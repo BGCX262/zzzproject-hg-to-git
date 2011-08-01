@@ -1,3 +1,5 @@
+spool logs\month_create.log
+
 DROP SEQUENCE Months_IDMonth_SEQ;
 CREATE SEQUENCE  Months_IDMonth_SEQ  
   MINVALUE 61 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
@@ -24,6 +26,7 @@ CREATE INDEX MonthsIDQ ON Months
 ) 
 ;
 
+spool off
 
 exit;
 

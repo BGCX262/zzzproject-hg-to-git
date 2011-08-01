@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - вторник-Август-02-2011   
---------------------------------------------------------
+spool logs\months_insert.log
+
 delete from months;
 
 Insert into Months (IDMonth,Month,IDHY) values (1,to_date('2008-01-01','yyyy-mm-dd'),1.0);
@@ -56,5 +55,7 @@ Insert into Months (IDMonth,Month,IDHY) values (50,to_date('2007-11-01','yyyy-mm
 Insert into Months (IDMonth,Month,IDHY) values (51,to_date('2007-12-01','yyyy-mm-dd'),18.0);
 
 commit;
+
+spool off
 
 exit;

@@ -1,3 +1,6 @@
+spool logs\products_create.log
+
+
 DROP SEQUENCE Products_IDProd_SEQ;
 CREATE SEQUENCE  Products_IDProd_SEQ  
   MINVALUE 60000000 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
@@ -28,5 +31,8 @@ CREATE INDEX ProductsIDProdGr ON Products
   IDProdGr
 ) 
 ;
+
+spool off
+
 
 exit;

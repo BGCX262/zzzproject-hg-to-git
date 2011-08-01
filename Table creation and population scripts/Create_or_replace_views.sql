@@ -1,4 +1,4 @@
-/*CREATE OR REPLACE force VIEW BR_Value
+﻿/*CREATE OR REPLACE force VIEW BR_Value
 AS
 SELECT BR.IDKAM ,
        IDRep.VALUE ,
@@ -332,14 +332,5 @@ SELECT IMS.IDProd ,
                  ) 
           ON Products.IDProd = IMS.IDProd;
  */         
-create or replace view all_employees
-as
-select idrep as emp_id, 'REP' as emp_type, emp as emp_name
-from reps
-union all
-select idkam ,'KAM', kam
-from kams
-union all
-select idsenkam, 'SKAM', senkam
-from senkams; 
+
 

@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - вторник-Август-02-2011   
---------------------------------------------------------
+spool logs\senkams_insert.log
+
 delete from SenKAMs;
 
 Insert into SenKAMs (IDSenKAM,SenKAM,IDArea) values (1,'Мельниченко',2);
@@ -10,6 +9,8 @@ Insert into SenKAMs (IDSenKAM,SenKAM,IDArea) values (4,'Шилиманов',3);
 Insert into SenKAMs (IDSenKAM,SenKAM,IDArea) values (27,'Салдадзе',5);
 
 commit;
+
+spool off
 
 exit;
 

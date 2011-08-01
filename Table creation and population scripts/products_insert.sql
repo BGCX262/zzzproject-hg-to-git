@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - вторник-Август-02-2011   
---------------------------------------------------------
+spool logs\products_insert.log
+
 delete from Products;
 Insert into Products (IDProd,Prod,IDProdGr,PriceCIP,PriceNet,StartDate,EndDate,Remarks) values (80,'A20',1.0,2646.0000,65.2662,to_date('2010-01-01','yyyy-mm-dd'),to_date('2010-03-31','yyyy-mm-dd'),'ES_Jan-Mar_2010');
 Insert into Products (IDProd,Prod,IDProdGr,PriceCIP,PriceNet,StartDate,EndDate,Remarks) values (81,'A30',1.0,3969.0000,97.8993,to_date('2010-01-01','yyyy-mm-dd'),to_date('2010-03-31','yyyy-mm-dd'),'ES_Jan-Mar_2010');
@@ -66,5 +65,7 @@ Insert into Products (IDProd,Prod,IDProdGr,PriceCIP,PriceNet,StartDate,EndDate,R
 Insert into Products (IDProd,Prod,IDProdGr,PriceCIP,PriceNet,StartDate,EndDate,Remarks) values (58791927,'V400',5.0,120000.0000,2959.9178,to_date('2010-04-02','yyyy-mm-dd'),to_date('2010-12-31','yyyy-mm-dd'),'Imp_Apr-Dec_2010');
 
 commit;
+
+spool off
 
 exit;

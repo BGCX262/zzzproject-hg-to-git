@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - понедельник-Август-01-2011   
---------------------------------------------------------
+spool logs\kams_insert.log
+
 delete from kams;
 
 Insert into KAMs (IDKAM,KAM,IDSenKAM) values (1,'Власенко',2.0);
@@ -21,6 +20,8 @@ Insert into KAMs (IDKAM,KAM,IDSenKAM) values (17,'Решетова',27.0);
 Insert into KAMs (IDKAM,KAM,IDSenKAM) values (18,'Прядко',2.0);
 
 commit;
+
+spool off
 
 exit;
 

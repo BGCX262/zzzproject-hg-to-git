@@ -1,4 +1,7 @@
-﻿DROP SEQUENCE Discounts_Код_SEQ;
+spool logs\discount_create.log
+
+
+DROP SEQUENCE Discounts_Код_SEQ;
 CREATE SEQUENCE  Discounts_Код_SEQ  
   MINVALUE 100 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
 
@@ -19,6 +22,8 @@ ADD CONSTRAINT PK_Discounts PRIMARY KEY
 )
 ENABLE
 ;
+
+spool off
 
 exit;
 

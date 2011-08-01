@@ -1,3 +1,5 @@
+spool logs\areas_create.log
+
 drop sequence Areas_IDArea_SEQ;
 CREATE SEQUENCE  Areas_IDArea_SEQ  MINVALUE 100 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
 
@@ -13,6 +15,9 @@ ADD CONSTRAINT PK_Areas PRIMARY KEY
   IDArea
 )
 ENABLE;
+
+spool off;
+
 
 exit;
 

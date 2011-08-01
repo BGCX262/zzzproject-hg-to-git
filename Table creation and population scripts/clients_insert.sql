@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - понедельник-Август-01-2011   
---------------------------------------------------------
+spool logs\clients_insert.log
+
 delete from clients;
 Insert into Clients (IDClient,Client,City,IDReg) values (1,'ГУЗ "Самарский областной онкологический диспансер"','Самара',57);
 Insert into Clients (IDClient,Client,City,IDReg) values (2,'ГУЗ “Самарская областная клиническая больница им. М.И. Калинина”','Самара',57);
@@ -528,5 +527,6 @@ Insert into Clients (IDClient,Client,City,IDReg) values (526,'ГУП КК "Ра�
 Insert into Clients (IDClient,Client,City,IDReg) values (527,'ГУЗ "Городская больница №40"','Санкт-Петербург',58);
 
 commit;
+spool off;
 
 exit;

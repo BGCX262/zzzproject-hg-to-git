@@ -1,6 +1,4 @@
---------------------------------------------------------
---  File created - понедельник-Август-01-2011   
---------------------------------------------------------
+spool logs\areas_insert.log
 
 delete from areas;
 
@@ -11,5 +9,7 @@ Insert into Areas (IDArea,Areas) values (4,'Москва + ЦФО');
 Insert into Areas (IDArea,Areas) values (5,'Юг');
 
 commit;
+
+spool off;
 
 exit;

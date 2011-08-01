@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - понедельник-Август-01-2011   
---------------------------------------------------------
+spool logs\br_insert.log
+
 delete from br;
 
 Insert into BR (IDBR,IDKAM,IDRep,IDClient,IDProd,Packs,IDHY) values (1,4,'',276,93,'5',7);
@@ -814,5 +813,6 @@ Insert into BR (IDBR,IDKAM,IDRep,IDClient,IDProd,Packs,IDHY) values (766,2,'5',4
 Insert into BR (IDBR,IDKAM,IDRep,IDClient,IDProd,Packs,IDHY) values (767,1,'7',475,5,'1770',8);
 
 commit;
+spool off
 
 exit;

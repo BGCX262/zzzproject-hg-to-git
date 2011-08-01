@@ -1,3 +1,5 @@
+spool logs\reps_create.log
+
 DROP SEQUENCE Reps_IDRep_SEQ;
 CREATE SEQUENCE  Reps_IDRep_SEQ  
   MINVALUE 20 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
@@ -24,5 +26,7 @@ CREATE INDEX RepsIDBusUnit ON Reps
   IDBusUnit
 )
 ;
+
+spool off
 
 exit;

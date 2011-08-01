@@ -1,3 +1,5 @@
+spool logs\clients_create.log
+
 DROP SEQUENCE Clients_IDClient_SEQ;
 CREATE SEQUENCE  Clients_IDClient_SEQ  
   MINVALUE 1000 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
@@ -18,5 +20,8 @@ ADD CONSTRAINT PK_Clients PRIMARY KEY
 )
 ENABLE
 ;
+
+spool off
+
 
 exit;

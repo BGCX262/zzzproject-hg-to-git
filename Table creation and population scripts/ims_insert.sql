@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - понедельник-Август-01-2011   
---------------------------------------------------------
+spool logs\ims_insert.log
+
 delete from IMS;
 
 Insert into IMS (IDIMS,IDClient,IDProd,Packs,IDWS,IDMonth,Remarks) values (50333698,415,86,'12',1,37,null);
@@ -2193,5 +2192,6 @@ Insert into IMS (IDIMS,IDClient,IDProd,Packs,IDWS,IDMonth,Remarks) values (50334
 Insert into IMS (IDIMS,IDClient,IDProd,Packs,IDWS,IDMonth,Remarks) values (1563,315,58791926,'24',2,36,null);
 
 commit;
+spool off
 
 exit;

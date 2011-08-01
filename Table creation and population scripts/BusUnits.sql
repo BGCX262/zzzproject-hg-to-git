@@ -1,3 +1,5 @@
+spool logs\busunits_create.log
+
 DROP SEQUENCE BusUnits_IDBusUnit_SEQ;
 CREATE SEQUENCE  BusUnits_IDBusUnit_SEQ  
   MINVALUE 10 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
@@ -15,6 +17,8 @@ ADD CONSTRAINT PK_BusUnits PRIMARY KEY
   IDBusUnit
 )
 ENABLE;
+
+spool off;
 
 exit;
 

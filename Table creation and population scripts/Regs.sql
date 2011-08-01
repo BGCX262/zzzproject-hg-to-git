@@ -1,3 +1,6 @@
+spool logs\regs_create.log
+
+
 DROP SEQUENCE Regs_IDReg_SEQ;
 CREATE SEQUENCE  Regs_IDReg_SEQ  
   MINVALUE 100 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
@@ -26,6 +29,8 @@ CREATE INDEX RegsIDArea ON Regs
   IDArea
 ) 
 ;
+
+spoll off
 
 exit;
 

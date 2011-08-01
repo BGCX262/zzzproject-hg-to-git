@@ -1,6 +1,4 @@
-﻿--------------------------------------------------------
---  File created - вторник-Август-02-2011   
---------------------------------------------------------
+spool logs\reps_insert.log
 delete from  Reps;
 Insert into Reps (IDRep,Emp,IDBusUnit) values (16,'Мочалова','1');
 Insert into Reps (IDRep,Emp,IDBusUnit) values (1,'Атаян','2');
@@ -20,6 +18,6 @@ Insert into Reps (IDRep,Emp,IDBusUnit) values (14,'Щербак','2');
 Insert into Reps (IDRep,Emp,IDBusUnit) values (15,'Стрикалова','1:2');
 
 commit;
-
+spool off
 exit;
 

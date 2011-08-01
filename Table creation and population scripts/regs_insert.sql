@@ -1,6 +1,5 @@
-﻿--------------------------------------------------------
---  File created - вторник-Август-02-2011   
---------------------------------------------------------
+spool logs\regs_insert.log
+
 delete from  Regs;
 
 Insert into Regs (IDReg,Reg,Cap,SubArea,IDArea) values (1,'Адыгея Республика','Майкоп','Южный',5.0);
@@ -89,6 +88,8 @@ Insert into Regs (IDReg,Reg,Cap,SubArea,IDArea) values (83,'Ямало-Нене�
 Insert into Regs (IDReg,Reg,Cap,SubArea,IDArea) values (84,'Ярославская область','Ярославль','Центральный',4.0);
 
 commit;
+
+spool off
 
 exit;
 

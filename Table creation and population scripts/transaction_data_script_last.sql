@@ -1,4 +1,6 @@
-﻿DROP SEQUENCE TRANSACTIONS_ID_SEQ;
+spool logs\transaction_data_create.log
+
+DROP SEQUENCE TRANSACTIONS_ID_SEQ;
 CREATE SEQUENCE  TRANSACTIONS_ID_SEQ  
   MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1  NOCYCLE ;
   
@@ -29,20 +31,13 @@ ADD CONSTRAINT PK_TRANSACTIONS PRIMARY KEY
 )
 ENABLE
 ;
---select * from transactions_data;
---IDBR, IDIMS, TRASACTION_TYPE, IDKAMREP, IDCLIENT, IDPROD, IDHY, IDY, IDMONTH, IDWS, PACKS_PLAN, PACKS_FACK
---select distinct idhy from br;
---KAM 
---select IDBR, null, 'BR', 'KAM', IDKAM, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null from br where idkam is not null; 
 INSERT INTO transactions_data  
 select TRANSACTIONS_ID_SEQ.nextval,IDBR, null, 'BR', 'KAM',  IDKAM, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null, PACKS 
 from br where idkam is not null
 ; 
 commit;
 
---KAM 
---select * from ims;
---IDBR, IDIMS, TRASACTION_TYPE,  'KAM', IDKAMREP, IDCLIENT, IDPROD, IDHY, IDY, IDMONTH, IDWS, PACKS_PLAN, PACKS_FACK
+
 INSERT INTO transactions_data  
 select TRANSACTIONS_ID_SEQ.nextval, br.IDBR, ims.IDIMS, 'IMS', 'KAM', br.IDKAM, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
 from ims, br
@@ -54,7 +49,6 @@ where ims.idclient=br.idclient
 commit;
 
 ----------------------------
---IDBR, IDIMS, TRASACTION_TYPE, IDKAMREP, IDCLIENT, IDPROD, IDHY, IDY, IDMONTH, IDWS, PACKS_PLAN, PACKS_FACK
 INSERT INTO transactions_data  
 select TRANSACTIONS_ID_SEQ.nextval, null, ims.IDIMS, 'IMS', 'KAM', 
 --------------------------
@@ -70,15 +64,11 @@ group by  b.idhy, c2.city
  where 
   t.minkam=t.maxkam and
   t.city = c.city 
-  --and t.idhy = (select max(idhy) from br)
-  --and t.idhy = (select idhy from months where idmonth=ims.idmonth) 
  ) idkamrep,
---------------------------
  ims.IDCLIENT, ims.IDPROD, 
  (select idhy from months where idmonth=ims.idmonth), 
  (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), 
  ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
-
 from ims, clients c
 where 
   ims.idclient=c.idclient and
@@ -93,13 +83,6 @@ where
 commit;
 
   
-  /*
-
-INSERT INTO transactions_data  
-select IDBR, null, 'BR', IDREP, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null from br where idkam is not null
-; 
-commit;
-*/
 create or replace view v_bonus as 
 select  
   td.idy,
@@ -610,5 +593,18 @@ create or replace view v_pivot_total as
 from  (select empltype, kam, base, prodgr, ims, br, prodsplit, kpersent, k from v_total_bonus)
 pivot (sum(ims) as sum_ims, sum(br) as sum_br, min(prodsplit) as psplit for (prodgr) in ('AN' as AN, 'A0' as A0, 'Mi' as Mi, 'Npl' as Npl, 'Vbx' as Vbx))
 );
+
+create or replace view all_employees
+as
+select idrep as emp_id, 'REP' as emp_type, emp as emp_name
+from reps
+union all
+select idkam ,'KAM', kam
+from kams
+union all
+select idsenkam, 'SKAM', senkam
+from senkams; 
+
+spool off
 
 exit;
