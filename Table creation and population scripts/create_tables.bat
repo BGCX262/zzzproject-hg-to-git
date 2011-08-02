@@ -16,3 +16,4 @@ sqlplus mdb_rep/mdb@xe @senkams.sql
 sqlplus mdb_rep/mdb@xe @wss.sql
 sqlplus mdb_rep/mdb@xe @years.sql
 
+sqlplus mdb_rep/mdb@xe @employee.sql

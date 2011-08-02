@@ -17,3 +17,5 @@ sqlplus mdb_rep/mdb@xe @senkams_insert.sql
 sqlplus mdb_rep/mdb@xe @wss_insert.sql
 sqlplus mdb_rep/mdb@xe @years_insert.sql
 sqlplus mdb_rep/mdb@xe @transaction_data_script.sql
+
+sqlplus mdb_rep/mdb@xe @employee_insert.sql
