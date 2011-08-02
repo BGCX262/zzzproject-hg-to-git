@@ -16,4 +16,4 @@ sqlplus mdb_rep/mdb@xe @reps_insert.sql
 sqlplus mdb_rep/mdb@xe @senkams_insert.sql
 sqlplus mdb_rep/mdb@xe @wss_insert.sql
 sqlplus mdb_rep/mdb@xe @years_insert.sql
-sqlplus mdb_rep/mdb@xe @transaction_data_script_last.sql
+sqlplus mdb_rep/mdb@xe @transaction_data_script.sql
