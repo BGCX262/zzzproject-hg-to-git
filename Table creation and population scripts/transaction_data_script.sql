@@ -308,7 +308,7 @@ where
   and k.idsenkam=sk.idsenkam
   and td.kamrep='KAM'
   and td.idkamrep=k.idkam
-  and td.idhy=7
+  --and td.idhy=7
 group by 
   td.idy,
   td.idhy,
@@ -401,6 +401,8 @@ create or replace view v_pivot_total as
 (select 
   *
 from  (select 
+        idy,
+        idhy,
         empltype, 
         idsenkam,
         kam, 
@@ -465,7 +467,7 @@ where
   and sk.idsenkam=vsk.idsenkam
   and td.kamrep='KAM'
   and td.idkamrep=k.idkam
-  and td.idhy=7 
+ -- and td.idhy=7 
 group by 
   td.idy,
   td.idhy,
@@ -557,6 +559,8 @@ create or replace view v_sk_pivot_total as
 (select 
   *
 from  (select 
+        idy,
+        idhy,
         empltype, 
         idsenkam,
         kam, 
@@ -606,7 +610,7 @@ where
   and td.kamrep='REP'
   and td.idkamrep=r.idrep
   and sr.idreps=r.idrep
-  and td.idhy=7 
+  --and td.idhy=7 
 group by 
   td.idy,
   td.idhy,
@@ -698,6 +702,8 @@ create or replace view v_rep_pivot_total as
 (select 
   *
 from  (select 
+        idy,
+        idhy,
         empltype,
         idsenreps,
         rep, 
