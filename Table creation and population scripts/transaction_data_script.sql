@@ -156,7 +156,25 @@ ENABLE
 ;
 
 delete from cip_schema_empl;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,1, 'KAM', K.IDKAM FROM KAMS K WHERE NOT EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%');
+insert into cip_schema_empl select cipemp_id_seq.nextval,1, 'KAM', employee_id from employee where employee_type = 'KAM';
+insert into cip_schema_empl select cipemp_id_seq.nextval,1, 'SKAM', employee_id from employee where employee_type = 'SKAM';
+insert into cip_schema_empl select cipemp_id_seq.nextval,6, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 1) from dual;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,7, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 8) FROM DUAL;
+insert into cip_schema_empl select cipemp_id_seq.nextval,6, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 9) from dual;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 10) FROM DUAL;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 11) FROM DUAL;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 12) FROM DUAL;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 3) FROM DUAL;
+insert into cip_schema_empl select cipemp_id_seq.nextval,4, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 7) from dual;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 13) FROM DUAL;
+insert into cip_schema_empl select cipemp_id_seq.nextval,4, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 14) from dual;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 15) FROM DUAL;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 4) FROM DUAL;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 6) FROM DUAL;
+insert into cip_schema_empl select cipemp_id_seq.nextval,6, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 2) from dual;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 5) FROM DUAL;
+
+/*INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,1, 'KAM', K.IDKAM FROM KAMS K WHERE NOT EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%');
 INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,2, 'SKAM', K.IDKAM FROM KAMS K WHERE EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%');
 INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 1 FROM DUAL;
 INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,7, 'REP', 8 FROM DUAL;
@@ -173,7 +191,7 @@ INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 4 FROM DUAL;
 INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 6 FROM DUAL;
 
 INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 2 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 5 FROM DUAL;
+INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 5 FROM DUAL;*/
 
 commit;
 
@@ -280,6 +298,21 @@ end pr_payout_curve;
 /
 
 exec pr_payout_curve(50,90,130);
+/
+
+create or replace function month_return(months varchar2) return varchar2
+is
+l_vc_arr2    apex_application_global.vc_arr2;
+l_month varchar2(255);
+l_result varchar2(4000);
+begin
+ l_vc_arr2 := APEX_UTIL.STRING_TO_TABLE(months,':');
+       for z in 1..l_vc_arr2.count loop
+               select to_char(month,'mm.yy') into l_month from months where idmonth = l_vc_arr2(z);
+               l_result := l_result || l_month ||';';
+       end loop;
+ return l_result;
+end;
 /
 
 create or replace view v_bonus as 

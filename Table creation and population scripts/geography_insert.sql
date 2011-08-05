@@ -12,13 +12,41 @@ insert into geography values (5,null,'AREA','Юг');
 --insert subareas
 insert into geography values (geography_id_seq.nextval,1,'SUBAREA',	'Приволжский');
 insert into geography values (geography_id_seq.nextval,1,'SUBAREA',	'Южный');
-insert into geography values (geography_id_seq.nextval,2,'SUBAREA',	'Северо-западный');
+insert into geography values (geography_id_seq.nextval,2,'SUBAREA',	'Северо-Западный');
 insert into geography values (geography_id_seq.nextval,3,'SUBAREA',	'Уральский');
 insert into geography values (geography_id_seq.nextval,3,'SUBAREA',	'Сибирский');
 insert into geography values (geography_id_seq.nextval,3,'SUBAREA',	'Дальневосточный');
 insert into geography values (geography_id_seq.nextval,3,'SUBAREA',	'Приволжский');
+insert into geography values (geography_id_seq.nextval,4,'SUBAREA',	'Центральный');
+insert into geography values (geography_id_seq.nextval,5,'SUBAREA',	'Южный');
+insert into geography values (geography_id_seq.nextval,5,'SUBAREA',	'Северо-Кавказский');
 
 --insert regions
+begin
+for i in (
+select 'insert into geography values (geography_id_seq.nextval,' || (select geography_id from geography where geography_name = subarea and geography_parent = idarea) || ',''REGION'',' ||''''|| reg ||''')' as str 
+from regs) loop
+
+execute immediate i.str;
+
+end loop;
+commit;
+end;
+/
+
+
+--insert cities
+begin
+for i in (
+select 'insert into geography values (geography_id_seq.nextval,' || (select geography_id from geography where geography_name = reg) || ',''CITY'',' ||''''|| cap ||''')' as str
+from regs) loop
+
+execute immediate i.str;
+
+end loop;
+commit;
+end;
+/
 
 
 
