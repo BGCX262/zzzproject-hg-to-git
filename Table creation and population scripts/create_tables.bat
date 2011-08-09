@@ -19,4 +19,5 @@ sqlplus mdb_rep/mdb@xe @years.sql
 sqlplus mdb_rep/mdb@xe @employee.sql
 sqlplus mdb_rep/mdb@xe @geography.sql
 sqlplus mdb_rep/mdb@xe @affiliation.sql
+sqlplus mdb_rep/mdb@xe @employee_client.sql
 

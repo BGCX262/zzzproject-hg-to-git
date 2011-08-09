@@ -22,6 +22,11 @@ add constraint pk_employee primary key
 alter table employee
 add constraint fk_employee foreign key (employee_parent) references employee(employee_id) on delete cascade;
 
+create or replace view all_employees as
+select * from employee where employee_type <> 'TEAM';
+/
+
+
 spool off;
 
 

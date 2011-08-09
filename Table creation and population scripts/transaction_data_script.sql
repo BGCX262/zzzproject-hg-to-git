@@ -11,7 +11,7 @@ CREATE TABLE TRANSACTIONS_DATA
     IDTRAN NUMBER,
     IDBR    NUMBER(11,0) ,
     IDIMS    NUMBER(11,0),
-    TRASACTION_TYPE VARCHAR(4),
+    trasaction_type varchar(4),
     KAMREP VARCHAR(4),
     IDKAMREP   NUMBER(11,0),
     IDCLIENT NUMBER(11,0),
@@ -33,16 +33,16 @@ ADD CONSTRAINT PK_TRANSACTIONS PRIMARY KEY
 ENABLE
 ;
 
-INSERT INTO transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval,IDBR, null, 'BR', 'KAM',  IDKAM, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null, PACKS 
+insert into transactions_data  
+select TRANSACTIONS_ID_SEQ.nextval,IDBR, null, 'BR', null as kam/*'KAM'*/, null as idkam /* IDKAM*/, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null, PACKS 
 from br where idkam is not null
 ; 
 commit;
 
 
 
-INSERT INTO transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval, br.IDBR, ims.IDIMS, 'IMS', 'KAM', br.IDKAM, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
+insert into transactions_data  
+select TRANSACTIONS_ID_SEQ.nextval, br.IDBR, ims.IDIMS, 'IMS', null as kam /*'KAM'*/, null as idkam /*br.IDKAM*/, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
 from ims, br
 where ims.idclient=br.idclient
   and ims.idprod=br.idprod
@@ -52,8 +52,8 @@ where ims.idclient=br.idclient
 commit;
 
 
-INSERT INTO transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval, null, ims.IDIMS, 'IMS', 'KAM', 
+insert into transactions_data  
+select TRANSACTIONS_ID_SEQ.nextval, null, ims.IDIMS, 'IMS', null as kam /*'KAM'*/, 
 (select max(maxkam) from 
 (
 select  b.idhy, c2.city, count(distinct b.idkam) qvt, min(b.idkam) minkam, max(b.idkam) maxkam 
@@ -87,15 +87,15 @@ commit;
 
 
 
-INSERT INTO transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval,IDBR, null, 'BR', 'REP',  IDREP, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null, PACKS 
+insert into transactions_data  
+select TRANSACTIONS_ID_SEQ.nextval,IDBR, null, 'BR', null as rep /*'REP'*/, null as idrep/* IDREP*/, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null, PACKS 
 from br where idrep is not null
 ; 
 commit;
  
 
-INSERT INTO transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval,br.IDBR, ims.IDIMS, 'IMS', 'REP', br.IDREP, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
+insert into transactions_data  
+select TRANSACTIONS_ID_SEQ.nextval,br.IDBR, ims.IDIMS, 'IMS', null as rep /*'REP'*/, null as idrep /* br.IDREP*/, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
 from ims, br
 where ims.idclient=br.idclient
   and ims.idprod=br.idprod

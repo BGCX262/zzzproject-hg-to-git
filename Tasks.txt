@@ -1,10 +1,10 @@
-1. комманды в иерархию сотрудников
-2. % в payout curve
-3. Dictionaries - > Administration tool
+1. комманды в иерархию сотрудников - DONE
+2. % в payout curve - DONE
+3. Dictionaries - > Administration tool DONE
 4. Q to Freedman - > Employee Geography link
-5. Start date , End date убрать из emp_geo (убрать вообще!!!. СКРЫТЬ)
-6. Table client -- employee (customer alignment) Type  =  EXPL + Добавить долю в % (для плана, по умолчанию 1 - 100%)
-7. убираем из transactons_data поля KAMREP IDKAMREP(их мы добавляем в client_employee)
+5. Start date , End date убрать из emp_geo (убрать вообще!!!. СКРЫТЬ) DONE
+6. Table client -- employee (customer alignment) Type  =  EXPL + Добавить долю в % (для плана, по умолчанию 1 - 100%) DONE
+7. убираем из transactons_data поля KAMREP IDKAMREP(их мы добавляем в client_employee) DONE
 8. Добавить отчет "план по сотрудникам" по периодам(H1...)
 9. Выход на редактирование плана по клиентам (форма плана) + выход из этой же формы на редактирование доли плана
 10. Факт - the same as plan
@@ -13,6 +13,6 @@
 	2. Уровень Фридмана - видит все.
 	3. Уровень контролер - репорты(вопрос в том, как сделать так, что бы Фридман накидал отчетик и показал им. saved interactive report?)
 12.Dashboards переименовать в reports + добавить 2 уровень табов и первый из них dashboards. На каждой из страничек сделать по 4 области
-Пока сделать 2 таба
+Пока сделать 2 таба DONE
 
 
