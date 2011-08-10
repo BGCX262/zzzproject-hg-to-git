@@ -13,7 +13,7 @@ insert into employee values (1,98,'SKAM','Мельниченко',null);
 insert into employee values (2,98,'SKAM','Смирнова',null);
 insert into employee values (3,98,'SKAM','Серебряков',null);
 insert into employee values (4,98,'SKAM','Шилиманов',null);
-insert into employee values (27,98,'SKAM','Салдадзе',null);
+insert into employee values (27,98,'SKAM','Салдадзе (fired)',null);
 
 --insert kams
 insert into employee values (employee_id_seq.nextval,2,'KAM','Власенко',null);
@@ -25,11 +25,11 @@ insert into employee values (employee_id_seq.nextval,1,'KAM','Набиев',null
 insert into employee values (employee_id_seq.nextval,4,'KAM','Катаев',null);
 insert into employee values (employee_id_seq.nextval,3,'KAM','Волга вакансия',null);
 insert into employee values (employee_id_seq.nextval,4,'KAM','Урал вакансия',null);
-insert into employee values (employee_id_seq.nextval,27,'KAM','Салдадзе (fired)',null);
-insert into employee values (employee_id_seq.nextval,3,'KAM','Серебряков',null);
-insert into employee values (employee_id_seq.nextval,2,'KAM','Смирнова',null);
-insert into employee values (employee_id_seq.nextval,1,'KAM','Мельниченко',null);
-insert into employee values (employee_id_seq.nextval,4,'KAM','Шилиманов',null);
+--insert into employee values (employee_id_seq.nextval,27,'KAM','Салдадзе (fired)',null);
+--insert into employee values (employee_id_seq.nextval,3,'KAM','Серебряков',null);
+--insert into employee values (employee_id_seq.nextval,2,'KAM','Смирнова',null);
+--insert into employee values (employee_id_seq.nextval,1,'KAM','Мельниченко',null);
+--insert into employee values (employee_id_seq.nextval,4,'KAM','Шилиманов',null);
 insert into employee values (employee_id_seq.nextval,27,'KAM','Решетова',null);
 insert into employee values (employee_id_seq.nextval,2,'KAM','Прядко',null);
 

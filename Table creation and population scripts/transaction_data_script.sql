@@ -269,6 +269,21 @@ insert into senreps select 4, 18 from dual;
 
 commit;
 
+drop sequence PAYOUT_ID_SEQ;
+create sequence  PAYOUT_ID_SEQ  minvalue 100 maxvalue 999999999999999999999999 increment by 1  nocycle ;
+
+create table payout_curve 
+(
+idpayout number,
+ytdgoal number,
+targetinc number
+);
+
+alter table payout_curve add constraint pk_payout primary key
+(
+  idpayout
+) enable;
+
 
 create or replace
 procedure 
@@ -770,6 +785,33 @@ from kams
 union all
 select idsenkam, 'SKAM', senkam
 from senkams; 
+
+insert into employee_client
+select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, 'EXPL' as link_type, 1 as plan_pct 
+from 
+(select distinct b.idhy, 
+(select e.employee_id from employee e, kams k where e.employee_name=k.kam and e.employee_type in ('KAM','SKAM') and k.idkam = b.idkam) as empl,
+b.idclient
+from br b
+where b.idkam is not null
+) t
+;
+
+commit;
+
+insert into employee_client
+select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, 'EXPL' as link_type, 1 as plan_pct 
+from 
+(select distinct b.idhy, 
+(select e.employee_id from employee e, reps r where e.employee_name=r.emp and e.employee_type in ('REP','SREP') and r.idrep = b.idrep) as empl,
+b.idclient
+from br b
+where b.idrep is not null
+) t
+;
+
+commit;
+
 
 spool off
 

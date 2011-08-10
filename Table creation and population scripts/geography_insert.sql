@@ -22,6 +22,9 @@ insert into geography values (geography_id_seq.nextval,5,'SUBAREA',	'Южный'
 insert into geography values (geography_id_seq.nextval,5,'SUBAREA',	'Северо-Кавказский');
 
 --insert regions
+--fix the bug(duplicate) with chechenskaya resp
+delete from regs where idreg = 80;
+
 begin
 for i in (
 select 'insert into geography values (geography_id_seq.nextval,' || (select geography_id from geography where geography_name = subarea and geography_parent = idarea) || ',''REGION'',' ||''''|| reg ||''')' as str 

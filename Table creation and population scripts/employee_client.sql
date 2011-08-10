@@ -7,6 +7,7 @@ drop table employee_client;
 create table employee_client
 (
   employee_client_id number,
+  idhy number,
   employee_id number,
   client_id number,
   link_type varchar2(1024) default 'EXPL',

@@ -30,7 +30,7 @@ CREATE INDEX RegsIDArea ON Regs
 ) 
 ;
 
-spoll off
+spool off
 
 exit;
 

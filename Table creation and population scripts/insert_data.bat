@@ -16,9 +16,10 @@ sqlplus mdb_rep/mdb@xe @reps_insert.sql
 sqlplus mdb_rep/mdb@xe @senkams_insert.sql
 sqlplus mdb_rep/mdb@xe @wss_insert.sql
 sqlplus mdb_rep/mdb@xe @years_insert.sql
-sqlplus mdb_rep/mdb@xe @transaction_data_script.sql
+rem sqlplus mdb_rep/mdb@xe @transaction_data_script.sql
 
 sqlplus mdb_rep/mdb@xe @employee_insert.sql
+sqlplus mdb_rep/mdb@xe @transaction_data_script.sql
 sqlplus mdb_rep/mdb@xe @geography_insert.sql
 sqlplus mdb_rep/mdb@xe @clients_update.sql
 sqlplus mdb_rep/mdb@xe @affiliation_insert.sql
