@@ -83,27 +83,6 @@ where
 ;
 commit;
 
-  
-
-
-
-insert into transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval,IDBR, null, 'BR', null as rep /*'REP'*/, null as idrep/* IDREP*/, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null, PACKS 
-from br where idrep is not null
-; 
-commit;
- 
-
-insert into transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval,br.IDBR, ims.IDIMS, 'IMS', null as rep /*'REP'*/, null as idrep /* br.IDREP*/, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
-from ims, br
-where ims.idclient=br.idclient
-  and ims.idprod=br.idprod
-  and br.idhy=(select idhy from months where idmonth=ims.idmonth)
-  and br.idrep is not null
-  ;
-commit;
- 
 
 DROP SEQUENCE CIP_ID_SEQ;
 CREATE SEQUENCE  CIP_ID_SEQ  
@@ -239,10 +218,10 @@ insert into cip_schema_detail select CIPDET_ID_SEQ.nextval,7, 4, 0.5, 43313, 866
 
 commit;
 
-insert into reps select 17, 'Ночевкина', 2 from dual;
-insert into reps select 18, 'Лисюкова', 1 from dual;
+--insert into reps select 17, 'Ночевкина', 2 from dual;
+--insert into reps select 18, 'Лисюкова', 1 from dual;
 
-commit; 
+/*commit; 
 
 drop table senreps; 
 CREATE TABLE senreps
@@ -267,11 +246,12 @@ insert into senreps select 14, 18 from dual;
 insert into senreps select 15, 18 from dual;
 insert into senreps select 4, 18 from dual;
 
-commit;
+commit;*/
 
 drop sequence PAYOUT_ID_SEQ;
 create sequence  PAYOUT_ID_SEQ  minvalue 100 maxvalue 999999999999999999999999 increment by 1  nocycle ;
 
+drop table payout_curve;
 create table payout_curve 
 (
 idpayout number,
@@ -775,16 +755,6 @@ from  (select
             )
 );
 
-create or replace view all_employees
-as
-select idrep as emp_id, 'REP' as emp_type, emp as emp_name
-from reps
-union all
-select idkam ,'KAM', kam
-from kams
-union all
-select idsenkam, 'SKAM', senkam
-from senkams; 
 
 insert into employee_client
 select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, 'EXPL' as link_type, 1 as plan_pct 
