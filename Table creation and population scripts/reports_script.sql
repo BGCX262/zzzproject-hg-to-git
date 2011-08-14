@@ -269,7 +269,59 @@ group by
   hy.idhy,
   pg.prodgr
 ;
+create or replace view v_report_geography_table as
+select 
+  ar.geography_id as area_id,
+  su.geography_id as subarea_id,
+  re.geography_id as region_id,
+  ar.geography_name as area,
+  su.geography_name as subarea,
+  re.geography_name as region
+from
+geography ar,
+geography su,
+geography re
+where
+  ar.geography_id=su.geography_parent
+  and su.geography_id=re.geography_parent
 
+;
+
+create or replace view v_db4_geog_pf as
+select 
+  geo.*,
+  h.hy,
+  gc.idhy,
+  gc.qvt_month,
+  gc.v_plan,
+  gc.v_fact
+from 
+  half_year h,
+  v_report_geography_table geo,
+  (select 
+      td.idhy, 
+      g.geography_id,
+      g.geography_parent,
+      g.geography_name,
+      count(distinct td.idmonth) as qvt_month,
+      sum(td.packs_plan) as v_plan,
+      sum(td.packs_fack) as v_fact
+    from 
+      transactions_data td,
+      geography g,
+      clients cc
+    where 
+        g.geography_id = cc.idreg
+        and cc.idclient = td.idclient
+    group by 
+      td.idhy,
+      g.geography_id,
+      g.geography_parent,
+      g.geography_name) gc
+where 
+  h.idhy=gc.idhy
+  and geo.region_id=gc.geography_id
+;
 
 spool off
 
