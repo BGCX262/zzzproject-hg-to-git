@@ -11,6 +11,7 @@ select
   pg.idprodgr,
   pg.prodgr,
   td.trasaction_type,
+  sum(td.packs_plan) as packs,
   sum(td.packs_plan * p.pricecip) BR,
   sum(td.packs_fack * p.pricecip) IMS,
   sum(td.packs * p.pricecip) CIP
@@ -167,7 +168,109 @@ where e.employee_parent in (99,98)
 order by 4,5 desc
 ;
 
+create or replace view v_report_employee_table as
+select 
+  lvl_1.employee_id as empl_1_id,
+  lvl_2.employee_id as empl_manager_id,
+  lvl_3.employee_id as empl_employee_id,
+  lvl_1.employee_name as employee_group,
+  lvl_2.employee_name as manager_name,
+  lvl_3.employee_name as employee_name
+from 
+  employee lvl_1, 
+  employee lvl_2, 
+  (select employee_id, employee_parent, employee_name from employee 
+   union
+   select employee_id,employee_id as employee_parent, employee_name
+   from employee
+   where employee_parent in (98,99)
+  ) lvl_3
+where 
+  lvl_1.employee_id=lvl_2.employee_parent
+  and lvl_2.employee_id=lvl_3.employee_parent
+order by 2
+;
+
+create or replace view v_db1_empl_client as
+select 
+e.*,
+h.hy,
+ecq.idhy,
+ecq.qvt_clients
+from 
+  half_year h,
+  v_report_employee_table e,
+  (
+    select 
+      ec.idhy,
+      ec.employee_id, 
+      count(ec.client_id) as qvt_clients 
+    from 
+      employee_client ec
+    group by 
+      ec.idhy,
+      ec.employee_id) ecq
+where 
+  h.idhy=ecq.idhy
+  and ecq.employee_id=e.empl_employee_id  
+;
+
+create or replace view v_db2_empl_pf as
+select 
+e.*,
+h.hy,
+ecp.idhy,
+ecp.qvt_month,
+ecp.v_plan,
+ecp.v_fact
+from 
+  half_year h,
+  v_report_employee_table e,
+  (
+    select 
+      ec.idhy, 
+      ec.employee_id,
+      count(distinct td.idmonth) as qvt_month,
+      sum(td.packs_plan) as v_plan,
+      sum(td.packs_fack) as v_fact
+    from 
+      employee_client ec,
+      transactions_data td
+    where 
+        td.idhy=ec.idhy
+        and td.idclient = ec.client_id
+    group by 
+      ec.idhy, 
+      ec.employee_id
+  ) ecp
+where 
+  h.idhy=ecp.idhy
+  and ecp.employee_id=e.empl_employee_id  
+;
+
+create or replace view v_db3_prodgr as
+select
+  hy.hy,
+  hy.idhy,
+  pg.prodgr,
+  sum(td.packs_plan) as v_plan,
+  sum(td.packs_fack) as v_fact
+from 
+  transactions_data td,
+  products p,
+  prodgrs pg,
+  half_year hy
+where 
+  p.idprod=td.idprod
+  and pg.idprodgr=p.idprodgr
+  and hy.idhy=td.idhy
+group by 
+  hy.hy,
+  hy.idhy,
+  pg.prodgr
+;
+
+
 spool off
 
 exit;
-
