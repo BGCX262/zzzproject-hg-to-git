@@ -269,6 +269,7 @@ group by
   hy.idhy,
   pg.prodgr
 ;
+
 create or replace view v_report_geography_table as
 select 
   ar.geography_id as area_id,
@@ -284,7 +285,6 @@ geography re
 where
   ar.geography_id=su.geography_parent
   and su.geography_id=re.geography_parent
-
 ;
 
 create or replace view v_db4_geog_pf as
