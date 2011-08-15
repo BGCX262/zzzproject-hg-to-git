@@ -322,7 +322,7 @@ where
   h.idhy=gc.idhy
   and geo.region_id=gc.geography_id
 ;
-
+ 
 spool off
 
 exit;
