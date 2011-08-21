@@ -13,7 +13,7 @@ prompt  APPLICATION 100 - Sales
 -- Application Export:
 --   Application:     100
 --   Name:            Sales
---   Date and Time:   00:38 Monday August 15, 2011
+--   Date and Time:   01:16 Monday August 22, 2011
 --   Exported By:     ADMIN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -65,13 +65,10 @@ prompt  APPLICATION 100 - Sales
 --  AA          AA  PP      EEEEEE  XX      XX
 prompt  Set Credentials...
  
-declare
-l_wp_id number; 
 begin
- select workspace_id into l_wp_id from apex_workspaces; 
+ 
   -- Assumes you are running the script connected to SQL*Plus as the Oracle user APEX_040000 or as the owner (parsing schema) of the application.
-  wwv_flow_api.set_security_group_id(p_security_group_id=>nvl(wwv_flow_application_install.get_workspace_id,l_wp_id));
-  --,1281423458935712));
+  wwv_flow_api.set_security_group_id(p_security_group_id=>nvl(wwv_flow_application_install.get_workspace_id,1281423458935712));
  
 end;
 /
@@ -149,7 +146,7 @@ wwv_flow_api.create_flow(
   p_default_region_template=> 2616718399032833 + wwv_flow_api.g_id_offset,
   p_error_template=> 2614238398032776 + wwv_flow_api.g_id_offset,
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20110815002629',
+  p_checksum_salt_last_reset => '20110822011454',
   p_max_session_length_sec=> 3600,
   p_home_link=> 'f?p=&APP_ID.:1:&SESSION.',
   p_flow_language=> 'ru',
@@ -193,7 +190,7 @@ wwv_flow_api.create_flow(
   p_default_menur_template => 2615541273032830 + wwv_flow_api.g_id_offset,
   p_default_listr_template => 2616128690032831 + wwv_flow_api.g_id_offset,
   p_last_updated_by => 'ADMIN',
-  p_last_upd_yyyymmddhh24miss=> '20110815002629',
+  p_last_upd_yyyymmddhh24miss=> '20110822011454',
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
  
@@ -204,6 +201,26 @@ prompt  ...authorization schemes
 --
  
 begin
+ 
+--application/shared_components/security/authorization/administrator
+wwv_flow_api.create_security_scheme(
+  p_id => 1866420468812449 + wwv_flow_api.g_id_offset,
+  p_flow_id => wwv_flow.g_flow_id,
+  p_name=>'Administrator',
+  p_scheme_type=>'EXISTS',
+  p_scheme=>'select 1 from dual where v(''APP_USER'') = ''ADMINISTRATOR''',
+  p_caching=>'BY_USER_BY_SESSION',
+  p_error_message=>'You have no permissions to access this page');
+ 
+--application/shared_components/security/authorization/afridman
+wwv_flow_api.create_security_scheme(
+  p_id => 1871116668887034 + wwv_flow_api.g_id_offset,
+  p_flow_id => wwv_flow.g_flow_id,
+  p_name=>'AFridman',
+  p_scheme_type=>'EXISTS',
+  p_scheme=>'select 1 from dual where v(''APP_USER'') = ''AFRIDMAN''',
+  p_caching=>'BY_USER_BY_SESSION',
+  p_error_message=>'You have no permissions to access this page');
  
 --application/shared_components/security/authorization/access_control_administrator
 wwv_flow_api.create_security_scheme(
@@ -555,6 +572,7 @@ wwv_flow_api.create_tab (
   p_tab_step => 6,
   p_tab_also_current_for_pages => '6,61,61,40',
   p_tab_parent_tabset=>'',
+  p_security_scheme => '!'||(1866420468812449+ wwv_flow_api.g_id_offset),
   p_tab_comment  => '');
  
 --application/shared_components/navigation/tabs/standard/t_dictionaries
@@ -579,7 +597,7 @@ wwv_flow_api.create_tab (
   p_tab_name=> 'Access control',
   p_tab_text => 'Access control',
   p_tab_step => 2,
-  p_tab_also_current_for_pages => '',
+  p_tab_also_current_for_pages => '2',
   p_tab_parent_tabset=>'',
   p_display_condition_type=> 'NEVER',
   p_tab_comment  => '');
@@ -771,14 +789,21 @@ wwv_flow_api.create_page (
  ,p_tab_set => 'TS1'
  ,p_name => 'Home'
  ,p_step_title => 'Home'
+ ,p_allow_duplicate_submissions => 'Y'
  ,p_step_sub_title => 'Home'
  ,p_step_sub_title_type => 'TEXT_WITH_SUBSTITUTIONS'
+ ,p_first_item => 'AUTO_FIRST_ITEM'
  ,p_include_apex_css_js_yn => 'Y'
+ ,p_autocomplete_on_off => 'ON'
+ ,p_page_is_public_y_n => 'N'
+ ,p_protection_level => 'N'
  ,p_cache_page_yn => 'N'
+ ,p_cache_timeout_seconds => 21600
+ ,p_cache_by_user_yn => 'N'
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110712011525'
+ ,p_last_upd_yyyymmddhh24miss => '20110822011454'
   );
 null;
  
@@ -866,6 +891,7 @@ wwv_flow_api.create_page_plug (
   p_plug_query_num_rows_type => 'NEXT_PREVIOUS_LINKS',
   p_plug_query_row_count_max => 500,
   p_plug_query_show_nulls_as => ' - ',
+  p_plug_required_role => '!'||(1866420468812449+ wwv_flow_api.g_id_offset),
   p_plug_display_condition_type => '',
   p_pagination_display_position=>'BOTTOM_RIGHT',
   p_plug_customized=>'0',
@@ -884,7 +910,19 @@ end;
  
 begin
  
-null;
+wwv_flow_api.create_page_branch(
+  p_id=>1872527675984790 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 1,
+  p_branch_action=> 'f?p=&APP_ID.:7:&SESSION.::&DEBUG.:::',
+  p_branch_point=> 'BEFORE_HEADER',
+  p_branch_type=> 'REDIRECT_URL',
+  p_branch_sequence=> 10,
+  p_branch_condition_type=> 'EXISTS',
+  p_branch_condition=> 'select 1 from dual where v(''APP_USER'') = ''ADMINISTRATOR''',
+  p_save_state_before_branch_yn=>'Y',
+  p_branch_comment=> 'Created 22-AUG-2011 01:14 by ADMIN');
+ 
  
 end;
 /
@@ -927,7 +965,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110724001734'
+ ,p_last_upd_yyyymmddhh24miss => '20110822003240'
   );
 null;
  
@@ -941,7 +979,7 @@ declare
 begin
 s := null;
 wwv_flow_api.create_page_plug (
-  p_id=> 1288112004047852 + wwv_flow_api.g_id_offset,
+  p_id=> 1859903929731406 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 2,
   p_plug_name=> 'Application Administration',
@@ -979,7 +1017,7 @@ s:=s||'select id,'||chr(10)||
 '';
 
 wwv_flow_api.create_report_region (
-  p_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 2,
   p_name=> 'Access Control List',
@@ -1014,8 +1052,8 @@ declare
 begin
 s := null;
 wwv_flow_api.create_report_columns (
-  p_id=> 1289319233047918 + wwv_flow_api.g_id_offset,
-  p_region_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861229074731429 + wwv_flow_api.g_id_offset,
+  p_region_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_query_column_id=> 1,
   p_form_element_id=> null,
@@ -1040,8 +1078,8 @@ declare
 begin
 s := null;
 wwv_flow_api.create_report_columns (
-  p_id=> 1289422398047921 + wwv_flow_api.g_id_offset,
-  p_region_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861325136731431 + wwv_flow_api.g_id_offset,
+  p_region_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_query_column_id=> 2,
   p_form_element_id=> null,
@@ -1070,8 +1108,8 @@ declare
 begin
 s := null;
 wwv_flow_api.create_report_columns (
-  p_id=> 1289500993047921 + wwv_flow_api.g_id_offset,
-  p_region_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861418927731431 + wwv_flow_api.g_id_offset,
+  p_region_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_query_column_id=> 3,
   p_form_element_id=> null,
@@ -1099,8 +1137,8 @@ declare
 begin
 s := null;
 wwv_flow_api.create_report_columns (
-  p_id=> 1289616090047921 + wwv_flow_api.g_id_offset,
-  p_region_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861523056731432 + wwv_flow_api.g_id_offset,
+  p_region_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_query_column_id=> 4,
   p_form_element_id=> null,
@@ -1131,8 +1169,8 @@ declare
 begin
 s := null;
 wwv_flow_api.create_report_columns (
-  p_id=> 1289700542047921 + wwv_flow_api.g_id_offset,
-  p_region_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861622202731432 + wwv_flow_api.g_id_offset,
+  p_region_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_query_column_id=> 5,
   p_form_element_id=> null,
@@ -1161,8 +1199,8 @@ declare
 begin
 s := null;
 wwv_flow_api.create_report_columns (
-  p_id=> 1289804857047921 + wwv_flow_api.g_id_offset,
-  p_region_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861721260731432 + wwv_flow_api.g_id_offset,
+  p_region_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_query_column_id=> 6,
   p_form_element_id=> null,
@@ -1186,8 +1224,8 @@ declare
 begin
 s := null;
 wwv_flow_api.create_report_columns (
-  p_id=> 1289924237047921 + wwv_flow_api.g_id_offset,
-  p_region_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_id=> 1861809183731432 + wwv_flow_api.g_id_offset,
+  p_region_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_query_column_id=> 7,
   p_form_element_id=> null,
@@ -1211,11 +1249,11 @@ end;
 begin
  
 wwv_flow_api.create_page_button(
-  p_id             => 1292132297047935 + wwv_flow_api.g_id_offset,
+  p_id             => 1864032117731437 + wwv_flow_api.g_id_offset,
   p_flow_id        => wwv_flow.g_flow_id,
   p_flow_step_id   => 2,
   p_button_sequence=> 50,
-  p_button_plug_id => 1289102737047911+wwv_flow_api.g_id_offset,
+  p_button_plug_id => 1861014330731426+wwv_flow_api.g_id_offset,
   p_button_name    => 'ADD',
   p_button_image   => 'template:'||to_char(2614921232032777+wwv_flow_api.g_id_offset),
   p_button_image_alt=> 'Add User',
@@ -1226,11 +1264,11 @@ wwv_flow_api.create_page_button(
   p_required_patch => null + wwv_flow_api.g_id_offset);
  
 wwv_flow_api.create_page_button(
-  p_id             => 1288719639047901 + wwv_flow_api.g_id_offset,
+  p_id             => 1860624983731420 + wwv_flow_api.g_id_offset,
   p_flow_id        => wwv_flow.g_flow_id,
   p_flow_step_id   => 2,
   p_button_sequence=> 10,
-  p_button_plug_id => 1288112004047852+wwv_flow_api.g_id_offset,
+  p_button_plug_id => 1859903929731406+wwv_flow_api.g_id_offset,
   p_button_name    => 'SAVE',
   p_button_image   => 'template:'||to_char(2614921232032777+wwv_flow_api.g_id_offset),
   p_button_image_alt=> 'Set Application Mode',
@@ -1244,11 +1282,11 @@ wwv_flow_api.create_page_button(
   p_required_patch => null + wwv_flow_api.g_id_offset);
  
 wwv_flow_api.create_page_button(
-  p_id             => 1291919501047935 + wwv_flow_api.g_id_offset,
+  p_id             => 1863825820731437 + wwv_flow_api.g_id_offset,
   p_flow_id        => wwv_flow.g_flow_id,
   p_flow_step_id   => 2,
   p_button_sequence=> 40,
-  p_button_plug_id => 1289102737047911+wwv_flow_api.g_id_offset,
+  p_button_plug_id => 1861014330731426+wwv_flow_api.g_id_offset,
   p_button_name    => 'SUBMIT',
   p_button_image   => 'template:'||to_char(2614921232032777+wwv_flow_api.g_id_offset),
   p_button_image_alt=> 'Apply Changes',
@@ -1259,11 +1297,11 @@ wwv_flow_api.create_page_button(
   p_required_patch => null + wwv_flow_api.g_id_offset);
  
 wwv_flow_api.create_page_button(
-  p_id             => 1291522776047934 + wwv_flow_api.g_id_offset,
+  p_id             => 1863404942731434 + wwv_flow_api.g_id_offset,
   p_flow_id        => wwv_flow.g_flow_id,
   p_flow_step_id   => 2,
   p_button_sequence=> 30,
-  p_button_plug_id => 1289102737047911+wwv_flow_api.g_id_offset,
+  p_button_plug_id => 1861014330731426+wwv_flow_api.g_id_offset,
   p_button_name    => 'MULTI_ROW_DELETE',
   p_button_image   => 'template:'||to_char(2614921232032777+wwv_flow_api.g_id_offset),
   p_button_image_alt=> 'Delete',
@@ -1281,7 +1319,7 @@ end;
 begin
  
 wwv_flow_api.create_page_branch(
-  p_id=>1294226636047942 + wwv_flow_api.g_id_offset,
+  p_id=>1866131629731474 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 2,
   p_branch_action=> 'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#',
@@ -1302,7 +1340,7 @@ h := null;
 h:=h||'Identify how access to this application will be controlled.';
 
 wwv_flow_api.create_page_item(
-  p_id=>1288429151047866 + wwv_flow_api.g_id_offset,
+  p_id=>1860230512731415 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 2,
   p_name=>'P2_APPLICATION_MODE',
@@ -1310,7 +1348,7 @@ wwv_flow_api.create_page_item(
   p_is_required=> false,
   p_accept_processing=> 'REPLACE_EXISTING',
   p_item_sequence=> 10,
-  p_item_plug_id => 1288112004047852+wwv_flow_api.g_id_offset,
+  p_item_plug_id => 1859903929731406+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default=> 'ALL',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
@@ -1349,7 +1387,7 @@ declare
     h varchar2(32767) := null;
 begin
 wwv_flow_api.create_page_item(
-  p_id=>1290729043047931 + wwv_flow_api.g_id_offset,
+  p_id=>1862617847731433 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 2,
   p_name=>'P2_SETUP_ID',
@@ -1357,7 +1395,7 @@ wwv_flow_api.create_page_item(
   p_is_required=> false,
   p_accept_processing=> 'REPLACE_EXISTING',
   p_item_sequence=> 20,
-  p_item_plug_id => 1289102737047911+wwv_flow_api.g_id_offset,
+  p_item_plug_id => 1861014330731426+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default=> '1',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
@@ -1393,7 +1431,7 @@ h := null;
 h:=h||'Enter case insensitive query criteria, then press the <b>Go</b> button.';
 
 wwv_flow_api.create_page_item(
-  p_id=>1290906359047934 + wwv_flow_api.g_id_offset,
+  p_id=>1862827911731434 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 2,
   p_name=>'P2_FIND',
@@ -1401,7 +1439,7 @@ wwv_flow_api.create_page_item(
   p_is_required=> false,
   p_accept_processing=> 'REPLACE_EXISTING',
   p_item_sequence=> 30,
-  p_item_plug_id => 1289102737047911+wwv_flow_api.g_id_offset,
+  p_item_plug_id => 1861014330731426+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Find',
@@ -1435,7 +1473,7 @@ declare
     h varchar2(32767) := null;
 begin
 wwv_flow_api.create_page_item(
-  p_id=>1291312331047934 + wwv_flow_api.g_id_offset,
+  p_id=>1863224452731434 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 2,
   p_name=>'P2_GO',
@@ -1443,7 +1481,7 @@ wwv_flow_api.create_page_item(
   p_is_required=> false,
   p_accept_processing=> 'REPLACE_EXISTING',
   p_item_sequence=> 40,
-  p_item_plug_id => 1289102737047911+wwv_flow_api.g_id_offset,
+  p_item_plug_id => 1861014330731426+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default=> 'Go',
   p_prompt=>'Go',
@@ -1473,7 +1511,7 @@ end;
 begin
  
 wwv_flow_api.create_page_validation(
-  p_id => 1292413295047936 + wwv_flow_api.g_id_offset,
+  p_id => 1864310909731438 + wwv_flow_api.g_id_offset,
   p_flow_id => wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_tabular_form_region_id => null + wwv_flow_api.g_id_offset,
@@ -1488,7 +1526,7 @@ wwv_flow_api.create_page_validation(
 'return true;',
   p_validation_type => 'FUNC_BODY_RETURNING_BOOLEAN',
   p_error_message => 'You may not delete yourself.',
-  p_when_button_pressed=> 1291522776047934 + wwv_flow_api.g_id_offset,
+  p_when_button_pressed=> 1863404942731434 + wwv_flow_api.g_id_offset,
   p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION',
   p_validation_comment=> '');
  
@@ -1501,7 +1539,7 @@ end;
 begin
  
 wwv_flow_api.create_page_validation(
-  p_id => 1292621012047937 + wwv_flow_api.g_id_offset,
+  p_id => 1864524242731441 + wwv_flow_api.g_id_offset,
   p_flow_id => wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_tabular_form_region_id => null + wwv_flow_api.g_id_offset,
@@ -1518,7 +1556,7 @@ wwv_flow_api.create_page_validation(
 'return true;',
   p_validation_type => 'FUNC_BODY_RETURNING_BOOLEAN',
   p_error_message => 'You may not remove administrator privilege from yourself.',
-  p_when_button_pressed=> 1291919501047935 + wwv_flow_api.g_id_offset,
+  p_when_button_pressed=> 1863825820731437 + wwv_flow_api.g_id_offset,
   p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION',
   p_validation_comment=> '');
  
@@ -1552,7 +1590,7 @@ p:=p||'declare'||chr(10)||
 'end;';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1292829768047938 + wwv_flow_api.g_id_offset,
+  p_id     => 1864719636731471 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 10,
@@ -1581,7 +1619,7 @@ begin
 p:=p||'F|#OWNER#:APEX_ACCESS_SETUP:P2_SETUP_ID:ID';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1293007234047938 + wwv_flow_api.g_id_offset,
+  p_id     => 1864930053731472 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 20,
@@ -1610,7 +1648,7 @@ begin
 p:=p||'#OWNER#:APEX_ACCESS_SETUP:P2_SETUP_ID:ID|U';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1289030258047906 + wwv_flow_api.g_id_offset,
+  p_id     => 1860921100731425 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 10,
@@ -1619,7 +1657,7 @@ wwv_flow_api.create_page_process(
   p_process_name=> 'Process Row of APEX_ACCESS_SETUP',
   p_process_sql_clob => p, 
   p_process_error_message=> 'Unable to process set application mode request.',
-  p_process_when_button_id=>1288719639047901 + wwv_flow_api.g_id_offset,
+  p_process_when_button_id=>1860624983731420 + wwv_flow_api.g_id_offset,
   p_process_success_message=> 'Application Mode Set.',
   p_process_is_stateful_y_n=>'N',
   p_process_comment=>'');
@@ -1640,7 +1678,7 @@ begin
 p:=p||'#OWNER#:APEX_ACCESS_CONTROL:ID';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1293223625047938 + wwv_flow_api.g_id_offset,
+  p_id     => 1865102964731473 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 20,
@@ -1649,7 +1687,7 @@ wwv_flow_api.create_page_process(
   p_process_name=> 'ApplyMRU',
   p_process_sql_clob => p, 
   p_process_error_message=> 'Unable to process update.',
-  p_process_when_button_id=>1291919501047935 + wwv_flow_api.g_id_offset,
+  p_process_when_button_id=>1863825820731437 + wwv_flow_api.g_id_offset,
   p_process_success_message=> '#MRU_COUNT# row(s) updated, #MRI_COUNT# row(s) inserted.',
   p_process_is_stateful_y_n=>'N',
   p_process_comment=>'');
@@ -1670,7 +1708,7 @@ begin
 p:=p||'#OWNER#:APEX_ACCESS_CONTROL:ID';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1293421363047938 + wwv_flow_api.g_id_offset,
+  p_id     => 1865313078731474 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 30,
@@ -1701,7 +1739,7 @@ begin
 p:=p||'#OWNER#:APEX_ACCESS_CONTROL:ID';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1293621903047938 + wwv_flow_api.g_id_offset,
+  p_id     => 1865503124731474 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 40,
@@ -1710,7 +1748,7 @@ wwv_flow_api.create_page_process(
   p_process_name=> 'ApplyMRU',
   p_process_sql_clob => p, 
   p_process_error_message=> 'Unable to process update.',
-  p_process_when_button_id=>1292132297047935 + wwv_flow_api.g_id_offset,
+  p_process_when_button_id=>1864032117731437 + wwv_flow_api.g_id_offset,
   p_process_success_message=> '#MRU_COUNT# row(s) updated, #MRI_COUNT# row(s) inserted.',
   p_process_is_stateful_y_n=>'N',
   p_process_comment=>'');
@@ -1731,7 +1769,7 @@ begin
 p:=p||'1';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1293801812047939 + wwv_flow_api.g_id_offset,
+  p_id     => 1865711170731474 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 50,
@@ -1740,7 +1778,7 @@ wwv_flow_api.create_page_process(
   p_process_name=> 'AddRows',
   p_process_sql_clob => p, 
   p_process_error_message=> 'Unable to add rows.',
-  p_process_when_button_id=>1292132297047935 + wwv_flow_api.g_id_offset,
+  p_process_when_button_id=>1864032117731437 + wwv_flow_api.g_id_offset,
   p_process_success_message=> '',
   p_process_is_stateful_y_n=>'N',
   p_process_comment=>'');
@@ -1761,7 +1799,7 @@ begin
 p:=p||'reset_pagination';
 
 wwv_flow_api.create_page_process(
-  p_id     => 1294007353047939 + wwv_flow_api.g_id_offset,
+  p_id     => 1865923123731474 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id => 2,
   p_process_sequence=> 60,
@@ -1770,7 +1808,7 @@ wwv_flow_api.create_page_process(
   p_process_name=> 'Reset Pagination',
   p_process_sql_clob => p, 
   p_process_error_message=> '',
-  p_process_when_button_id=>1291312331047934 + wwv_flow_api.g_id_offset,
+  p_process_when_button_id=>1863224452731434 + wwv_flow_api.g_id_offset,
   p_process_success_message=> '',
   p_process_is_stateful_y_n=>'N',
   p_process_comment=>'');
@@ -1790,54 +1828,54 @@ begin
 begin
  
 wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1290019872047921 + wwv_flow_api.g_id_offset,
+  p_id     => 1861931854731432 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_column_sequence=> 1,
   p_query_column_name=> 'ID',
   p_display_as=> 'TEXT',
   p_column_comment=> '');
  
 wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1290102497047929 + wwv_flow_api.g_id_offset,
+  p_id     => 1862021629731433 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_column_sequence=> 2,
   p_query_column_name=> 'ADMIN_USERNAME',
   p_display_as=> 'TEXT',
   p_column_comment=> '');
  
 wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1290201436047931 + wwv_flow_api.g_id_offset,
+  p_id     => 1862111385731433 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_column_sequence=> 3,
   p_query_column_name=> 'ADMIN_PRIVILEGES',
   p_display_as=> 'TEXT',
   p_column_comment=> '');
  
 wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1290312591047931 + wwv_flow_api.g_id_offset,
+  p_id     => 1862206267731433 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_column_sequence=> 4,
   p_query_column_name=> 'SETUP_ID',
   p_display_as=> 'TEXT',
   p_column_comment=> '');
  
 wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1290419605047931 + wwv_flow_api.g_id_offset,
+  p_id     => 1862314350731433 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_column_sequence=> 5,
   p_query_column_name=> 'LAST_CHANGED_BY',
   p_display_as=> 'TEXT',
   p_column_comment=> '');
  
 wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1290524354047931 + wwv_flow_api.g_id_offset,
+  p_id     => 1862424485731433 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1289102737047911 + wwv_flow_api.g_id_offset,
+  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
   p_column_sequence=> 6,
   p_query_column_name=> 'LAST_CHANGED_ON',
   p_display_as=> 'TEXT',
@@ -3579,15 +3617,23 @@ wwv_flow_api.create_page (
  ,p_id => 6
  ,p_tab_set => 'TS1'
  ,p_name => 'Plan_Fact'
- ,p_step_title => 'Plan_Fact'
+ ,p_step_title => 'Reports'
+ ,p_allow_duplicate_submissions => 'Y'
  ,p_step_sub_title => 'Plan_Fact'
  ,p_step_sub_title_type => 'TEXT_WITH_SUBSTITUTIONS'
+ ,p_first_item => 'AUTO_FIRST_ITEM'
  ,p_include_apex_css_js_yn => 'Y'
+ ,p_autocomplete_on_off => 'ON'
+ ,p_required_role => '!'||(1866420468812449 + wwv_flow_api.g_id_offset)
+ ,p_page_is_public_y_n => 'N'
+ ,p_protection_level => 'N'
  ,p_cache_page_yn => 'N'
+ ,p_cache_timeout_seconds => 21600
+ ,p_cache_by_user_yn => 'N'
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110810194419'
+ ,p_last_upd_yyyymmddhh24miss => '20110822005747'
   );
 null;
  
@@ -18098,7 +18144,7 @@ wwv_flow_api.create_page (
  ,p_include_apex_css_js_yn => 'Y'
  ,p_cache_page_yn => 'N'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110814234137'
+ ,p_last_upd_yyyymmddhh24miss => '20110822005156'
   );
 null;
  
@@ -28660,7 +28706,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110810213645'
+ ,p_last_upd_yyyymmddhh24miss => '20110822005156'
   );
 null;
  
@@ -30406,7 +30452,7 @@ wwv_flow_api.create_page (
  ,p_page_is_public_y_n => 'N'
  ,p_cache_page_yn => 'N'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110714071628'
+ ,p_last_upd_yyyymmddhh24miss => '20110822011121'
   );
 null;
  
@@ -37909,5 +37955,3 @@ end;
 set verify on
 set feedback on
 prompt  ...done
-
-exit;
