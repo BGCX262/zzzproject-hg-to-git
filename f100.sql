@@ -13,7 +13,7 @@ prompt  APPLICATION 100 - Sales
 -- Application Export:
 --   Application:     100
 --   Name:            Sales
---   Date and Time:   01:16 Monday August 22, 2011
+--   Date and Time:   23:54 Sunday August 28, 2011
 --   Exported By:     ADMIN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -146,7 +146,7 @@ wwv_flow_api.create_flow(
   p_default_region_template=> 2616718399032833 + wwv_flow_api.g_id_offset,
   p_error_template=> 2614238398032776 + wwv_flow_api.g_id_offset,
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20110822011454',
+  p_checksum_salt_last_reset => '20110828235122',
   p_max_session_length_sec=> 3600,
   p_home_link=> 'f?p=&APP_ID.:1:&SESSION.',
   p_flow_language=> 'ru',
@@ -190,7 +190,7 @@ wwv_flow_api.create_flow(
   p_default_menur_template => 2615541273032830 + wwv_flow_api.g_id_offset,
   p_default_listr_template => 2616128690032831 + wwv_flow_api.g_id_offset,
   p_last_updated_by => 'ADMIN',
-  p_last_upd_yyyymmddhh24miss=> '20110822011454',
+  p_last_upd_yyyymmddhh24miss=> '20110828235122',
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
  
@@ -221,6 +221,24 @@ wwv_flow_api.create_security_scheme(
   p_scheme=>'select 1 from dual where v(''APP_USER'') = ''AFRIDMAN''',
   p_caching=>'BY_USER_BY_SESSION',
   p_error_message=>'You have no permissions to access this page');
+ 
+--application/shared_components/security/authorization/access_control_amg
+wwv_flow_api.create_security_scheme(
+  p_id => 1873014007262432 + wwv_flow_api.g_id_offset,
+  p_flow_id => wwv_flow.g_flow_id,
+  p_name=>'access_control_amg',
+  p_scheme_type=>'FUNCTION_RETURNING_BOOLEAN',
+  p_scheme=>'declare'||chr(10)||
+' l_control number;'||chr(10)||
+'begin'||chr(10)||
+' select access_read into l_control from access_control where  access_user = V(''APP_USER'')'||chr(10)||
+' and access_page = APEX_APPLICATION.G_FLOW_STEP_ID;'||chr(10)||
+' if l_control = 1 then return true;'||chr(10)||
+'  else return false;'||chr(10)||
+' end if;'||chr(10)||
+'end;',
+  p_caching=>'BY_USER_BY_PAGE_VIEW',
+  p_error_message=>'You have no permissions to see this page');
  
 --application/shared_components/security/authorization/access_control_administrator
 wwv_flow_api.create_security_scheme(
@@ -572,7 +590,8 @@ wwv_flow_api.create_tab (
   p_tab_step => 6,
   p_tab_also_current_for_pages => '6,61,61,40',
   p_tab_parent_tabset=>'',
-  p_security_scheme => '!'||(1866420468812449+ wwv_flow_api.g_id_offset),
+  p_tab_plsql_condition=>'select 1 from dual where is_ok(''ANALYTIC_REPORTS_TAB'') = 1',
+  p_display_condition_type=> 'EXISTS',
   p_tab_comment  => '');
  
 --application/shared_components/navigation/tabs/standard/t_dictionaries
@@ -803,7 +822,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110822011454'
+ ,p_last_upd_yyyymmddhh24miss => '20110828235122'
   );
 null;
  
@@ -891,8 +910,9 @@ wwv_flow_api.create_page_plug (
   p_plug_query_num_rows_type => 'NEXT_PREVIOUS_LINKS',
   p_plug_query_row_count_max => 500,
   p_plug_query_show_nulls_as => ' - ',
-  p_plug_required_role => '!'||(1866420468812449+ wwv_flow_api.g_id_offset),
-  p_plug_display_condition_type => '',
+  p_plug_display_condition_type => 'EXISTS',
+  p_plug_display_when_condition => 'select 1 from dual where'||chr(10)||
+'is_ok(''HOME_PAGE_REGION_PAGES'') = 1',
   p_pagination_display_position=>'BOTTOM_RIGHT',
   p_plug_customized=>'0',
   p_plug_caching=> 'NOT_CACHED',
@@ -919,7 +939,7 @@ wwv_flow_api.create_page_branch(
   p_branch_type=> 'REDIRECT_URL',
   p_branch_sequence=> 10,
   p_branch_condition_type=> 'EXISTS',
-  p_branch_condition=> 'select 1 from dual where v(''APP_USER'') = ''ADMINISTRATOR''',
+  p_branch_condition=> 'select 1 from dual where is_ok(''HOME_PAGE'') = 0',
   p_save_state_before_branch_yn=>'Y',
   p_branch_comment=> 'Created 22-AUG-2011 01:14 by ADMIN');
  
@@ -3624,7 +3644,6 @@ wwv_flow_api.create_page (
  ,p_first_item => 'AUTO_FIRST_ITEM'
  ,p_include_apex_css_js_yn => 'Y'
  ,p_autocomplete_on_off => 'ON'
- ,p_required_role => '!'||(1866420468812449 + wwv_flow_api.g_id_offset)
  ,p_page_is_public_y_n => 'N'
  ,p_protection_level => 'N'
  ,p_cache_page_yn => 'N'
@@ -3633,7 +3652,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110822005747'
+ ,p_last_upd_yyyymmddhh24miss => '20110828233155'
   );
 null;
  
@@ -11139,7 +11158,7 @@ wwv_flow_api.create_page (
  ,p_id => 23
  ,p_tab_set => 'TS1'
  ,p_name => 'Report on WSS'
- ,p_step_title => 'List of WSS'
+ ,p_step_title => 'List of Distributors'
  ,p_allow_duplicate_submissions => 'Y'
  ,p_step_sub_title_type => 'TEXT_WITH_SUBSTITUTIONS'
  ,p_first_item => 'AUTO_FIRST_ITEM'
@@ -11153,7 +11172,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110815002629'
+ ,p_last_upd_yyyymmddhh24miss => '20110828234807'
   );
 null;
  
@@ -18144,7 +18163,7 @@ wwv_flow_api.create_page (
  ,p_include_apex_css_js_yn => 'Y'
  ,p_cache_page_yn => 'N'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110822005156'
+ ,p_last_upd_yyyymmddhh24miss => '20110828233155'
   );
 null;
  
@@ -28706,7 +28725,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110822005156'
+ ,p_last_upd_yyyymmddhh24miss => '20110828233155'
   );
 null;
  
