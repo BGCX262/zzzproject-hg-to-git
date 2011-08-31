@@ -783,6 +783,20 @@ where b.idrep is not null
 commit;
 
 
+create or replace
+trigger  bi_transactions_data
+  before insert or update on transactions_data
+  for each row
+begin
+
+    if nvl(:new.packs_plan,0) <> 0 then
+        :new.packs := :new.packs_plan;
+    else 
+        :new.packs := :new.packs_fack;
+    end if;   
+end; 
+
+
 spool off
 
 exit;
