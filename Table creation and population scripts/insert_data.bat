@@ -23,4 +23,6 @@ sqlplus mdb_rep/mdb@xe @transaction_data_script.sql
 sqlplus mdb_rep/mdb@xe @geography_insert.sql
 sqlplus mdb_rep/mdb@xe @clients_update.sql
 sqlplus mdb_rep/mdb@xe @affiliation_insert.sql
+sqlplus mdb_rep/mdb@xe @access_control_insert.sql
+
 
