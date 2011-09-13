@@ -10,6 +10,7 @@ sqlplus mdb_rep/mdb@xe @kam.sql
 sqlplus mdb_rep/mdb@xe @months.sql
 sqlplus mdb_rep/mdb@xe @prodgrs.sql
 sqlplus mdb_rep/mdb@xe @products.sql
+sqlplus mdb_rep/mdb@xe @products_new.sql
 sqlplus mdb_rep/mdb@xe @regs.sql
 sqlplus mdb_rep/mdb@xe @reps.sql
 sqlplus mdb_rep/mdb@xe @senkams.sql

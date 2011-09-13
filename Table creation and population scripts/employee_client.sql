@@ -10,6 +10,7 @@ create table employee_client
   idhy number,
   employee_id number,
   client_id number,
+  idprod number,
   link_type varchar2(1024) default 'EXPL',
   plan_pct number default 1
 );

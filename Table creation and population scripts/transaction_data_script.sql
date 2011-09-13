@@ -83,6 +83,14 @@ where
 ;
 commit;
 
+--
+--Update transactions_data for new products
+--
+
+update transactions_data td
+set idprod = (select pn.idprod from products_new pn, products po where pn.prod = po.prod and po.idprod = td.idprod) ;
+
+--
 
 DROP SEQUENCE CIP_ID_SEQ;
 CREATE SEQUENCE  CIP_ID_SEQ  
@@ -757,12 +765,13 @@ from  (select
 
 
 insert into employee_client
-select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, 'EXPL' as link_type, 1 as plan_pct 
+select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, t.idprod,'EXPL' as link_type, 1 as plan_pct 
 from 
 (select distinct b.idhy, 
 (select e.employee_id from employee e, kams k where e.employee_name=k.kam and e.employee_type in ('KAM','SKAM') and k.idkam = b.idkam) as empl,
-b.idclient
-from br b
+b.idclient,
+pn.idprod
+from br b, products_new pn
 where b.idkam is not null
 ) t
 ;
@@ -770,12 +779,13 @@ where b.idkam is not null
 commit;
 
 insert into employee_client
-select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, 'EXPL' as link_type, 1 as plan_pct 
+select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, t.idprod, 'EXPL' as link_type, 1 as plan_pct 
 from 
 (select distinct b.idhy, 
 (select e.employee_id from employee e, reps r where e.employee_name=r.emp and e.employee_type in ('REP','SREP') and r.idrep = b.idrep) as empl,
-b.idclient
-from br b
+b.idclient,
+pn.idprod
+from br b, products_new pn
 where b.idrep is not null
 ) t
 ;

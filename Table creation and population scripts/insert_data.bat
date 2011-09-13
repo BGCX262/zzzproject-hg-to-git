@@ -11,6 +11,7 @@ sqlplus mdb_rep/mdb@xe @kams_insert.sql
 sqlplus mdb_rep/mdb@xe @months_insert.sql
 sqlplus mdb_rep/mdb@xe @prodgrs_insert.sql
 sqlplus mdb_rep/mdb@xe @products_insert.sql
+sqlplus mdb_rep/mdb@xe @products_new_insert.sql
 sqlplus mdb_rep/mdb@xe @regs_insert.sql
 sqlplus mdb_rep/mdb@xe @reps_insert.sql
 sqlplus mdb_rep/mdb@xe @senkams_insert.sql
