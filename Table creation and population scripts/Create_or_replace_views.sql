@@ -1,10 +1,18 @@
-create or replace view v_dates as 
-AS
-WITH all_dates AS
-  (SELECT to_date('31.12.2006','dd.mm.yyyy')+rownum dt
+spool logs\create_or_replace_views.log
+
+create or replace view all_dates
+as
+SELECT to_date('31.12.2006','dd.mm.yyyy')+rownum dt
   FROM dual
-    CONNECT BY level <= (sysdate+365 - to_date('01.01.2007','dd.mm.yyyy'))
-  )
+    CONNECT BY level <= (sysdate+365 - to_date('01.01.2007','dd.mm.yyyy'));
+	
+create or replace view v_dates as 
+--AS
+--WITH all_dates AS
+--  (SELECT to_date('31.12.2006','dd.mm.yyyy')+rownum dt
+ -- FROM dual
+ --   CONNECT BY level <= (sysdate+365 - to_date('01.01.2007','dd.mm.yyyy'))
+--  )
 --days
 SELECT TO_CHAR(dt,'yyyymmdd') AS dt_id,
   TO_CHAR(dt,'yyyymmdd')      AS dt_id_fake,
@@ -106,3 +114,6 @@ FROM
     NULL               AS dt_parent
   FROM all_dates
   );
+  
+ spool off 
+ exit; 
