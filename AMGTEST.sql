@@ -19,7 +19,7 @@ execute immediate 'alter session set nls_numeric_characters=''.,''';
 end;
 /
 -- Workspace, user group, user and team development export
--- Generated 2011.08.14 17:08:00 by ADMIN
+-- Generated 2011.09.20 01:01:53 by ADMIN
 -- This script can be run in sqlplus as the owner of the Oracle Apex owner.
 begin
     wwv_flow_api.set_security_group_id(p_security_group_id=>1281423458935712);
@@ -73,7 +73,7 @@ wwv_flow_fnd_user_api.create_fnd_user (
   p_developer_privs=> 'ADMIN:CREATE:DATA_LOADER:EDIT:HELP:MONITOR:SQL',
   p_default_schema=> 'MDB_REP',
   p_account_locked=> 'N',
-  p_account_expiry=> to_date('201107232026','YYYYMMDDHH24MI'),
+  p_account_expiry=> to_date('201109132233','YYYYMMDDHH24MI'),
   p_failed_access_attempts=> 0,
   p_change_password_on_first_use=> 'Y',
   p_first_password_use_occurred=> 'Y',
@@ -92,19 +92,19 @@ wwv_flow_fnd_user_api.create_fnd_user (
   p_last_name    => '',
   p_description  => '',
   p_email_address=> 'admin@amgen.com',
-  p_web_password => '4408877428C8364AF2519DD718488CF4',
+  p_web_password => '7DAFB2249AA6BEF04B607418528F5DD3',
   p_web_password_format => 'HEX_ENCODED_DIGEST_V2',
   p_group_ids    => '',
   p_developer_privs=> '',
   p_default_schema=> 'MDB_REP',
   p_account_locked=> 'N',
-  p_account_expiry=> to_date('201108100000','YYYYMMDDHH24MI'),
+  p_account_expiry=> to_date('201108220047','YYYYMMDDHH24MI'),
   p_failed_access_attempts=> 0,
   p_change_password_on_first_use=> 'N',
   p_first_password_use_occurred=> 'N',
-  p_allow_app_building_yn=> 'N',
-  p_allow_sql_workshop_yn=> 'N',
-  p_allow_websheet_dev_yn=> 'N',
+  p_allow_app_building_yn=> 'Y',
+  p_allow_sql_workshop_yn=> 'Y',
+  p_allow_websheet_dev_yn=> 'Y',
   p_allow_team_development_yn=> 'Y',
   p_allow_access_to_schemas => '');
 end;
@@ -117,19 +117,19 @@ wwv_flow_fnd_user_api.create_fnd_user (
   p_last_name    => 'Fridman',
   p_description  => '',
   p_email_address=> 'afridman@amgen.com',
-  p_web_password => 'CD63E9D71FE7ED26F36FA415D266EF7A',
+  p_web_password => '54514EDFDD188BD4417A5FBE25AB0151',
   p_web_password_format => 'HEX_ENCODED_DIGEST_V2',
   p_group_ids    => '',
   p_developer_privs=> '',
   p_default_schema=> 'MDB_REP',
   p_account_locked=> 'N',
-  p_account_expiry=> to_date('201108100000','YYYYMMDDHH24MI'),
+  p_account_expiry=> to_date('201108220059','YYYYMMDDHH24MI'),
   p_failed_access_attempts=> 0,
   p_change_password_on_first_use=> 'N',
   p_first_password_use_occurred=> 'N',
-  p_allow_app_building_yn=> 'N',
-  p_allow_sql_workshop_yn=> 'N',
-  p_allow_websheet_dev_yn=> 'N',
+  p_allow_app_building_yn=> 'Y',
+  p_allow_sql_workshop_yn=> 'Y',
+  p_allow_websheet_dev_yn=> 'Y',
   p_allow_team_development_yn=> 'Y',
   p_allow_access_to_schemas => '');
 end;
@@ -182,72 +182,6 @@ wwv_flow_fnd_user_api.create_fnd_user (
   p_allow_websheet_dev_yn=> 'N',
   p_allow_team_development_yn=> 'Y',
   p_allow_access_to_schemas => '');
-end;
-/
-prompt Check Compatibility...
-begin
--- This date identifies the minimum version required to import this file.
-wwv_flow_team_api.check_version(p_version_yyyy_mm_dd=>'2010.05.13');
-end;
-/
- 
-begin wwv_flow.g_import_in_progress := true; wwv_flow.g_user := USER; end; 
-/
- 
---
-prompt ...news
---
-begin
-null;
-end;
-/
---
-prompt ...links
---
-begin
-null;
-end;
-/
---
-prompt ...bugs
---
-begin
-null;
-end;
-/
---
-prompt ...events
---
-begin
-null;
-end;
-/
---
-prompt ...features
---
-begin
-null;
-end;
-/
---
-prompt ...tasks
---
-begin
-null;
-end;
-/
---
-prompt ...feedback
---
-begin
-null;
-end;
-/
---
-prompt ...task defaults
---
-begin
-null;
 end;
 /
 commit;
