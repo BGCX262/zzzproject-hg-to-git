@@ -1,4 +1,5 @@
 del logs\*.log
+set nls_lang=american_america.al32utf8
 call create_user.bat
 call create_tables.bat
 call create_views.bat
