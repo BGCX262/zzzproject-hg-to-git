@@ -13,11 +13,11 @@ prompt  APPLICATION 100 - Sales
 -- Application Export:
 --   Application:     100
 --   Name:            Sales
---   Date and Time:   00:56 Wednesday September 14, 2011
+--   Date and Time:   12:58 Tuesday September 20, 2011
 --   Exported By:     ADMIN
 --   Flashback:       0
 --   Export Type:     Application Export
---   Version: 4.0.2.00.08
+--   Version: 4.0.2.00.09
  
 -- Import:
 --   Using application builder
@@ -146,7 +146,7 @@ wwv_flow_api.create_flow(
   p_default_region_template=> 2616718399032833 + wwv_flow_api.g_id_offset,
   p_error_template=> 2614238398032776 + wwv_flow_api.g_id_offset,
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20110914003717',
+  p_checksum_salt_last_reset => '20110920110450',
   p_max_session_length_sec=> 3600,
   p_home_link=> 'f?p=&APP_ID.:1:&SESSION.',
   p_flow_language=> 'ru',
@@ -190,7 +190,7 @@ wwv_flow_api.create_flow(
   p_default_menur_template => 2615541273032830 + wwv_flow_api.g_id_offset,
   p_default_listr_template => 2616128690032831 + wwv_flow_api.g_id_offset,
   p_last_updated_by => 'ADMIN',
-  p_last_upd_yyyymmddhh24miss=> '20110914003717',
+  p_last_upd_yyyymmddhh24miss=> '20110920110450',
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
  
@@ -31340,6 +31340,7 @@ wwv_flow_api.create_page_plug (
   p_plug_display_error_message=> '#SQLERRM#',
   p_plug_query_row_template=> 1,
   p_plug_query_headings_type=> 'COLON_DELMITED_LIST',
+  p_plug_query_row_count_max => 500,
   p_plug_query_show_nulls_as => ' - ',
   p_plug_display_condition_type => '',
   p_pagination_display_position=>'BOTTOM_RIGHT',
@@ -33003,7 +33004,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110905151525'
+ ,p_last_upd_yyyymmddhh24miss => '20110920081055'
   );
 null;
  
@@ -33086,7 +33087,7 @@ a1:=a1||'select case when connect_by_isleaf = 1 then 0'||chr(10)||
 'connect by prior "DT_ID" = "DT_PARENT"'||chr(10)||
 'order siblings ';
 
-a1:=a1||'by "DT_ID"';
+a1:=a1||'by "DT_ID" desc';
 
 wwv_flow_api.create_jstree(
   p_id => 1905230578119445+wwv_flow_api.g_id_offset,
@@ -35394,6 +35395,8 @@ wwv_flow_api.create_list_item (
   p_list_item_link_text=> 'Years',
   p_list_item_link_target=> 'f?p=&APP_ID.:19:&SESSION.::&DEBUG.::::',
   p_list_item_icon=> 'menu/calendar_32.gif',
+  p_list_item_disp_cond_type=> 'NEVER',
+  p_list_item_disp_condition=> '',
   p_list_countclicks_y_n=> 'N',
   p_list_text_01=> '',
   p_list_item_current_type=> 'COLON_DELIMITED_PAGE_LIST',
@@ -35409,6 +35412,8 @@ wwv_flow_api.create_list_item (
   p_list_item_link_text=> 'Half Year',
   p_list_item_link_target=> 'f?p=&APP_ID.:21:&SESSION.::&DEBUG.::::',
   p_list_item_icon=> 'menu/calendar_32.gif',
+  p_list_item_disp_cond_type=> 'NEVER',
+  p_list_item_disp_condition=> '',
   p_list_countclicks_y_n=> 'N',
   p_list_text_01=> '',
   p_list_item_current_type=> 'COLON_DELIMITED_PAGE_LIST',
@@ -35424,6 +35429,8 @@ wwv_flow_api.create_list_item (
   p_list_item_link_text=> 'Months',
   p_list_item_link_target=> 'f?p=&APP_ID.:31:&SESSION.::&DEBUG.::::',
   p_list_item_icon=> 'menu/calendar_32.gif',
+  p_list_item_disp_cond_type=> 'NEVER',
+  p_list_item_disp_condition=> '',
   p_list_countclicks_y_n=> 'N',
   p_list_text_01=> '',
   p_list_item_current_type=> 'COLON_DELIMITED_PAGE_LIST',
