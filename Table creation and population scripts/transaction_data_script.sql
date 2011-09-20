@@ -11,18 +11,24 @@ CREATE TABLE TRANSACTIONS_DATA
     IDTRAN NUMBER,
     IDBR    NUMBER(11,0) ,
     IDIMS    NUMBER(11,0),
-    trasaction_type varchar(4),
-    KAMREP VARCHAR(4),
-    IDKAMREP   NUMBER(11,0),
+    TRANSACTION_TYPE varchar(4),
+    --KAMREP VARCHAR(4),
+    --IDKAMREP   NUMBER(11,0),
     IDCLIENT NUMBER(11,0),
     IDPROD   NUMBER(11,0),
-    IDHY     NUMBER(11,0),
-    IDY     NUMBER(11,0),
-    IDMONTH NUMBER(11,0),
+	REAL_DATE date,
+	REAL_DATE_TYPE varchar2(30),
+    --IDHY     NUMBER(11,0),
+    --IDY     NUMBER(11,0),
+    --IDMONTH NUMBER(11,0),
     IDWS    NUMBER(11,0),
     PACKS_PLAN    NUMBER(5,0) DEFAULT 0,
     PACKS_FACK    NUMBER(5,0) DEFAULT 0,
-    PACKS    NUMBER(5,0) DEFAULT 0    
+    PACKS    NUMBER(5,0) DEFAULT 0 ,
+	COMMENTS varchar2(1024),
+	EXTRA_ID	number default null,
+	EXTRA_CODE varchar2(30) default null,
+	EXTRA_TEXT varchar2(4000) default null
   );
 
 ALTER TABLE TRANSACTIONS_DATA
@@ -34,55 +40,60 @@ ENABLE
 ;
 
 insert into transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval,IDBR, null, 'BR', null as kam/*'KAM'*/, null as idkam /* IDKAM*/, IDCLIENT, IDPROD, IDHY, (select IDY from half_year where idhy=br.idhy), null, null, PACKS, null, PACKS 
-from br where idkam is not null
+select transactions_id_seq.nextval,idbr, null, 'BR',  idclient, idprod, case when idhy=7 then to_date('01.01.2011','dd.mm.yyyy') when idhy=8 then to_date('01.07.2011','dd.mm.yyyy') else to_date('31.12.2071','dd.mm.yyyy') end , 'HalfYear', null, packs, null, packs, null, null, null , null
+from br where idkam is not null;
 ; 
 commit;
 
 
 
+--insert into transactions_data  
+--select TRANSACTIONS_ID_SEQ.nextval, br.IDBR, ims.IDIMS, 'IMS', null as kam /*'KAM'*/, null as idkam /*br.IDKAM*/, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
+--from ims, br
+--where ims.idclient=br.idclient
+ -- and ims.idprod=br.idprod
+ -- and br.idhy=(select idhy from months where idmonth=ims.idmonth)
+ -- and br.idkam is not null
+ -- ;
+--commit;
+
+
+--insert into transactions_data  
+--select TRANSACTIONS_ID_SEQ.nextval, null, ims.IDIMS, 'IMS', null as kam /*'KAM'*/, 
+--(select max(maxkam) from 
+--(
+--select  b.idhy, c2.city, count(distinct b.idkam) qvt, min(b.idkam) minkam, max(b.idkam) maxkam 
+--from 
+ -- br b, clients c2
+--where b.idclient=c2.idclient
+--and c2.city is not null
+--group by  b.idhy, c2.city
+--) t
+-- where 
+--  t.minkam=t.maxkam and
+ -- t.city = c.city 
+-- ) idkamrep,ims.IDCLIENT, ims.IDPROD, 
+--- (select idhy from months where idmonth=ims.idmonth), 
+-- (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), 
+ --ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
+--from ims, clients c
+--where 
+ -- ims.idclient=c.idclient and
+ -- ims.idims not in ( 
+ -- select ims1.IDIMS
+ -- from ims ims1, br br1
+ -- where ims1.idclient=br1.idclient
+ --   and ims1.idprod=br1.idprod
+ --   and br1.idhy=(select idhy from months where idmonth=ims1.idmonth)
+ --   and br1.idkam is not null)
+--;
+--commit;
+
 insert into transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval, br.IDBR, ims.IDIMS, 'IMS', null as kam /*'KAM'*/, null as idkam /*br.IDKAM*/, ims.IDCLIENT, ims.IDPROD, (select idhy from months where idmonth=ims.idmonth), (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
-from ims, br
-where ims.idclient=br.idclient
-  and ims.idprod=br.idprod
-  and br.idhy=(select idhy from months where idmonth=ims.idmonth)
-  and br.idkam is not null
-  ;
+select transactions_id_seq.nextval,null, 'IMS', null, idclient, idprod, (select month from months m where m.idmonth = i.idmonth), 'Month', idws, null, packs, packs, null, null, null , null
+from ims i;
+
 commit;
-
-
-insert into transactions_data  
-select TRANSACTIONS_ID_SEQ.nextval, null, ims.IDIMS, 'IMS', null as kam /*'KAM'*/, 
-(select max(maxkam) from 
-(
-select  b.idhy, c2.city, count(distinct b.idkam) qvt, min(b.idkam) minkam, max(b.idkam) maxkam 
-from 
-  br b, clients c2
-where b.idclient=c2.idclient
-and c2.city is not null
-group by  b.idhy, c2.city
-) t
- where 
-  t.minkam=t.maxkam and
-  t.city = c.city 
- ) idkamrep,ims.IDCLIENT, ims.IDPROD, 
- (select idhy from months where idmonth=ims.idmonth), 
- (select IDY from half_year where idhy=(select idhy from months where idmonth=ims.idmonth)), 
- ims.IDMONTH, ims.IDWS, null, ims.PACKS, ims.PACKS  
-from ims, clients c
-where 
-  ims.idclient=c.idclient and
-  ims.idims not in ( 
-  select ims1.IDIMS
-  from ims ims1, br br1
-  where ims1.idclient=br1.idclient
-    and ims1.idprod=br1.idprod
-    and br1.idhy=(select idhy from months where idmonth=ims1.idmonth)
-    and br1.idkam is not null)
-;
-commit;
-
 --
 --Update transactions_data for new products
 --
@@ -90,6 +101,7 @@ commit;
 update transactions_data td
 set idprod = (select pn.idprod from products_new pn, products po where pn.prod = po.prod and po.idprod = td.idprod) ;
 
+commit;
 --
 
 DROP SEQUENCE CIP_ID_SEQ;
@@ -318,7 +330,7 @@ begin
 end;
 /
 
-create or replace view v_bonus as 
+create or replace force view v_bonus as 
 select  
   td.idy,
   td.idhy,
@@ -328,7 +340,7 @@ select
   k.kam,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type,
+  td.TRANSACTION_TYPE,
   sum(td.packs_plan * p.pricecip) BR,
   sum(td.packs_fack * p.pricecip) IMS,
   sum(td.packs * p.pricecip) CIP
@@ -354,9 +366,9 @@ group by
   k.kam,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type;
+  td.TRANSACTION_TYPE;
 
-create or replace view v_prepare_calculation as  
+create or replace force view v_prepare_calculation as  
 select 
   v.*,
   (select 
@@ -409,7 +421,7 @@ from
   v_bonus v
 ;
 
-create or replace view v_total_bonus as
+create or replace force view v_total_bonus as
 select 
   vpc.*,
   (select 
@@ -433,7 +445,7 @@ select
 from  
   v_prepare_calculation vpc;
 
-create or replace view v_pivot_total as
+create or replace force view v_pivot_total as
 (select 
   *
 from  (select 
@@ -462,7 +474,7 @@ from  (select
             )
 );
 
-create or replace view v_kams as
+create or replace force view v_kams as
   SELECT 
     K.IDKAM, 
     SK.IDSENKAM 
@@ -475,7 +487,7 @@ create or replace view v_kams as
 ;
 
 
-create or replace view v_bonus_sk as 
+create or replace force view v_bonus_sk as 
 select  
   td.idy,
   td.idhy,
@@ -485,7 +497,7 @@ select
   sk.senkam kam,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type,
+  td.TRANSACTION_TYPE,
   sum(td.packs_plan * p.pricecip) BR,
   sum(td.packs_fack * p.pricecip) IMS,
   sum(td.packs * p.pricecip) CIP
@@ -512,9 +524,9 @@ group by
   sk.senkam,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type;
+  td.TRANSACTION_TYPE;
 
-create or replace view v_sk_prepare_calculation as  
+create or replace force view v_sk_prepare_calculation as  
 select 
   v.*,
   (select 
@@ -567,7 +579,7 @@ from
   v_bonus_sk v
 ;
 
-create or replace view v_sk_total_bonus as
+create or replace force view v_sk_total_bonus as
 select 
   vpc.*,
   (select 
@@ -591,7 +603,7 @@ select
 from  
   v_sk_prepare_calculation vpc;
 
-create or replace view v_sk_pivot_total as
+create or replace force view v_sk_pivot_total as
 (select 
   *
 from  (select 
@@ -620,7 +632,7 @@ from  (select
             )
 );
 
-create or replace view v_bonus_rep as 
+create or replace force view v_bonus_rep as 
 select  
   td.idy,
   td.idhy,
@@ -630,7 +642,7 @@ select
   r.emp rep,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type,
+  td.TRANSACTION_TYPE,
   sum(td.packs_plan * p.pricecip) BR,
   sum(td.packs_fack * p.pricecip) IMS,
   sum(td.packs * p.pricecip) CIP
@@ -655,9 +667,9 @@ group by
   r.emp,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type;
+  td.TRANSACTION_TYPE;
 
-create or replace view v_rep_prepare_calculation as  
+create or replace force view v_rep_prepare_calculation as  
 select 
   v.*,
   (select 
@@ -710,7 +722,7 @@ from
   v_bonus_rep v
 ;
 
-create or replace view v_rep_total_bonus as
+create or replace force view v_rep_total_bonus as
 select 
   vpc.*,
   (select 
@@ -734,7 +746,7 @@ select
 from  
   v_rep_prepare_calculation vpc;
 
-create or replace view v_rep_pivot_total as
+create or replace force view v_rep_pivot_total as
 (select 
   *
 from  (select 

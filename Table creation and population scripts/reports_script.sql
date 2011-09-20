@@ -10,7 +10,7 @@ select
   e.employee_id,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type,
+  td.TRANSACTION_TYPE,
   sum(td.packs_plan) as packs,
   sum(td.packs_plan * p.pricecip) BR,
   sum(td.packs_fack * p.pricecip) IMS,
@@ -35,7 +35,7 @@ group by
   e.employee_name,
   pg.idprodgr,
   pg.prodgr,
-  td.trasaction_type;
+  td.TRANSACTION_TYPE;
   
 create or replace view v_prepare_calculation_new as  
 select 
