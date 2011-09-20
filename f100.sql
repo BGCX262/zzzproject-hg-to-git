@@ -13,11 +13,11 @@ prompt  APPLICATION 100 - Sales
 -- Application Export:
 --   Application:     100
 --   Name:            Sales
---   Date and Time:   12:58 Tuesday September 20, 2011
+--   Date and Time:   17:45 Tuesday September 20, 2011
 --   Exported By:     ADMIN
 --   Flashback:       0
 --   Export Type:     Application Export
---   Version: 4.0.2.00.09
+--   Version: 4.0.2.00.08
  
 -- Import:
 --   Using application builder
@@ -146,7 +146,7 @@ wwv_flow_api.create_flow(
   p_default_region_template=> 2616718399032833 + wwv_flow_api.g_id_offset,
   p_error_template=> 2614238398032776 + wwv_flow_api.g_id_offset,
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20110920110450',
+  p_checksum_salt_last_reset => '20110920174454',
   p_max_session_length_sec=> 3600,
   p_home_link=> 'f?p=&APP_ID.:1:&SESSION.',
   p_flow_language=> 'ru',
@@ -190,7 +190,7 @@ wwv_flow_api.create_flow(
   p_default_menur_template => 2615541273032830 + wwv_flow_api.g_id_offset,
   p_default_listr_template => 2616128690032831 + wwv_flow_api.g_id_offset,
   p_last_updated_by => 'ADMIN',
-  p_last_upd_yyyymmddhh24miss=> '20110920110450',
+  p_last_upd_yyyymmddhh24miss=> '20110920174454',
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
  
@@ -790,6 +790,37 @@ wwv_flow_api.create_list_of_values (
   p_lov_query=> 'select hy d, idhy r'||chr(10)||
 'from   half_year'||chr(10)||
 'order by to_number(substr(hy,length(hy)-3,4))');
+ 
+null;
+ 
+end;
+/
+
+--application/shared_components/user_interface/lov/halfyears_list
+ 
+begin
+ 
+wwv_flow_api.create_list_of_values (
+  p_id       => 1942608569656599 + wwv_flow_api.g_id_offset,
+  p_flow_id  => wwv_flow.g_flow_id,
+  p_lov_name => 'HALFYEARS LIST',
+  p_lov_query=> 'select dt_parent || '' '' || dt as d, real_date as r from v_dates where dt_type = ''HalfYear'''||chr(10)||
+'order by 2 desc');
+ 
+null;
+ 
+end;
+/
+
+--application/shared_components/user_interface/lov/months_list
+ 
+begin
+ 
+wwv_flow_api.create_list_of_values (
+  p_id       => 1944718762820359 + wwv_flow_api.g_id_offset,
+  p_flow_id  => wwv_flow.g_flow_id,
+  p_lov_name => 'MONTHS LIST',
+  p_lov_query=> 'select substr(dt_parent,1,4) || '' '' || dt as d, real_date as r from v_dates where dt_type = ''Month'' order by 2 desc ');
  
 null;
  
@@ -1987,7 +2018,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110913231711'
+ ,p_last_upd_yyyymmddhh24miss => '20110920162943'
   );
 null;
  
@@ -2003,13 +2034,17 @@ s:=s||'select "IDTRAN", '||chr(10)||
 '(select client from clients where idclient=td."IDCLIENT") Client,'||chr(10)||
 '(select geography_name from clients,geography where idclient=td."IDCLIENT" and geography_id = city) ClientCity,'||chr(10)||
 '(select prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
-'(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
-'(select y from years where idy = td."IDY") Year,'||chr(10)||
+'(select dt || ''_'' || dt_parent from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) HalfYear,'||chr(10)||
+'(select dt_';
+
+s:=s||'parent from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) Year,'||chr(10)||
+''||chr(10)||
+'--(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
+'--(select y from years where idy = td."IDY") Year,'||chr(10)||
+''||chr(10)||
 '"PACKS_PLAN",'||chr(10)||
 '"PACKS"'||chr(10)||
-'from "#';
-
-s:=s||'OWNER#"."TRANSACTIONS_DATA" td where trasaction_type = ''BR'''||chr(10)||
+'from "#OWNER#"."TRANSACTIONS_DATA" td where transaction_type = ''BR'''||chr(10)||
 'order by idtran desc'||chr(10)||
 '  '||chr(10)||
 '';
@@ -2044,13 +2079,17 @@ a1:=a1||'select "IDTRAN", '||chr(10)||
 '(select client from clients where idclient=td."IDCLIENT") Client,'||chr(10)||
 '(select geography_name from clients,geography where idclient=td."IDCLIENT" and geography_id = city) ClientCity,'||chr(10)||
 '(select prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
-'(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
-'(select y from years where idy = td."IDY") Year,'||chr(10)||
+'(select dt || ''_'' || dt_parent from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) HalfYear,'||chr(10)||
+'(select dt_';
+
+a1:=a1||'parent from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) Year,'||chr(10)||
+''||chr(10)||
+'--(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
+'--(select y from years where idy = td."IDY") Year,'||chr(10)||
+''||chr(10)||
 '"PACKS_PLAN",'||chr(10)||
 '"PACKS"'||chr(10)||
-'from "#';
-
-a1:=a1||'OWNER#"."TRANSACTIONS_DATA" td where trasaction_type = ''BR'''||chr(10)||
+'from "#OWNER#"."TRANSACTIONS_DATA" td where transaction_type = ''BR'''||chr(10)||
 'order by idtran desc'||chr(10)||
 '  '||chr(10)||
 '';
@@ -2270,16 +2309,16 @@ end;
 /
 begin
 wwv_flow_api.create_worksheet_column(
-  p_id => 1493502277652353+wwv_flow_api.g_id_offset,
+  p_id => 1941902486465609+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 3,
   p_worksheet_id => 1491613986620272+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'HALFYEAR',
+  p_db_column_name         =>'YEAR',
   p_display_order          =>5,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'L',
-  p_column_label           =>'Halfyear',
-  p_report_label           =>'Halfyear',
+  p_column_identifier      =>'P',
+  p_column_label           =>'Year',
+  p_report_label           =>'Year',
   p_sync_form_label        =>'Y',
   p_display_in_default_rpt =>'Y',
   p_is_sortable            =>'Y',
@@ -2308,16 +2347,16 @@ end;
 /
 begin
 wwv_flow_api.create_worksheet_column(
-  p_id => 1493602969652354+wwv_flow_api.g_id_offset,
+  p_id => 1493502277652353+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 3,
   p_worksheet_id => 1491613986620272+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'YEAR',
+  p_db_column_name         =>'HALFYEAR',
   p_display_order          =>6,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'M',
-  p_column_label           =>'Year',
-  p_report_label           =>'Year',
+  p_column_identifier      =>'L',
+  p_column_label           =>'Halfyear',
+  p_report_label           =>'Halfyear',
   p_sync_form_label        =>'Y',
   p_display_in_default_rpt =>'Y',
   p_is_sortable            =>'Y',
@@ -2332,11 +2371,11 @@ wwv_flow_api.create_worksheet_column(
   p_allow_hide             =>'Y',
   p_others_may_edit        =>'Y',
   p_others_may_view        =>'Y',
-  p_column_type            =>'NUMBER',
+  p_column_type            =>'STRING',
   p_display_as             =>'TEXT',
   p_display_text_as        =>'ESCAPE_SC',
   p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'RIGHT',
+  p_column_alignment       =>'LEFT',
   p_tz_dependent           =>'N',
   p_rpt_distinct_lov       =>'Y',
   p_rpt_show_filter_lov    =>'D',
@@ -25705,7 +25744,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110913231859'
+ ,p_last_upd_yyyymmddhh24miss => '20110920170646'
   );
 null;
  
@@ -25912,7 +25951,7 @@ wwv_flow_api.create_page_item(
   p_id=>1488806017620269 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 53,
-  p_name=>'P53_TRASACTION_TYPE',
+  p_name=>'P53_TRANSACTION_TYPE',
   p_data_type=> 'VARCHAR',
   p_is_required=> false,
   p_accept_processing=> 'REPLACE_EXISTING',
@@ -25922,7 +25961,7 @@ wwv_flow_api.create_page_item(
   p_item_default=> 'BR',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Trasaction Type',
-  p_source=>'TRASACTION_TYPE',
+  p_source=>'TRANSACTION_TYPE',
   p_source_type=> 'DB_COLUMN',
   p_source_post_computation => '''BR''',
   p_display_as=> 'NATIVE_HIDDEN',
@@ -25967,7 +26006,7 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Kamrep',
   p_source=>'KAMREP',
-  p_source_type=> 'DB_COLUMN',
+  p_source_type=> 'ALWAYS_NULL',
   p_display_as=> 'NATIVE_HIDDEN',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
@@ -25980,6 +26019,7 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
@@ -26010,7 +26050,7 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Employee',
   p_source=>'IDKAMREP',
-  p_source_type=> 'DB_COLUMN',
+  p_source_type=> 'ALWAYS_NULL',
   p_display_as=> 'NATIVE_HIDDEN',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
@@ -26023,6 +26063,7 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620221820033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
@@ -26138,7 +26179,7 @@ wwv_flow_api.create_page_item(
   p_id=>1489827464620270 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 53,
-  p_name=>'P53_IDHY',
+  p_name=>'P53_REAL_DATE_TYPE',
   p_data_type=> 'VARCHAR',
   p_is_required=> true,
   p_accept_processing=> 'REPLACE_EXISTING',
@@ -26147,16 +26188,12 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Half Year',
-  p_source=>'IDHY',
+  p_source=>'REAL_DATE_TYPE',
   p_source_type=> 'DB_COLUMN',
-  p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select hy, idhy from half_year where idy = :p53_IDY',
-  p_lov_display_null=> 'YES',
+  p_source_post_computation => '''HalfYear''',
+  p_display_as=> 'NATIVE_HIDDEN',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
-  p_lov_cascade_parent_items=> 'P53_IDY',
-  p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -26171,8 +26208,7 @@ wwv_flow_api.create_page_item(
   p_lov_display_extra=>'YES',
   p_protection_level => 'N',
   p_escape_on_http_output => 'Y',
-  p_attribute_01 => 'NONE',
-  p_attribute_02 => 'N',
+  p_attribute_01 => 'Y',
   p_show_quick_picks=>'N',
   p_item_comment => '');
  
@@ -26187,7 +26223,7 @@ wwv_flow_api.create_page_item(
   p_id=>1490030435620270 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 53,
-  p_name=>'P53_IDY',
+  p_name=>'P53_REAL_DATE',
   p_data_type=> 'VARCHAR',
   p_is_required=> true,
   p_accept_processing=> 'REPLACE_EXISTING',
@@ -26195,11 +26231,13 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 1487225001620267+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Year',
-  p_source=>'IDY',
+  p_prompt=>'Period',
+  p_source=>'REAL_DATE',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select y, idy from years',
+  p_named_lov=> 'HALFYEARS LIST',
+  p_lov=> 'select dt_parent || '' '' || dt as d, real_date as r from v_dates where dt_type = ''HalfYear'''||chr(10)||
+'order by 2 desc',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
   p_lov_null_text=>'--None--',
@@ -26486,7 +26524,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110913232041'
+ ,p_last_upd_yyyymmddhh24miss => '20110920171820'
   );
 null;
  
@@ -26502,14 +26540,18 @@ s:=s||'select "IDTRAN", '||chr(10)||
 '(select client from clients where idclient=td."IDCLIENT") Client,'||chr(10)||
 '(select geography_name from clients,geography where idclient=td."IDCLIENT" and geography_id = city) ClientCity,'||chr(10)||
 '(select prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
-'(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
-'(select y from years where idy = td."IDY") Year,'||chr(10)||
-'(select month from months whe';
+''||chr(10)||
+'(select trim(dt) || '' '' || substr(dt_parent,1,4) from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) Mo';
 
-s:=s||'re idmonth = td."IDMONTH") Month,'||chr(10)||
+s:=s||'nth,'||chr(10)||
+''||chr(10)||
+''||chr(10)||
+'--(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
+'--(select y from years where idy = td."IDY") Year,'||chr(10)||
+'--(select month from months where idmonth = td."IDMONTH") Month,'||chr(10)||
 '(select ws from wss where idws = td."IDWS") Distributor,'||chr(10)||
 '"PACKS_FACK"'||chr(10)||
-'from "#OWNER#"."TRANSACTIONS_DATA" td where trasaction_type=''IMS'''||chr(10)||
+'from "#OWNER#"."TRANSACTIONS_DATA" td where transaction_type=''IMS'''||chr(10)||
 'order by idtran desc'||chr(10)||
 '  '||chr(10)||
 '';
@@ -26544,14 +26586,18 @@ a1:=a1||'select "IDTRAN", '||chr(10)||
 '(select client from clients where idclient=td."IDCLIENT") Client,'||chr(10)||
 '(select geography_name from clients,geography where idclient=td."IDCLIENT" and geography_id = city) ClientCity,'||chr(10)||
 '(select prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
-'(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
-'(select y from years where idy = td."IDY") Year,'||chr(10)||
-'(select month from months whe';
+''||chr(10)||
+'(select trim(dt) || '' '' || substr(dt_parent,1,4) from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) Mo';
 
-a1:=a1||'re idmonth = td."IDMONTH") Month,'||chr(10)||
+a1:=a1||'nth,'||chr(10)||
+''||chr(10)||
+''||chr(10)||
+'--(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
+'--(select y from years where idy = td."IDY") Year,'||chr(10)||
+'--(select month from months where idmonth = td."IDMONTH") Month,'||chr(10)||
 '(select ws from wss where idws = td."IDWS") Distributor,'||chr(10)||
 '"PACKS_FACK"'||chr(10)||
-'from "#OWNER#"."TRANSACTIONS_DATA" td where trasaction_type=''IMS'''||chr(10)||
+'from "#OWNER#"."TRANSACTIONS_DATA" td where transaction_type=''IMS'''||chr(10)||
 'order by idtran desc'||chr(10)||
 '  '||chr(10)||
 '';
@@ -26662,7 +26708,7 @@ wwv_flow_api.create_worksheet_column(
   p_page_id=> 54,
   p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
   p_db_column_name         =>'CLIENT',
-  p_display_order          =>3,
+  p_display_order          =>2,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
   p_column_identifier      =>'K',
   p_column_label           =>'Client',
@@ -26700,11 +26746,49 @@ wwv_flow_api.create_worksheet_column(
   p_page_id=> 54,
   p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
   p_db_column_name         =>'CLIENTCITY',
-  p_display_order          =>4,
+  p_display_order          =>3,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
   p_column_identifier      =>'L',
   p_column_label           =>'City',
   p_report_label           =>'City',
+  p_sync_form_label        =>'Y',
+  p_display_in_default_rpt =>'Y',
+  p_is_sortable            =>'Y',
+  p_allow_sorting          =>'Y',
+  p_allow_filtering        =>'Y',
+  p_allow_highlighting     =>'Y',
+  p_allow_ctrl_breaks      =>'Y',
+  p_allow_aggregations     =>'Y',
+  p_allow_computations     =>'Y',
+  p_allow_charting         =>'Y',
+  p_allow_group_by         =>'Y',
+  p_allow_hide             =>'Y',
+  p_others_may_edit        =>'Y',
+  p_others_may_view        =>'Y',
+  p_column_type            =>'STRING',
+  p_display_as             =>'TEXT',
+  p_display_text_as        =>'ESCAPE_SC',
+  p_heading_alignment      =>'CENTER',
+  p_column_alignment       =>'LEFT',
+  p_tz_dependent           =>'N',
+  p_rpt_distinct_lov       =>'Y',
+  p_rpt_show_filter_lov    =>'D',
+  p_rpt_filter_date_ranges =>'ALL',
+  p_help_text              =>'');
+end;
+/
+begin
+wwv_flow_api.create_worksheet_column(
+  p_id => 1943715720724876+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id=> 54,
+  p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
+  p_db_column_name         =>'MONTH',
+  p_display_order          =>4,
+  p_group_id               =>null+wwv_flow_api.g_id_offset,
+  p_column_identifier      =>'R',
+  p_column_label           =>'Month',
+  p_report_label           =>'Month',
   p_sync_form_label        =>'Y',
   p_display_in_default_rpt =>'Y',
   p_is_sortable            =>'Y',
@@ -26771,126 +26855,12 @@ end;
 /
 begin
 wwv_flow_api.create_worksheet_column(
-  p_id => 1507216817870569+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 54,
-  p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'HALFYEAR',
-  p_display_order          =>6,
-  p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'N',
-  p_column_label           =>'Half Year',
-  p_report_label           =>'Half Year',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'STRING',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
-  p_id => 1507306534870570+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 54,
-  p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'YEAR',
-  p_display_order          =>7,
-  p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'O',
-  p_column_label           =>'Year',
-  p_report_label           =>'Year',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'NUMBER',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'RIGHT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
-  p_id => 1507404345870570+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 54,
-  p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'MONTH',
-  p_display_order          =>8,
-  p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'P',
-  p_column_label           =>'Month',
-  p_report_label           =>'Month',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'DATE',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
   p_id => 1507509866870570+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 54,
   p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
   p_db_column_name         =>'DISTRIBUTOR',
-  p_display_order          =>9,
+  p_display_order          =>6,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
   p_column_identifier      =>'Q',
   p_column_label           =>'Distributor',
@@ -26928,7 +26898,7 @@ wwv_flow_api.create_worksheet_column(
   p_page_id=> 54,
   p_worksheet_id => 1503811879850231+wwv_flow_api.g_id_offset,
   p_db_column_name         =>'PACKS_FACK',
-  p_display_order          =>10,
+  p_display_order          =>7,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
   p_column_identifier      =>'I',
   p_column_label           =>'Packs Fact',
@@ -27084,7 +27054,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110913232106'
+ ,p_last_upd_yyyymmddhh24miss => '20110920173055'
   );
 null;
  
@@ -27300,7 +27270,7 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Kamrep',
   p_source=>'KAMREP',
-  p_source_type=> 'DB_COLUMN',
+  p_source_type=> 'ALWAYS_NULL',
   p_source_post_computation => '''KAM''',
   p_display_as=> 'NATIVE_HIDDEN',
   p_lov_display_null=> 'NO',
@@ -27314,6 +27284,7 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
@@ -27344,7 +27315,7 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Employee',
   p_source=>'IDKAMREP',
-  p_source_type=> 'DB_COLUMN',
+  p_source_type=> 'ALWAYS_NULL',
   p_display_as=> 'NATIVE_HIDDEN',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
@@ -27357,6 +27328,7 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620221820033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
@@ -27472,25 +27444,21 @@ wwv_flow_api.create_page_item(
   p_id=>1501100663850203 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 55,
-  p_name=>'P55_IDHY',
+  p_name=>'P55_REAL_DATE_TYPE',
   p_data_type=> 'VARCHAR',
   p_is_required=> true,
   p_accept_processing=> 'REPLACE_EXISTING',
-  p_item_sequence=> 100,
+  p_item_sequence=> 110,
   p_item_plug_id => 1498732337850175+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Half Year',
-  p_source=>'IDHY',
+  p_source=>'REAL_DATE_TYPE',
   p_source_type=> 'DB_COLUMN',
-  p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select hy, idhy from half_year where idy = :p55_IDY',
-  p_lov_display_null=> 'YES',
+  p_source_post_computation => '''Month''',
+  p_display_as=> 'NATIVE_HIDDEN',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
-  p_lov_cascade_parent_items=> 'P55_IDY',
-  p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -27505,8 +27473,7 @@ wwv_flow_api.create_page_item(
   p_lov_display_extra=>'YES',
   p_protection_level => 'N',
   p_escape_on_http_output => 'Y',
-  p_attribute_01 => 'NONE',
-  p_attribute_02 => 'N',
+  p_attribute_01 => 'Y',
   p_show_quick_picks=>'N',
   p_item_comment => '');
  
@@ -27531,13 +27498,10 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Year',
   p_source=>'IDY',
-  p_source_type=> 'DB_COLUMN',
-  p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select y, idy from years',
-  p_lov_display_null=> 'YES',
+  p_source_type=> 'ALWAYS_NULL',
+  p_display_as=> 'NATIVE_HIDDEN',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -27547,13 +27511,13 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620221820033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
   p_protection_level => 'N',
   p_escape_on_http_output => 'Y',
-  p_attribute_01 => 'NONE',
-  p_attribute_02 => 'N',
+  p_attribute_01 => 'Y',
   p_show_quick_picks=>'N',
   p_item_comment => '');
  
@@ -27568,25 +27532,24 @@ wwv_flow_api.create_page_item(
   p_id=>1501525660850205 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 55,
-  p_name=>'P55_IDMONTH',
+  p_name=>'P55_REAL_DATE',
   p_data_type=> 'VARCHAR',
   p_is_required=> true,
   p_accept_processing=> 'REPLACE_EXISTING',
-  p_item_sequence=> 110,
+  p_item_sequence=> 105,
   p_item_plug_id => 1498732337850175+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Month',
-  p_source=>'IDMONTH',
+  p_source=>'REAL_DATE',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select month, idmonth from months where idhy = :p55_IDHY',
+  p_named_lov=> 'MONTHS LIST',
+  p_lov=> 'select substr(dt_parent,1,4) || '' '' || dt as d, real_date as r from v_dates where dt_type = ''Month'' order by 2 desc ',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
   p_lov_null_text=>'--None--',
   p_lov_null_value=> '',
-  p_lov_cascade_parent_items=> 'P55_IDHY',
-  p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -27760,7 +27723,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Transaction Type',
-  p_source=>'TRASACTION_TYPE',
+  p_source=>'TRANSACTION_TYPE',
   p_source_type=> 'DB_COLUMN',
   p_source_post_computation => '''IMS''',
   p_display_as=> 'NATIVE_HIDDEN',
@@ -33201,7 +33164,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110913232207'
+ ,p_last_upd_yyyymmddhh24miss => '20110920174132'
   );
 null;
  
@@ -33215,15 +33178,17 @@ declare
 begin
 s:=s||'select "IDTRAN", '||chr(10)||
 '(select ws from wss where idws = td."IDWS") Distributor,'||chr(10)||
-'(select y from years where idy = td."IDY") Year,'||chr(10)||
-'(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
-'(select month from months where idmonth = td."IDMONTH") Month,'||chr(10)||
-'(select prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
-'"PACKS_FACK"'||chr(10)||
-'from "#OWNER#"."TRANSACTIONS_DATA" td where trasaction_type=''IMP'''||chr(10)||
-'order by';
+'--(select y from years where idy = td."IDY") Year,'||chr(10)||
+'--(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
+'--(select month from months where idmonth = td."IDMONTH") Month,'||chr(10)||
+'(select trim(dt) || '' '' || substr(dt_parent,1,4) from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) Month,'||chr(10)||
+''||chr(10)||
+'(sel';
 
-s:=s||' idtran desc'||chr(10)||
+s:=s||'ect prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
+'"PACKS_FACK"'||chr(10)||
+'from "#OWNER#"."TRANSACTIONS_DATA" td where transaction_type=''IMP'''||chr(10)||
+'order by idtran desc'||chr(10)||
 '  '||chr(10)||
 '';
 
@@ -33255,15 +33220,17 @@ declare
 begin
 a1:=a1||'select "IDTRAN", '||chr(10)||
 '(select ws from wss where idws = td."IDWS") Distributor,'||chr(10)||
-'(select y from years where idy = td."IDY") Year,'||chr(10)||
-'(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
-'(select month from months where idmonth = td."IDMONTH") Month,'||chr(10)||
-'(select prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
-'"PACKS_FACK"'||chr(10)||
-'from "#OWNER#"."TRANSACTIONS_DATA" td where trasaction_type=''IMP'''||chr(10)||
-'order by';
+'--(select y from years where idy = td."IDY") Year,'||chr(10)||
+'--(select hy from half_year where idhy = td."IDHY") HalfYear,'||chr(10)||
+'--(select month from months where idmonth = td."IDMONTH") Month,'||chr(10)||
+'(select trim(dt) || '' '' || substr(dt_parent,1,4) from v_dates vd where vd.real_date = td.real_date and vd.dt_type = td.real_date_type) Month,'||chr(10)||
+''||chr(10)||
+'(sel';
 
-a1:=a1||' idtran desc'||chr(10)||
+a1:=a1||'ect prod from products_new where idprod=td."IDPROD") Product,'||chr(10)||
+'"PACKS_FACK"'||chr(10)||
+'from "#OWNER#"."TRANSACTIONS_DATA" td where transaction_type=''IMP'''||chr(10)||
+'order by idtran desc'||chr(10)||
 '  '||chr(10)||
 '';
 
@@ -33406,54 +33373,16 @@ end;
 /
 begin
 wwv_flow_api.create_worksheet_column(
-  p_id => 1883530079324047+wwv_flow_api.g_id_offset,
+  p_id => 1945518425895958+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 74,
   p_worksheet_id => 1882829205324006+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'YEAR',
+  p_db_column_name         =>'MONTH',
   p_display_order          =>3,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'O',
-  p_column_label           =>'Year',
-  p_report_label           =>'Year',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'NUMBER',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'RIGHT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
-  p_id => 1883415670324046+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 74,
-  p_worksheet_id => 1882829205324006+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'HALFYEAR',
-  p_display_order          =>4,
-  p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'N',
-  p_column_label           =>'Half Year',
-  p_report_label           =>'Half Year',
+  p_column_identifier      =>'R',
+  p_column_label           =>'Month',
+  p_report_label           =>'Month',
   p_sync_form_label        =>'Y',
   p_display_in_default_rpt =>'Y',
   p_is_sortable            =>'Y',
@@ -33482,50 +33411,12 @@ end;
 /
 begin
 wwv_flow_api.create_worksheet_column(
-  p_id => 1883622036324047+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 74,
-  p_worksheet_id => 1882829205324006+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'MONTH',
-  p_display_order          =>5,
-  p_group_id               =>null+wwv_flow_api.g_id_offset,
-  p_column_identifier      =>'P',
-  p_column_label           =>'Month',
-  p_report_label           =>'Month',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'DATE',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
   p_id => 1883307846324046+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 74,
   p_worksheet_id => 1882829205324006+wwv_flow_api.g_id_offset,
   p_db_column_name         =>'PRODUCT',
-  p_display_order          =>6,
+  p_display_order          =>4,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
   p_column_identifier      =>'M',
   p_column_label           =>'Product',
@@ -33563,7 +33454,7 @@ wwv_flow_api.create_worksheet_column(
   p_page_id=> 74,
   p_worksheet_id => 1882829205324006+wwv_flow_api.g_id_offset,
   p_db_column_name         =>'PACKS_FACK',
-  p_display_order          =>7,
+  p_display_order          =>5,
   p_group_id               =>null+wwv_flow_api.g_id_offset,
   p_column_identifier      =>'I',
   p_column_label           =>'Packs Import',
@@ -33721,7 +33612,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110913232226'
+ ,p_last_upd_yyyymmddhh24miss => '20110920174454'
   );
 null;
  
@@ -33939,7 +33830,7 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Kamrep',
   p_source=>'KAMREP',
-  p_source_type=> 'DB_COLUMN',
+  p_source_type=> 'ALWAYS_NULL',
   p_source_post_computation => '''KAM''',
   p_display_as=> 'NATIVE_HIDDEN',
   p_lov_display_null=> 'NO',
@@ -33953,6 +33844,7 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
@@ -33983,7 +33875,7 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Employee',
   p_source=>'IDKAMREP',
-  p_source_type=> 'DB_COLUMN',
+  p_source_type=> 'ALWAYS_NULL',
   p_display_as=> 'NATIVE_HIDDEN',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
@@ -33996,6 +33888,7 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620221820033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
@@ -34109,25 +34002,21 @@ wwv_flow_api.create_page_item(
   p_id=>1889314662387803 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 75,
-  p_name=>'P75_IDHY',
+  p_name=>'P75_REAL_DATE_TYPE',
   p_data_type=> 'VARCHAR',
   p_is_required=> true,
   p_accept_processing=> 'REPLACE_EXISTING',
-  p_item_sequence=> 17,
+  p_item_sequence=> 25,
   p_item_plug_id => 1887309720387767+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Half Year',
-  p_source=>'IDHY',
+  p_source=>'REAL_DATE_TYPE',
   p_source_type=> 'DB_COLUMN',
-  p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select hy, idhy from half_year where idy = :p75_IDY',
-  p_lov_display_null=> 'YES',
+  p_source_post_computation => '''Month''',
+  p_display_as=> 'NATIVE_HIDDEN',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
-  p_lov_cascade_parent_items=> 'P75_IDY',
-  p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -34142,8 +34031,7 @@ wwv_flow_api.create_page_item(
   p_lov_display_extra=>'YES',
   p_protection_level => 'N',
   p_escape_on_http_output => 'Y',
-  p_attribute_01 => 'NONE',
-  p_attribute_02 => 'N',
+  p_attribute_01 => 'Y',
   p_show_quick_picks=>'N',
   p_item_comment => '');
  
@@ -34168,13 +34056,10 @@ wwv_flow_api.create_page_item(
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Year',
   p_source=>'IDY',
-  p_source_type=> 'DB_COLUMN',
-  p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select y, idy from years',
-  p_lov_display_null=> 'YES',
+  p_source_type=> 'ALWAYS_NULL',
+  p_display_as=> 'NATIVE_HIDDEN',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -34184,13 +34069,13 @@ wwv_flow_api.create_page_item(
   p_rowspan=> 1,
   p_label_alignment=> 'RIGHT',
   p_field_alignment=> 'LEFT',
+  p_display_when_type=>'NEVER',
   p_field_template=> 2620221820033009+wwv_flow_api.g_id_offset,
   p_is_persistent=> 'Y',
   p_lov_display_extra=>'YES',
   p_protection_level => 'N',
   p_escape_on_http_output => 'Y',
-  p_attribute_01 => 'NONE',
-  p_attribute_02 => 'N',
+  p_attribute_01 => 'Y',
   p_show_quick_picks=>'N',
   p_item_comment => '');
  
@@ -34205,7 +34090,7 @@ wwv_flow_api.create_page_item(
   p_id=>1889704482387804 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 75,
-  p_name=>'P75_IDMONTH',
+  p_name=>'P75_REAL_DATE',
   p_data_type=> 'VARCHAR',
   p_is_required=> true,
   p_accept_processing=> 'REPLACE_EXISTING',
@@ -34214,16 +34099,15 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Month',
-  p_source=>'IDMONTH',
+  p_source=>'REAL_DATE',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select month, idmonth from months where idhy = :p75_IDHY',
+  p_named_lov=> 'MONTHS LIST',
+  p_lov=> 'select substr(dt_parent,1,4) || '' '' || dt as d, real_date as r from v_dates where dt_type = ''Month'' order by 2 desc ',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
   p_lov_null_text=>'--None--',
   p_lov_null_value=> '',
-  p_lov_cascade_parent_items=> 'P75_IDHY',
-  p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -34310,7 +34194,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Transaction Type',
-  p_source=>'TRASACTION_TYPE',
+  p_source=>'TRANSACTION_TYPE',
   p_source_type=> 'DB_COLUMN',
   p_source_post_computation => '''IMP''',
   p_display_as=> 'NATIVE_HIDDEN',

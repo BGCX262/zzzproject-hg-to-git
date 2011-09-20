@@ -90,7 +90,7 @@ commit;
 --commit;
 
 insert into transactions_data  
-select transactions_id_seq.nextval,null, 'IMS', null, idclient, idprod, (select month from months m where m.idmonth = i.idmonth), 'Month', idws, null, packs, packs, null, null, null , null
+select transactions_id_seq.nextval, null,idims, 'IMS',  idclient, idprod, (select month from months m where m.idmonth = i.idmonth), 'Month', idws, null, packs, packs, null, null, null , null
 from ims i;
 
 commit;
