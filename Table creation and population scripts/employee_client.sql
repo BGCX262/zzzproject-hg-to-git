@@ -7,7 +7,7 @@ drop table employee_client;
 create table employee_client
 (
   employee_client_id number,
-  idhy number,
+  real_date date,
   employee_id number,
   client_id number,
   idprod number,

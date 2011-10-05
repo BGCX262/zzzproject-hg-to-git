@@ -775,7 +775,7 @@ from  (select
             )
 );
 
-
+/*
 insert into employee_client
 select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, t.idprod,'EXPL' as link_type, 1 as plan_pct 
 from 
@@ -803,7 +803,43 @@ where b.idrep is not null
 ;
 
 commit;
+*/
 
+insert into employee_client
+select 
+  employee_client_id_seq.nextval as ids, t.real_date, t.empl, t.idclient, t.idprod, 'EXPL' as link_type, 1 as plan_pct 
+from
+    (select distinct
+      case 
+        when b.idhy = 7 then to_date('01.01.2011','dd.mm.yyyy')
+        when b.idhy = 8 then to_date('01.07.2011','dd.mm.yyyy')
+        else to_date('01.01.2121','dd.mm.yyyy')
+      end as real_date,
+      (select e.employee_id from employee e, reps r where e.employee_name=r.emp and e.employee_type in ('REP','SREP') and r.idrep = b.idrep) as empl,
+      b.idclient,
+      (select p2.idprod from products p1, products_new p2 where p1.prod = p2.prod and p1.idprod = b.idprod) as idprod
+    from br b
+    where b.idrep is not null
+) t;
+commit;
+
+insert into employee_client
+select 
+  employee_client_id_seq.nextval as ids, t.real_date, t.empl, t.idclient, t.idprod, 'EXPL' as link_type, 1 as plan_pct 
+from
+    (select distinct
+      case 
+        when b.idhy = 7 then to_date('01.01.2011','dd.mm.yyyy')
+        when b.idhy = 8 then to_date('01.07.2011','dd.mm.yyyy')
+        else to_date('01.01.2121','dd.mm.yyyy')
+      end as real_date,
+      (select e.employee_id from employee e, kams k where e.employee_name=k.kam and e.employee_type in ('KAM','SKAM') and k.idkam = b.idkam) as empl,
+      b.idclient,
+      (select p2.idprod from products p1, products_new p2 where p1.prod = p2.prod and p1.idprod = b.idprod) as idprod
+    from br b
+    where b.idkam is not null
+) t;
+commit;
 
 create or replace
 trigger  bi_transactions_data
