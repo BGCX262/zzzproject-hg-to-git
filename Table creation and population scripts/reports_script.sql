@@ -325,343 +325,6 @@ where
  
  
 --Denis inserts new dashboards
-create or replace view db_check_region as
-select c.idclient, r.*
-from clients c,
-(
-select 'Area' as geography_type, area as region, region_id
-from v_report_geography_table g
-union
-select 'Subarea' as geography_type, subarea as region, region_id
-from v_report_geography_table g
-union
-select 'Region' as geography_type, region as region, region_id
-from v_report_geography_table g) r
-where c.idreg=r.region_id
-;
-
-create or replace view v_transaction_data as   
-select 
-  ec.employee_id, 
-  ec.idprod, 
-  (select idprodgr from products_new where idprod=ec.idprod) as idprodgr, 
-  d.real_date, 
-  to_char(td.real_date,'YYYY') as real_year, 
-  d.dt_report, 
-  d.dt_type, 
-  d.dt, 
-  ec.client_id, 
-  ec.plan_pct,
-  ec.link_type, 
-  td.packs,  
-  td.packs_fack,
-  td.packs_plan,
-  td.transaction_type
-from 
-  employee_client ec,
-  v_dates d,
-  transactions_data td
-where d.dt_report = (select v2.dt_report from  v_dates v2 where  v2.dt_type = 'HalfYear' and v2.real_date = ec.real_date)
-  and td.idprod = ec.idprod
-  and td.idclient=ec.client_id
-  and td.real_date = d.real_date
---and d.dt_report = '2011-H1'
---and ec.client_id = 472
---and ec.employee_id=121
-;
-
-CREATE OR REPLACE VIEW db_pgsales_calc
-AS
-  SELECT
-    NULL          AS LINK,
-    d.dt_report   AS period,
-    SUM(td.packs) AS units,
-    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
-    d.dt_type,
-    td.transaction_type,
-    d.dt_id,
-    pg.prodgr,
-    min(td.real_date) as minreal_date
-  FROM
-    transactions_data td,
-    products_new p,
-    prodgrs pg,
-    v_dates d
-  WHERE
-    p.idprodgr           =pg.idprodgr
-  AND td.idprod          = p.idprod
-  AND d.real_date        = td.real_date
-  AND d.dt_type         != 'Date'
-  AND td.transaction_type in ('IMS','IMP') --- ITM,TTM
-  GROUP BY
-    d.dt_report,
-    td.transaction_type,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr
-  ORDER BY
-    d.dt_id,
-    pg.prodgr;
-
-CREATE OR REPLACE VIEW db_pgtotal_calc
-AS
-  SELECT
-    NULL          AS LINK,
-    d.dt_report   AS period,
-    SUM(td.packs) AS units,
-    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr,
-    min(td.real_date) as minreal_date
-  FROM
-    transactions_data td,
-    products_new p,
-    prodgrs pg,
-    v_dates d
-  WHERE
-    p.idprodgr           =pg.idprodgr
-  AND td.idprod          = p.idprod
-  AND d.real_date        = td.real_date
-  AND d.dt_type         != 'Date'
-  AND td.transaction_type in ('IMS','IMP') --- ITM,TTM
-  GROUP BY
-    d.dt_report,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr
-  ORDER BY
-    d.dt_id,
-    pg.prodgr;
-
-CREATE OR REPLACE VIEW db_gsales_calc
-AS
-  SELECT
-    NULL          AS LINK,
-    d.dt_report   AS period,
-    SUM(td.packs) AS units,
-    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
-    d.dt_type,
-    td.transaction_type,
-    d.dt_id,
-    min(td.real_date) as minreal_date
-  FROM
-    transactions_data td,
-    v_dates d
-  WHERE
-   d.real_date        = td.real_date
-  AND d.dt_type         != 'Date'
-  AND td.transaction_type in ('IMS','IMP') --- ITM
-  GROUP BY
-    d.dt_report,
-    td.transaction_type,
-    d.dt_type,
-    d.dt_id
-  ORDER BY
-    d.dt_id ;
-
-CREATE OR REPLACE VIEW db_total_calc
-AS
-  SELECT
-    NULL          AS LINK,
-    d.dt_report   AS period,
-    SUM(td.packs) AS units,
-    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
-    d.dt_type,
-    d.dt_id,
-    min(td.real_date) as minreal_date
-  FROM
-    transactions_data td,
-    v_dates d
-  WHERE
-   d.real_date        = td.real_date
-  AND d.dt_type         != 'Date'
-  AND td.transaction_type in ('IMS','IMP') --- ITM
-  GROUP BY
-    d.dt_report,
-    d.dt_type,
-    d.dt_id
-  ORDER BY
-    d.dt_id ;
-
-create or replace view db_sales_reports as	
-select 'Units' as reports, transaction_type, minreal_date, dt_id, dt_type, period, units, 
-accumulate_value(transaction_type,dt_type, minreal_date) as units_accum,
-previous_value(transaction_type,dt_type, minreal_date) as previous_units,
-case 
-when previous_value(transaction_type,dt_type, minreal_date) = 0 THEN 0
-ELSE
-round((units - previous_value(transaction_type,dt_type, minreal_date))/previous_value(transaction_type,dt_type, minreal_date),3)*100
-END  as rost
-from db_gsales_calc
--- multi report
-union
-select 'CIP RUR' as reports, transaction_type, minreal_date, dt_id, dt_type, period, price as units, 
-accumulate_value(transaction_type,dt_type, minreal_date) as units_accum,
-previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR') as previous_units,
-case 
-when previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR') = 0 THEN 0
-ELSE
-round((price - previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR'))/previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR'),3)*100
-END  as rost
-from db_gsales_calc
-;
-
-create or replace view db_total_reports as	
-select  minreal_date, dt_id, dt_type, period, units, 
-accumulate_value('IMP',dt_type, minreal_date) - accumulate_value('IMS',dt_type, minreal_date) as units_diff,
-accumulate_value(null,dt_type, minreal_date )as units_accum,
-previous_value(null ,dt_type, minreal_date) as previous_units,
-case 
-when previous_value(null,dt_type, minreal_date) = 0 THEN 0
-ELSE
-round((units - previous_value(null,dt_type, minreal_date))/previous_value(null,dt_type, minreal_date),3)*100
-END  as rost
-from db_total_calc
-;
-
-create or replace view db_sales_pg_reports as	
-select transaction_type,prodgr, minreal_date, dt_id, dt_type, period, units, 
-accumulate_value(transaction_type,dt_type, minreal_date, prodgr) as units_accum,
-previous_value(transaction_type,dt_type, minreal_date, prodgr) as previous_units,
-case 
-when previous_value(transaction_type,dt_type, minreal_date, prodgr) = 0 THEN 0
-ELSE
-round((units - previous_value(transaction_type,dt_type, minreal_date, prodgr))/previous_value(transaction_type,dt_type, minreal_date, prodgr),3)*100
-END  as rost
-from db_pgsales_calc
-;
-
-create or replace view db_total_pg_reports as	
-select prodgr, minreal_date, dt_id, dt_type, period, units, 
-accumulate_value('IMP',dt_type, minreal_date) - accumulate_value('IMS',dt_type, minreal_date) as units_diff,
-accumulate_value(null,dt_type, minreal_date, prodgr) as units_accum,
-previous_value(null,dt_type, minreal_date, prodgr) as previous_units,
-case 
-when previous_value(null,dt_type, minreal_date, prodgr) = 0 THEN 0
-ELSE
-round((units - previous_value(null,dt_type, minreal_date, prodgr))/previous_value(null,dt_type, minreal_date, prodgr),3)*100
-END  as rost
-from db_pgtotal_calc
-;
-
-create or replace view db_region_calc as
-select null as link, t.* from (
-SELECT
-    'Region' as geography_type,
-    g.region,
-    d.dt_report   AS period,
-    SUM(td.packs) AS units,
-    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr,
-    min(td.real_date) as minreal_date
-  FROM
-    transactions_data td,
-    products_new p,
-    prodgrs pg,
-    v_dates d,
-    clients c,
-    V_REPORT_GEOGRAPHY_TABLE g
-  WHERE
-    p.idprodgr           =pg.idprodgr
-  AND td.idprod          = p.idprod
-  AND d.real_date        = td.real_date
-  AND d.dt_type         != 'Date'
-  AND td.idclient = c.idclient
-  AND c.idreg = g.region_id
-  AND td.transaction_type in ('IMS') --- ITM,TTM
-  GROUP BY
-    g.region,
-    d.dt_report,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr
-union
-SELECT
-    'Subarea' as geography_type,
-    g.subarea,
-    d.dt_report   AS period,
-    SUM(td.packs) AS units,
-    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr,
-    min(td.real_date) as minreal_date
-  FROM
-    transactions_data td,
-    products_new p,
-    prodgrs pg,
-    v_dates d,
-    clients c,
-    V_REPORT_GEOGRAPHY_TABLE g
-  WHERE
-    p.idprodgr           =pg.idprodgr
-  AND td.idprod          = p.idprod
-  AND d.real_date        = td.real_date
-  AND d.dt_type         != 'Date'
-  AND td.idclient = c.idclient
-  AND c.idreg = g.region_id
-  AND td.transaction_type in ('IMS') --- ITM,TTM
-  GROUP BY
-    g.subarea,
-    d.dt_report,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr
-union
-  SELECT
-    'Area' as geography_type,
-    g.area,
-    d.dt_report   AS period,
-    SUM(td.packs) AS units,
-    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr,
-    min(td.real_date) as minreal_date
-  FROM
-    transactions_data td,
-    products_new p,
-    prodgrs pg,
-    v_dates d,
-    clients c,
-    V_REPORT_GEOGRAPHY_TABLE g
-  WHERE
-    p.idprodgr           =pg.idprodgr
-  AND td.idprod          = p.idprod
-  AND d.real_date        = td.real_date
-  AND d.dt_type         != 'Date'
-  AND td.idclient = c.idclient
-  AND c.idreg = g.region_id
-  AND td.transaction_type in ('IMS') --- ITM,TTM
-  GROUP BY
-    g.area,
-    d.dt_report,
-    d.dt_type,
-    d.dt_id,
-    pg.prodgr
-) t
-ORDER BY
-    t.geography_type,
-    t.dt_id,
-    t.prodgr;
-    
-create or replace view db_region_report as
-select 
-    geography_type,
-    region,
-    period,
-    dt_type,
-    dt_id,
-    prodgr,
-    minreal_date,
-    units,
-    previous_value('IMS',dt_type, minreal_date, prodgr,'Units',geography_type,region) as previous_units
-from
-  db_region_calc
-;
 
 --funcitons
 create or replace
@@ -1020,6 +683,346 @@ Begin
   return nvl(val,0);
 end;
 /
+
+create or replace view db_check_region as
+select c.idclient, r.*
+from clients c,
+(
+select 'Area' as geography_type, area as region, region_id
+from v_report_geography_table g
+union
+select 'Subarea' as geography_type, subarea as region, region_id
+from v_report_geography_table g
+union
+select 'Region' as geography_type, region as region, region_id
+from v_report_geography_table g) r
+where c.idreg=r.region_id
+;
+
+create or replace view v_transaction_data as   
+select 
+  ec.employee_id, 
+  ec.idprod, 
+  (select idprodgr from products_new where idprod=ec.idprod) as idprodgr, 
+  d.real_date, 
+  to_char(td.real_date,'YYYY') as real_year, 
+  d.dt_report, 
+  d.dt_type, 
+  d.dt, 
+  ec.client_id, 
+  ec.plan_pct,
+  ec.link_type, 
+  td.packs,  
+  td.packs_fack,
+  td.packs_plan,
+  td.transaction_type
+from 
+  employee_client ec,
+  v_dates d,
+  transactions_data td
+where d.dt_report = (select v2.dt_report from  v_dates v2 where  v2.dt_type = 'HalfYear' and v2.real_date = ec.real_date)
+  and td.idprod = ec.idprod
+  and td.idclient=ec.client_id
+  and td.real_date = d.real_date
+--and d.dt_report = '2011-H1'
+--and ec.client_id = 472
+--and ec.employee_id=121
+;
+
+CREATE OR REPLACE VIEW db_pgsales_calc
+AS
+  SELECT
+    NULL          AS LINK,
+    d.dt_report   AS period,
+    SUM(td.packs) AS units,
+    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
+    d.dt_type,
+    td.transaction_type,
+    d.dt_id,
+    pg.prodgr,
+    min(td.real_date) as minreal_date
+  FROM
+    transactions_data td,
+    products_new p,
+    prodgrs pg,
+    v_dates d
+  WHERE
+    p.idprodgr           =pg.idprodgr
+  AND td.idprod          = p.idprod
+  AND d.real_date        = td.real_date
+  AND d.dt_type         != 'Date'
+  AND td.transaction_type in ('IMS','IMP') --- ITM,TTM
+  GROUP BY
+    d.dt_report,
+    td.transaction_type,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr
+  ORDER BY
+    d.dt_id,
+    pg.prodgr;
+
+CREATE OR REPLACE VIEW db_pgtotal_calc
+AS
+  SELECT
+    NULL          AS LINK,
+    d.dt_report   AS period,
+    SUM(td.packs) AS units,
+    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr,
+    min(td.real_date) as minreal_date
+  FROM
+    transactions_data td,
+    products_new p,
+    prodgrs pg,
+    v_dates d
+  WHERE
+    p.idprodgr           =pg.idprodgr
+  AND td.idprod          = p.idprod
+  AND d.real_date        = td.real_date
+  AND d.dt_type         != 'Date'
+  AND td.transaction_type in ('IMS','IMP') --- ITM,TTM
+  GROUP BY
+    d.dt_report,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr
+  ORDER BY
+    d.dt_id,
+    pg.prodgr;
+
+CREATE OR REPLACE VIEW db_gsales_calc
+AS
+  SELECT
+    NULL          AS LINK,
+    d.dt_report   AS period,
+    SUM(td.packs) AS units,
+    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
+    d.dt_type,
+    td.transaction_type,
+    d.dt_id,
+    min(td.real_date) as minreal_date
+  FROM
+    transactions_data td,
+    v_dates d
+  WHERE
+   d.real_date        = td.real_date
+  AND d.dt_type         != 'Date'
+  AND td.transaction_type in ('IMS','IMP') --- ITM
+  GROUP BY
+    d.dt_report,
+    td.transaction_type,
+    d.dt_type,
+    d.dt_id
+  ORDER BY
+    d.dt_id ;
+
+CREATE OR REPLACE VIEW db_total_calc
+AS
+  SELECT
+    NULL          AS LINK,
+    d.dt_report   AS period,
+    SUM(td.packs) AS units,
+    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
+    d.dt_type,
+    d.dt_id,
+    min(td.real_date) as minreal_date
+  FROM
+    transactions_data td,
+    v_dates d
+  WHERE
+   d.real_date        = td.real_date
+  AND d.dt_type         != 'Date'
+  AND td.transaction_type in ('IMS','IMP') --- ITM
+  GROUP BY
+    d.dt_report,
+    d.dt_type,
+    d.dt_id
+  ORDER BY
+    d.dt_id ;
+
+create or replace view db_sales_reports as	
+select 'Units' as reports, transaction_type, minreal_date, dt_id, dt_type, period, units, 
+accumulate_value(transaction_type,dt_type, minreal_date) as units_accum,
+previous_value(transaction_type,dt_type, minreal_date) as previous_units,
+case 
+when previous_value(transaction_type,dt_type, minreal_date) = 0 THEN 0
+ELSE
+round((units - previous_value(transaction_type,dt_type, minreal_date))/previous_value(transaction_type,dt_type, minreal_date),3)*100
+END  as rost
+from db_gsales_calc
+-- multi report
+union
+select 'CIP RUR' as reports, transaction_type, minreal_date, dt_id, dt_type, period, price as units, 
+accumulate_value(transaction_type,dt_type, minreal_date) as units_accum,
+previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR') as previous_units,
+case 
+when previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR') = 0 THEN 0
+ELSE
+round((price - previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR'))/previous_value(transaction_type,dt_type, minreal_date, null, 'CIPRUR'),3)*100
+END  as rost
+from db_gsales_calc
+;
+
+create or replace view db_total_reports as	
+select  minreal_date, dt_id, dt_type, period, units, 
+accumulate_value('IMP',dt_type, minreal_date) - accumulate_value('IMS',dt_type, minreal_date) as units_diff,
+accumulate_value(null,dt_type, minreal_date )as units_accum,
+previous_value(null ,dt_type, minreal_date) as previous_units,
+case 
+when previous_value(null,dt_type, minreal_date) = 0 THEN 0
+ELSE
+round((units - previous_value(null,dt_type, minreal_date))/previous_value(null,dt_type, minreal_date),3)*100
+END  as rost
+from db_total_calc
+;
+
+create or replace view db_sales_pg_reports as	
+select transaction_type,prodgr, minreal_date, dt_id, dt_type, period, units, 
+accumulate_value(transaction_type,dt_type, minreal_date, prodgr) as units_accum,
+previous_value(transaction_type,dt_type, minreal_date, prodgr) as previous_units,
+case 
+when previous_value(transaction_type,dt_type, minreal_date, prodgr) = 0 THEN 0
+ELSE
+round((units - previous_value(transaction_type,dt_type, minreal_date, prodgr))/previous_value(transaction_type,dt_type, minreal_date, prodgr),3)*100
+END  as rost
+from db_pgsales_calc
+;
+
+create or replace view db_total_pg_reports as	
+select prodgr, minreal_date, dt_id, dt_type, period, units, 
+accumulate_value('IMP',dt_type, minreal_date) - accumulate_value('IMS',dt_type, minreal_date) as units_diff,
+accumulate_value(null,dt_type, minreal_date, prodgr) as units_accum,
+previous_value(null,dt_type, minreal_date, prodgr) as previous_units,
+case 
+when previous_value(null,dt_type, minreal_date, prodgr) = 0 THEN 0
+ELSE
+round((units - previous_value(null,dt_type, minreal_date, prodgr))/previous_value(null,dt_type, minreal_date, prodgr),3)*100
+END  as rost
+from db_pgtotal_calc
+;
+
+create or replace view db_region_calc as
+select null as link, t.* from (
+SELECT
+    'Region' as geography_type,
+    g.region,
+    d.dt_report   AS period,
+    SUM(td.packs) AS units,
+    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr,
+    min(td.real_date) as minreal_date
+  FROM
+    transactions_data td,
+    products_new p,
+    prodgrs pg,
+    v_dates d,
+    clients c,
+    V_REPORT_GEOGRAPHY_TABLE g
+  WHERE
+    p.idprodgr           =pg.idprodgr
+  AND td.idprod          = p.idprod
+  AND d.real_date        = td.real_date
+  AND d.dt_type         != 'Date'
+  AND td.idclient = c.idclient
+  AND c.idreg = g.region_id
+  AND td.transaction_type in ('IMS') --- ITM,TTM
+  GROUP BY
+    g.region,
+    d.dt_report,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr
+union
+SELECT
+    'Subarea' as geography_type,
+    g.subarea,
+    d.dt_report   AS period,
+    SUM(td.packs) AS units,
+    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr,
+    min(td.real_date) as minreal_date
+  FROM
+    transactions_data td,
+    products_new p,
+    prodgrs pg,
+    v_dates d,
+    clients c,
+    V_REPORT_GEOGRAPHY_TABLE g
+  WHERE
+    p.idprodgr           =pg.idprodgr
+  AND td.idprod          = p.idprod
+  AND d.real_date        = td.real_date
+  AND d.dt_type         != 'Date'
+  AND td.idclient = c.idclient
+  AND c.idreg = g.region_id
+  AND td.transaction_type in ('IMS') --- ITM,TTM
+  GROUP BY
+    g.subarea,
+    d.dt_report,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr
+union
+  SELECT
+    'Area' as geography_type,
+    g.area,
+    d.dt_report   AS period,
+    SUM(td.packs) AS units,
+    SUM(td.packs * get_price(td.idprod,td.real_date)) AS price,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr,
+    min(td.real_date) as minreal_date
+  FROM
+    transactions_data td,
+    products_new p,
+    prodgrs pg,
+    v_dates d,
+    clients c,
+    V_REPORT_GEOGRAPHY_TABLE g
+  WHERE
+    p.idprodgr           =pg.idprodgr
+  AND td.idprod          = p.idprod
+  AND d.real_date        = td.real_date
+  AND d.dt_type         != 'Date'
+  AND td.idclient = c.idclient
+  AND c.idreg = g.region_id
+  AND td.transaction_type in ('IMS') --- ITM,TTM
+  GROUP BY
+    g.area,
+    d.dt_report,
+    d.dt_type,
+    d.dt_id,
+    pg.prodgr
+) t
+ORDER BY
+    t.geography_type,
+    t.dt_id,
+    t.prodgr;
+    
+create or replace view db_region_report as
+select 
+    geography_type,
+    region,
+    period,
+    dt_type,
+    dt_id,
+    prodgr,
+    minreal_date,
+    units,
+    previous_value('IMS',dt_type, minreal_date, prodgr,'Units',geography_type,region) as previous_units
+from
+  db_region_calc
+;
+
+
 
 ----bigtable
 drop table db_bigtable;
