@@ -112,9 +112,9 @@ DROP TABLE CIP_SCHEMA;
 CREATE TABLE CIP_SCHEMA
   (
     IDSCHEMA   NUMBER(11,0) ,
-    SCHEMA_NAME  VARCHAR(100),
-    IDHY NUMBER (10,0),
-    IDY NUMBER (10,0)
+    SCHEMA_NAME  VARCHAR2(100),
+    real_date date,
+	real_date_type varchar2(100)
   );
 ALTER TABLE CIP_SCHEMA
 ADD CONSTRAINT PK_CIP PRIMARY KEY
@@ -125,13 +125,13 @@ ENABLE
 ;
 
 DELETE FROM CIP_SCHEMA;
-INSERT INTO CIP_SCHEMA SELECT 1,'KAM SCHEMA H12011', 7, 5 FROM DUAL;
-INSERT INTO CIP_SCHEMA SELECT 2,'HEAD OF KAM SCHEMA H12011', 7, 5 FROM DUAL;
-INSERT INTO CIP_SCHEMA SELECT 3,'REP COMB 5 H12011', 7, 5 FROM DUAL;
-INSERT INTO CIP_SCHEMA SELECT 4,'REP NEPHRO 2 AN, Mi H12011', 7, 5 FROM DUAL;
-INSERT INTO CIP_SCHEMA SELECT 5,'REP ONCO 2 AO, Vbx H12011', 7, 5 FROM DUAL;
-INSERT INTO CIP_SCHEMA SELECT 6,'REP ONCO 3 AO, Npl, Vbx H12011', 7, 5 FROM DUAL;
-INSERT INTO CIP_SCHEMA SELECT 7,'REP ONCO 2 AO, Npl H12011', 7, 5 FROM DUAL;
+INSERT INTO CIP_SCHEMA SELECT 1,'KAM SCHEMA H12011', to_date('01.01.2011','dd.mm.yyyy'), 'HalfYear' FROM DUAL;
+INSERT INTO CIP_SCHEMA SELECT 2,'HEAD OF KAM SCHEMA H12011', to_date('01.01.2011','dd.mm.yyyy'), 'HalfYear' FROM DUAL;
+INSERT INTO CIP_SCHEMA SELECT 3,'REP COMB 5 H12011', to_date('01.01.2011','dd.mm.yyyy'), 'HalfYear' FROM DUAL;
+INSERT INTO CIP_SCHEMA SELECT 4,'REP NEPHRO 2 AN, Mi H12011', to_date('01.01.2011','dd.mm.yyyy'), 'HalfYear' FROM DUAL;
+INSERT INTO CIP_SCHEMA SELECT 5,'REP ONCO 2 AO, Vbx H12011', to_date('01.01.2011','dd.mm.yyyy'), 'HalfYear' FROM DUAL;
+INSERT INTO CIP_SCHEMA SELECT 6,'REP ONCO 3 AO, Npl, Vbx H12011', to_date('01.01.2011','dd.mm.yyyy'), 'HalfYear' FROM DUAL;
+INSERT INTO CIP_SCHEMA SELECT 7,'REP ONCO 2 AO, Npl H12011', to_date('01.01.2011','dd.mm.yyyy'), 'HalfYear' FROM DUAL;
  
  DROP SEQUENCE CIPEMP_ID_SEQ;
 CREATE SEQUENCE  CIPEMP_ID_SEQ  
@@ -330,6 +330,7 @@ begin
 end;
 /
 
+/*
 create or replace force view v_bonus as 
 select  
   td.idy,
@@ -774,7 +775,7 @@ from  (select
               for (prodgr) in ('AN' as AN, 'AO' as AO, 'Mi' as Mi, 'Npl' as Npl, 'Vbx' as Vbx)
             )
 );
-
+*/
 /*
 insert into employee_client
 select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, t.idprod,'EXPL' as link_type, 1 as plan_pct 
