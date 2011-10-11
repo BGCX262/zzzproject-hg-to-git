@@ -327,7 +327,7 @@ where
 --Denis inserts new dashboards
 
 --funcitons
-create or replace
+/*create or replace
 function get_price(
   product_id in number,
   dateid in date,
@@ -1130,7 +1130,7 @@ AS
     d.dt_id ;
 
 ---
- 
+ */
  
  
 spool off
