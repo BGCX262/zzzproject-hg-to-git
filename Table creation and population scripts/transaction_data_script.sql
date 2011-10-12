@@ -1214,7 +1214,7 @@ Begin
 end;
 /
 
-create or replace view db_check_region as
+create or replace force view db_check_region as
 select c.idclient, r.*
 from clients c,
 (
@@ -1229,7 +1229,7 @@ from v_report_geography_table g) r
 where c.idreg=r.region_id
 ;
 
-create or replace view v_transaction_data as   
+create or replace force view v_transaction_data as   
 select 
   ec.employee_id, 
   ec.idprod, 
@@ -1260,7 +1260,7 @@ where d.dt_report = (select v2.dt_report from  v_dates v2 where  v2.dt_type = 'H
 
 ;
 
-create or replace view vbonus as
+create or replace force view vbonus as
 select 
   td.real_year,
   td.dt,
@@ -1287,7 +1287,7 @@ group by
   td.transaction_type
 ;
 
-create or replace view vprepare_calculation as
+create or replace force view vprepare_calculation as
 SELECT v.*,
     (SELECT SUM(d.YVALUE)
     FROM cip_schema s,
@@ -1337,7 +1337,7 @@ SELECT v.*,
     ) goal_achievement_prod
   FROM vbonus v;
 
-create or replace view VTOTAL_BONUS as    
+create or replace force view VTOTAL_BONUS as    
   SELECT vpc.*,
     (SELECT targetinc
     FROM payout_curve pc
@@ -1380,7 +1380,7 @@ select * from vtotal_bonus;
   )  order by 2, 4;
   */
 
-CREATE OR REPLACE VIEW db_pgsales_calc
+create or replace force view db_pgsales_calc
 AS
   SELECT
     NULL          AS LINK,
@@ -1413,7 +1413,7 @@ AS
     d.dt_id,
     pg.prodgr;
 
-CREATE OR REPLACE VIEW db_pgtotal_calc
+create or replace force view db_pgtotal_calc
 AS
   SELECT
     NULL          AS LINK,
@@ -1444,7 +1444,7 @@ AS
     d.dt_id,
     pg.prodgr;
 
-CREATE OR REPLACE VIEW db_gsales_calc
+create or replace force view db_gsales_calc
 AS
   SELECT
     NULL          AS LINK,
@@ -1470,7 +1470,7 @@ AS
   ORDER BY
     d.dt_id ;
 
-CREATE OR REPLACE VIEW db_total_calc
+create or replace force view db_total_calc
 AS
   SELECT
     NULL          AS LINK,
@@ -1494,7 +1494,7 @@ AS
   ORDER BY
     d.dt_id ;
 
-create or replace view db_sales_reports as	
+create or replace force view db_sales_reports as	
 select 'Units' as reports, transaction_type, minreal_date, dt_id, dt_type, period, units, 
 accumulate_value(transaction_type,dt_type, minreal_date) as units_accum,
 previous_value(transaction_type,dt_type, minreal_date) as previous_units,
@@ -1517,7 +1517,7 @@ END  as rost
 from db_gsales_calc
 ;
 
-create or replace view db_total_reports as	
+create or replace force view db_total_reports as	
 select  minreal_date, dt_id, dt_type, period, units, 
 accumulate_value('IMP',dt_type, minreal_date) - accumulate_value('IMS',dt_type, minreal_date) as units_diff,
 accumulate_value(null,dt_type, minreal_date )as units_accum,
@@ -1530,7 +1530,7 @@ END  as rost
 from db_total_calc
 ;
 
-create or replace view db_sales_pg_reports as	
+create or replace force view db_sales_pg_reports as	
 select transaction_type,prodgr, minreal_date, dt_id, dt_type, period, units, 
 accumulate_value(transaction_type,dt_type, minreal_date, prodgr) as units_accum,
 previous_value(transaction_type,dt_type, minreal_date, prodgr) as previous_units,
@@ -1542,7 +1542,7 @@ END  as rost
 from db_pgsales_calc
 ;
 
-create or replace view db_total_pg_reports as	
+create or replace force view db_total_pg_reports as	
 select prodgr, minreal_date, dt_id, dt_type, period, units, 
 accumulate_value('IMP',dt_type, minreal_date) - accumulate_value('IMS',dt_type, minreal_date) as units_diff,
 accumulate_value(null,dt_type, minreal_date, prodgr) as units_accum,
@@ -1555,7 +1555,7 @@ END  as rost
 from db_pgtotal_calc
 ;
 
-create or replace view db_region_calc as
+create or replace force view db_region_calc as
 select null as link, t.* from (
 SELECT
     'Region' as geography_type,
@@ -1658,7 +1658,7 @@ ORDER BY
     t.dt_id,
     t.prodgr;
     
-create or replace view db_region_report as
+create or replace force view db_region_report as
 select 
     geography_type,
     region,
@@ -1857,7 +1857,6 @@ from
   dbms_output.put_line('end: '||sysdate);
 end;
 /
-
 
 spool off
 
