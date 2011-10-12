@@ -1,4 +1,4 @@
-
+﻿
 spool logs\transaction_data.log
 
 DROP SEQUENCE TRANSACTIONS_ID_SEQ;
@@ -1253,12 +1253,7 @@ from
 where d.dt_report = (select v2.dt_report from  v_dates v2 where  v2.dt_type = 'HalfYear' and v2.real_date = ec.real_date)
   and td.idprod = ec.idprod
   and td.idclient=ec.client_id
-  and td.real_date = d.real_date
---and d.dt_report = '2011-H1'
---and ec.client_id = 472
---and ec.employee_id=121
-
-;
+  and td.real_date = d.real_date;
 
 create or replace force view vbonus as
 select 
@@ -1273,20 +1268,15 @@ select
   sum(td.packs_plan*td.plan_pct*get_price(td.idprod,td.real_date)) as BR
 from 
   v_transaction_data td
-/*where 
-  td.dt_report = '2011-H1'
-  and td.employee_id = 121
-  and td.client_id=472
-*/
 group by 
   td.real_year,
   td.dt,
   td.dt_report,
   td.employee_id,
   td.idprodgr,
-  td.transaction_type
-;
+  td.transaction_type;
 
+  
 create or replace force view vprepare_calculation as
 SELECT v.*,
     (SELECT SUM(d.YVALUE)
@@ -1337,6 +1327,7 @@ SELECT v.*,
     ) goal_achievement_prod
   FROM vbonus v;
 
+
 create or replace force view VTOTAL_BONUS as    
   SELECT vpc.*,
     (SELECT targetinc
@@ -1351,34 +1342,8 @@ create or replace force view VTOTAL_BONUS as
     OR (vpc.goal_achievement > 3
     AND pc.YTDGoal           =3))
     ) payout_curve
-  FROM vprepare_calculation vpc;
+FROM vprepare_calculation vpc;
   
-/*  
-select * from vtotal_bonus;
- ( SELECT *
-  FROM
-    (SELECT dt_report,
-      e.employee_group as empltype,
-      employee_id,
-      e.manager_name,
-      e.employee_name,
-      base,
-      (select prodgr from prodgrs where idprodgr = vtb.idprodgr) as prodgr,
-      ims,
-      br,
-      prodsplit,
-      goal_achievement,
-      payout_curve ,
-      goal_achievement_prod,
-      payout_curve_prod
-    FROM vtotal_bonus vtb, 
-         v_report_employee_table e
-
-    where vtb.employee_id = e.empl_employee_id
-          and dt_report = '2011-H1'
-    ) t pivot ( SUM(ims) AS sum_ims, SUM(br) AS sum_br, MIN(prodsplit) AS psplit, MIN(goal_achievement_prod) AS goal_achievement, MIN(payout_curve_prod) AS payout_curve_prod FOR (prodgr) IN ('AN' AS AN, 'AO' AS AO, 'Mi' AS Mi, 'Npl' AS Npl, 'Vbx' AS Vbx) )
-  )  order by 2, 4;
-  */
 
 create or replace force view db_pgsales_calc
 AS
