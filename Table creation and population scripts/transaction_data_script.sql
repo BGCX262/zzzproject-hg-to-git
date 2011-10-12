@@ -858,6 +858,7 @@ end;
 
 
 ---dashboards and cubes
+
 create or replace
 function get_price(
   product_id in number,
@@ -1213,7 +1214,6 @@ Begin
 end;
 /
 
-
 create or replace view db_check_region as
 select c.idclient, r.*
 from clients c,
@@ -1242,7 +1242,7 @@ select
   ec.client_id, 
   ec.plan_pct,
   ec.link_type, 
-  td.packs,  
+  td.packs,
   td.packs_fack,
   td.packs_plan,
   td.transaction_type
@@ -1257,7 +1257,128 @@ where d.dt_report = (select v2.dt_report from  v_dates v2 where  v2.dt_type = 'H
 --and d.dt_report = '2011-H1'
 --and ec.client_id = 472
 --and ec.employee_id=121
+
 ;
+
+create or replace view vbonus as
+select 
+  td.real_year,
+  td.dt,
+  td.dt_report,
+  td.employee_id,
+  td.idprodgr,
+  td.transaction_type,
+  sum(td.packs*td.plan_pct*get_price(td.idprod,td.real_date)) as CIP,
+  sum(td.packs_fack*td.plan_pct*get_price(td.idprod,td.real_date)) as IMS,
+  sum(td.packs_plan*td.plan_pct*get_price(td.idprod,td.real_date)) as BR
+from 
+  v_transaction_data td
+/*where 
+  td.dt_report = '2011-H1'
+  and td.employee_id = 121
+  and td.client_id=472
+*/
+group by 
+  td.real_year,
+  td.dt,
+  td.dt_report,
+  td.employee_id,
+  td.idprodgr,
+  td.transaction_type
+;
+
+create or replace view vprepare_calculation as
+SELECT v.*,
+    (SELECT SUM(d.YVALUE)
+    FROM cip_schema s,
+      cip_schema_empl e,
+      cip_schema_detail d,
+      v_dates did
+    WHERE
+      did.real_date = s.real_date
+      and did.dt_type = s.real_date_type 
+      and e.idschema   =d.idschema
+      AND s.idschema   =e.idschema
+      --AND e.empltype  IN ('KAM','SKAM')
+      AND  e.idkamrep = v.employee_id
+      AND did.dt_report= v.dt_report
+    ) as base,
+    
+   (SELECT MIN(d.prodsplit)
+    FROM cip_schema s,
+      cip_schema_empl e,
+      cip_schema_detail d,
+      v_dates did
+    WHERE
+      did.real_date = s.real_date
+      and did.dt_type = s.real_date_type
+    AND e.idschema   =d.idschema
+    AND s.idschema   =e.idschema
+    --AND e.empltype  IN ('KAM','SKAM')
+    AND  e.idkamrep = v.employee_id
+    AND did.dt_report=v.dt_report
+    AND (d.idprodgr  =v.idprodgr
+    OR d.idprodgr   IS NULL)
+    ) as prodsplit,
+    
+    (SELECT ROUND( SUM(v1.ims) / SUM(v1.br) ,2)
+    FROM vbonus v1
+    WHERE v1.employee_id = v.employee_id
+    AND v1.dt_report = v.dt_report
+    GROUP BY v1.employee_id
+    ) goal_achievement,
+    
+    (SELECT DECODE(SUM(v1.br),0,0,ROUND( SUM(v1.ims) / SUM(v1.br) ,2) )
+    FROM vbonus v1
+    WHERE v1.employee_id = v.employee_id
+     AND v1.dt_report = v.dt_report
+    AND v1.idprodgr= v.idprodgr
+    GROUP BY v1.employee_id
+    ) goal_achievement_prod
+  FROM vbonus v;
+
+create or replace view VTOTAL_BONUS as    
+  SELECT vpc.*,
+    (SELECT targetinc
+    FROM payout_curve pc
+    WHERE (pc.YTDGoal BETWEEN vpc.goal_achievement_prod AND vpc.goal_achievement_prod
+    OR (vpc.goal_achievement_prod > 3
+    AND pc.YTDGoal                =3))
+    ) payout_curve_prod,
+    (SELECT targetinc
+    FROM payout_curve pc
+    WHERE (pc.YTDGoal BETWEEN vpc.goal_achievement AND vpc.goal_achievement
+    OR (vpc.goal_achievement > 3
+    AND pc.YTDGoal           =3))
+    ) payout_curve
+  FROM vprepare_calculation vpc;
+  
+/*  
+select * from vtotal_bonus;
+ ( SELECT *
+  FROM
+    (SELECT dt_report,
+      e.employee_group as empltype,
+      employee_id,
+      e.manager_name,
+      e.employee_name,
+      base,
+      (select prodgr from prodgrs where idprodgr = vtb.idprodgr) as prodgr,
+      ims,
+      br,
+      prodsplit,
+      goal_achievement,
+      payout_curve ,
+      goal_achievement_prod,
+      payout_curve_prod
+    FROM vtotal_bonus vtb, 
+         v_report_employee_table e
+
+    where vtb.employee_id = e.empl_employee_id
+          and dt_report = '2011-H1'
+    ) t pivot ( SUM(ims) AS sum_ims, SUM(br) AS sum_br, MIN(prodsplit) AS psplit, MIN(goal_achievement_prod) AS goal_achievement, MIN(payout_curve_prod) AS payout_curve_prod FOR (prodgr) IN ('AN' AS AN, 'AO' AS AO, 'Mi' AS Mi, 'Npl' AS Npl, 'Vbx' AS Vbx) )
+  )  order by 2, 4;
+  */
 
 CREATE OR REPLACE VIEW db_pgsales_calc
 AS
@@ -1736,7 +1857,6 @@ from
   dbms_output.put_line('end: '||sysdate);
 end;
 /
-
 
 
 spool off
