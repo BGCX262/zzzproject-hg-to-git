@@ -3,6 +3,7 @@ set verify off
 set serveroutput on size 1000000
 set feedback off
 WHENEVER SQLERROR EXIT SQL.SQLCODE ROLLBACK
+
 begin wwv_flow.g_import_in_progress := true; end; 
 /
  
@@ -192,3 +193,7 @@ end;
 set verify on
 set feedback on
 prompt  ...done
+
+exit
+
+

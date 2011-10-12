@@ -1,4 +1,4 @@
-﻿
+
 spool logs\transaction_data.log
 
 DROP SEQUENCE TRANSACTIONS_ID_SEQ;
@@ -173,24 +173,24 @@ INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', (select (sele
 insert into cip_schema_empl select cipemp_id_seq.nextval,6, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 2) from dual;
 INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', (select (select employee_id from employee where employee_type = 'REP' and employee_name = emp) from reps t where idrep = 5) FROM DUAL;
 
-/*INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,1, 'KAM', K.IDKAM FROM KAMS K WHERE NOT EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%');
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,2, 'SKAM', K.IDKAM FROM KAMS K WHERE EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%');
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 1 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,7, 'REP', 8 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 9 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 10 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 11 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 12 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 3 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 7 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 13 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 14 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 15 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 4 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 6 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,1, 'KAM', K.IDKAM FROM KAMS K WHERE NOT EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%');
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,2, 'SKAM', K.IDKAM FROM KAMS K WHERE EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%');
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 1 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,7, 'REP', 8 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 9 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 10 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 11 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 12 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 3 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 7 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 13 FROM DUAL;
+---INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 14 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 15 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 4 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,3, 'REP', 6 FROM DUAL;
 
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 2 FROM DUAL;
-INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 5 FROM DUAL;*/
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,6, 'REP', 2 FROM DUAL;
+--INSERT INTO CIP_SCHEMA_EMPL SELECT CIPEMP_ID_SEQ.nextval,4, 'REP', 5 FROM DUAL;
 
 commit;
 
@@ -241,32 +241,32 @@ commit;
 --insert into reps select 17, 'Ночевкина', 2 from dual;
 --insert into reps select 18, 'Лисюкова', 1 from dual;
 
-/*commit; 
+--commit; 
 
-drop table senreps; 
-CREATE TABLE senreps
-  (
-    IDREPS   NUMBER(11,0) ,
-    IDSENREPS  NUMBER(11,0)
-  ); 
+--drop table senreps; 
+--CREATE TABLE senreps
+--  (
+--    IDREPS   NUMBER(11,0) ,
+--    IDSENREPS  NUMBER(11,0)
+--  ); 
 
-insert into senreps select 1, 17 from dual;
-insert into senreps select 2, 17 from dual;
-insert into senreps select 8, 17 from dual;
-insert into senreps select 9, 17 from dual;
-insert into senreps select 10, 17 from dual;
-insert into senreps select 11, 17 from dual;
-insert into senreps select 12, 17 from dual;
+--insert into senreps select 1, 17 from dual;
+--insert into senreps select 2, 17 from dual;
+--insert into senreps select 8, 17 from dual;
+--insert into senreps select 9, 17 from dual;
+--insert into senreps select 10, 17 from dual;
+--insert into senreps select 11, 17 from dual;
+--insert into senreps select 12, 17 from dual;
 
-insert into senreps select 5, 18 from dual;
-insert into senreps select 3, 18 from dual;
-insert into senreps select 7, 18 from dual;
-insert into senreps select 13, 18 from dual;
-insert into senreps select 14, 18 from dual;
-insert into senreps select 15, 18 from dual;
-insert into senreps select 4, 18 from dual;
+--insert into senreps select 5, 18 from dual;
+--insert into senreps select 3, 18 from dual;
+--insert into senreps select 7, 18 from dual;
+--insert into senreps select 13, 18 from dual;
+--insert into senreps select 14, 18 from dual;
+--insert into senreps select 15, 18 from dual;
+--insert into senreps select 4, 18 from dual;
 
-commit;*/
+--commit;
 
 drop sequence PAYOUT_ID_SEQ;
 create sequence  PAYOUT_ID_SEQ  minvalue 100 maxvalue 999999999999999999999999 increment by 1  nocycle ;
@@ -330,481 +330,6 @@ begin
 end;
 /
 
-/*
-create or replace force view v_bonus as 
-select  
-  td.idy,
-  td.idhy,
-  'KAM' EmplType,
-  k.idsenkam,
-  k.idkam,
-  k.kam,
-  pg.idprodgr,
-  pg.prodgr,
-  td.TRANSACTION_TYPE,
-  sum(td.packs_plan * p.pricecip) BR,
-  sum(td.packs_fack * p.pricecip) IMS,
-  sum(td.packs * p.pricecip) CIP
-from
-  transactions_data td, 
-  products p,
-  prodgrs pg,
-  kams k,
-  senkams sk
-where 
-  td.idprod=p.idprod
-  and p.idprodgr = pg.idprodgr
-  and k.idsenkam=sk.idsenkam
-  and td.kamrep='KAM'
-  and td.idkamrep=k.idkam
-  --and td.idhy=7
-group by 
-  td.idy,
-  td.idhy,
-  DECODE(k.kam,sk.senkam,'Head of KAM','KAM'),
-  k.idsenkam,
-  k.idkam,
-  k.kam,
-  pg.idprodgr,
-  pg.prodgr,
-  td.TRANSACTION_TYPE;
-
-create or replace force view v_prepare_calculation as  
-select 
-  v.*,
-  (select 
-      sum(d.YVALUE)
-    from
-      cip_schema s,
-      cip_schema_empl e,
-      cip_schema_detail d
-    where 
-      e.idkamrep = v.idkam
-      and e.empltype in ('KAM','SKAM')      
-      and s.idy=v.idy
-      and s.idhy=v.idhy
-      and e.idschema=d.idschema
-      and s.idschema=e.idschema) base,
-  (select 
-    min(d.prodsplit)
-  from
-    cip_schema s,
-    cip_schema_empl e,
-    cip_schema_detail d
-  where 
-    e.idkamrep = v.idkam
-    and e.empltype in ('KAM','SKAM')
-    and s.idy=v.idy
-    and s.idhy=v.idhy
-    and (d.idprodgr=v.idprodgr or d.idprodgr is null)
-    and e.idschema=d.idschema
-    and s.idschema=e.idschema) prodsplit,
-    ( select 
-      round( sum(v1.ims) / sum(v1.br) ,2) 
-    from
-      v_bonus v1
-    where
-        v1.idkam=v.idkam
-        and v1.idhy=v.idhy
-        and v1.idy=v.idy
-     group by v1.idkam) goal_achievement,
-    ( select 
-      decode(sum(v1.br),0,0,round( sum(v1.ims) / sum(v1.br) ,2) )
-    from
-      v_bonus v1
-    where
-        v1.idkam=v.idkam
-        and v1.idhy=v.idhy
-        and v1.idy=v.idy
-        and v1.idprodgr=v.idprodgr
-     group by v1.idkam) goal_achievement_prod
-from 
-  v_bonus v
-;
-
-create or replace force view v_total_bonus as
-select 
-  vpc.*,
-  (select 
-    targetinc   
-  from
-    payout_curve pc
-  where 
-    (pc.YTDGoal BETWEEN vpc.goal_achievement_prod and vpc.goal_achievement_prod
-    or
-    (vpc.goal_achievement_prod > 3 and pc.YTDGoal=3))
-    ) payout_curve_prod,
-    (select 
-    targetinc   
-  from
-    payout_curve pc
-  where 
-    (pc.YTDGoal BETWEEN vpc.goal_achievement and vpc.goal_achievement
-    or
-    (vpc.goal_achievement > 3 and pc.YTDGoal=3))
-    ) payout_curve
-from  
-  v_prepare_calculation vpc;
-
-create or replace force view v_pivot_total as
-(select 
-  *
-from  (select 
-        idy,
-        idhy,
-        empltype, 
-        idsenkam,
-        kam, 
-        base, 
-        prodgr, 
-        ims, 
-        br, 
-        prodsplit, 
-        goal_achievement, 
-        payout_curve , 
-        goal_achievement_prod, 
-        payout_curve_prod 
-      from v_total_bonus) t
-            pivot (
-                sum(ims) as sum_ims, 
-                sum(br) as sum_br, 
-                min(prodsplit) as psplit, 
-                min(goal_achievement_prod) as goal_achievement, 
-                min(payout_curve_prod) as payout_curve_prod 
-              for (prodgr) in ('AN' as AN, 'AO' as AO, 'Mi' as Mi, 'Npl' as Npl, 'Vbx' as Vbx)
-            )
-);
-
-create or replace force view v_kams as
-  SELECT 
-    K.IDKAM, 
-    SK.IDSENKAM 
-  FROM 
-    KAMS K, 
-    SENKAMS SK 
-  WHERE 
-    K.IDSENKAM=SK.IDSENKAM AND 
-    EXISTS (SELECT 1 FROM SENKAMS S WHERE K.KAM LIKE S.SENKAM||'%')
-;
-
-
-create or replace force view v_bonus_sk as 
-select  
-  td.idy,
-  td.idhy,
-  'Head of KAM' EmplType,
-  vsk.idsenkam,
-  vsk.idkam,
-  sk.senkam kam,
-  pg.idprodgr,
-  pg.prodgr,
-  td.TRANSACTION_TYPE,
-  sum(td.packs_plan * p.pricecip) BR,
-  sum(td.packs_fack * p.pricecip) IMS,
-  sum(td.packs * p.pricecip) CIP
-from
-  transactions_data td, 
-  products p,
-  prodgrs pg,
-  kams k,
-  senkams sk,
-  v_kams vsk
-where 
-      td.idprod=p.idprod
-  and p.idprodgr = pg.idprodgr
-  and k.idsenkam=sk.idsenkam
-  and sk.idsenkam=vsk.idsenkam
-  and td.kamrep='KAM'
-  and td.idkamrep=k.idkam
- -- and td.idhy=7 
-group by 
-  td.idy,
-  td.idhy,
-  vsk.idsenkam,
-  vsk.idkam,
-  sk.senkam,
-  pg.idprodgr,
-  pg.prodgr,
-  td.TRANSACTION_TYPE;
-
-create or replace force view v_sk_prepare_calculation as  
-select 
-  v.*,
-  (select 
-      sum(d.YVALUE)
-    from
-      cip_schema s,
-      cip_schema_empl e,
-      cip_schema_detail d
-    where 
-      e.idkamrep = v.idkam
-      and e.empltype = 'SKAM'
-      and s.idy=v.idy
-      and s.idhy=v.idhy
-      and e.idschema=d.idschema
-      and s.idschema=e.idschema) base,
-  (select 
-    min(d.prodsplit)
-  from
-    cip_schema s,
-    cip_schema_empl e,
-    cip_schema_detail d
-  where 
-    e.idkamrep = v.idkam
-    and e.empltype='SKAM'
-    and s.idy=v.idy
-    and s.idhy=v.idhy
-    and (d.idprodgr=v.idprodgr or d.idprodgr is null)
-    and e.idschema=d.idschema
-    and s.idschema=e.idschema) prodsplit,
-    ( select 
-      round( sum(v1.ims) / sum(v1.br) ,2) 
-    from
-      v_bonus_sk v1
-    where
-        v1.idkam=v.idkam
-        and v1.idhy=v.idhy
-        and v1.idy=v.idy
-     group by v1.idkam) goal_achievement,
-    ( select 
-      decode(sum(v1.br),0,0,round( sum(v1.ims) / sum(v1.br) ,2) )
-    from
-      v_bonus_sk v1
-    where
-        v1.idkam=v.idkam
-        and v1.idhy=v.idhy
-        and v1.idy=v.idy
-        and v1.idprodgr=v.idprodgr
-     group by v1.idkam) goal_achievement_prod
-from 
-  v_bonus_sk v
-;
-
-create or replace force view v_sk_total_bonus as
-select 
-  vpc.*,
-  (select 
-    targetinc   
-  from
-    payout_curve pc
-  where 
-    (pc.YTDGoal BETWEEN vpc.goal_achievement_prod and vpc.goal_achievement_prod
-    or
-    (vpc.goal_achievement_prod > 3 and pc.YTDGoal=3))
-    ) payout_curve_prod,
-    (select 
-    targetinc   
-  from
-    payout_curve pc
-  where 
-    (pc.YTDGoal BETWEEN vpc.goal_achievement and vpc.goal_achievement
-    or
-    (vpc.goal_achievement > 3 and pc.YTDGoal=3))
-    ) payout_curve
-from  
-  v_sk_prepare_calculation vpc;
-
-create or replace force view v_sk_pivot_total as
-(select 
-  *
-from  (select 
-        idy,
-        idhy,
-        empltype, 
-        idsenkam,
-        kam, 
-        base, 
-        prodgr, 
-        ims, 
-        br, 
-        prodsplit, 
-        goal_achievement, 
-        payout_curve , 
-        goal_achievement_prod, 
-        payout_curve_prod 
-      from v_sk_total_bonus) t
-            pivot (
-                sum(ims) as sum_ims, 
-                sum(br) as sum_br, 
-                min(prodsplit) as psplit, 
-                min(goal_achievement_prod) as goal_achievement, 
-                min(payout_curve_prod) as payout_curve_prod 
-              for (prodgr) in ('AN' as AN, 'AO' as AO, 'Mi' as Mi, 'Npl' as Npl, 'Vbx' as Vbx)
-            )
-);
-
-create or replace force view v_bonus_rep as 
-select  
-  td.idy,
-  td.idhy,
-  'Reps' EmplType,
-  sr.idsenreps,
-  r.idrep,
-  r.emp rep,
-  pg.idprodgr,
-  pg.prodgr,
-  td.TRANSACTION_TYPE,
-  sum(td.packs_plan * p.pricecip) BR,
-  sum(td.packs_fack * p.pricecip) IMS,
-  sum(td.packs * p.pricecip) CIP
-from
-  transactions_data td, 
-  products p,
-  prodgrs pg,
-  reps r,
-  senreps sr
-where 
-      td.idprod=p.idprod
-  and p.idprodgr = pg.idprodgr
-  and td.kamrep='REP'
-  and td.idkamrep=r.idrep
-  and sr.idreps=r.idrep
-  --and td.idhy=7 
-group by 
-  td.idy,
-  td.idhy,
-  sr.idsenreps,
-  idrep,
-  r.emp,
-  pg.idprodgr,
-  pg.prodgr,
-  td.TRANSACTION_TYPE;
-
-create or replace force view v_rep_prepare_calculation as  
-select 
-  v.*,
-  (select 
-      sum(d.YVALUE)
-    from
-      cip_schema s,
-      cip_schema_empl e,
-      cip_schema_detail d
-    where 
-      e.idkamrep = v.idrep
-      and e.empltype='REP'
-      and s.idy=v.idy
-      and s.idhy=v.idhy
-      and e.idschema=d.idschema
-      and s.idschema=e.idschema) base,
-  (select 
-    min(d.prodsplit)
-  from
-    cip_schema s,
-    cip_schema_empl e,
-    cip_schema_detail d
-  where 
-    e.idkamrep = v.idrep
-    and e.empltype='REP'
-    and s.idy=v.idy
-    and s.idhy=v.idhy
-    and (d.idprodgr=v.idprodgr or d.idprodgr is null)
-    and e.idschema=d.idschema
-    and s.idschema=e.idschema) prodsplit,
-    ( select 
-      round( sum(v1.ims) / sum(v1.br) ,2) 
-    from
-      v_bonus_rep v1
-    where
-        v1.idrep=v.idrep
-        and v1.idhy=v.idhy
-        and v1.idy=v.idy
-     group by v1.idrep) goal_achievement,
-    ( select 
-      decode(sum(v1.br),0,0,round( sum(v1.ims) / sum(v1.br) ,2) )
-    from
-      v_bonus_rep v1
-    where
-        v1.idrep=v.idrep
-        and v1.idhy=v.idhy
-        and v1.idy=v.idy
-        and v1.idprodgr=v.idprodgr
-     group by v1.idrep) goal_achievement_prod
-from 
-  v_bonus_rep v
-;
-
-create or replace force view v_rep_total_bonus as
-select 
-  vpc.*,
-  (select 
-    targetinc   
-  from
-    payout_curve pc
-  where 
-    (pc.YTDGoal BETWEEN vpc.goal_achievement_prod and vpc.goal_achievement_prod
-    or
-    (vpc.goal_achievement_prod > 3 and pc.YTDGoal=3))
-    ) payout_curve_prod,
-    (select 
-    targetinc   
-  from
-    payout_curve pc
-  where 
-    (pc.YTDGoal BETWEEN vpc.goal_achievement and vpc.goal_achievement
-    or
-    (vpc.goal_achievement > 3 and pc.YTDGoal=3))
-    ) payout_curve
-from  
-  v_rep_prepare_calculation vpc;
-
-create or replace force view v_rep_pivot_total as
-(select 
-  *
-from  (select 
-        idy,
-        idhy,
-        empltype,
-        idsenreps,
-        rep, 
-        base, 
-        prodgr, 
-        ims, 
-        br, 
-        prodsplit, 
-        goal_achievement, 
-        payout_curve , 
-        goal_achievement_prod, 
-        payout_curve_prod 
-      from v_rep_total_bonus) t
-            pivot (
-                sum(ims) as sum_ims, 
-                sum(br) as sum_br, 
-                max(prodsplit) as psplit, 
-                min(goal_achievement_prod) as goal_achievement, 
-                min(payout_curve_prod) as payout_curve_prod 
-              for (prodgr) in ('AN' as AN, 'AO' as AO, 'Mi' as Mi, 'Npl' as Npl, 'Vbx' as Vbx)
-            )
-);
-*/
-/*
-insert into employee_client
-select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, t.idprod,'EXPL' as link_type, 1 as plan_pct 
-from 
-(select distinct b.idhy, 
-(select e.employee_id from employee e, kams k where e.employee_name=k.kam and e.employee_type in ('KAM','SKAM') and k.idkam = b.idkam) as empl,
-b.idclient,
-pn.idprod
-from br b, products_new pn
-where b.idkam is not null
-) t
-;
-
-commit;
-
-insert into employee_client
-select employee_client_id_seq.nextval as ids, t.idhy, t.empl, t.idclient, t.idprod, 'EXPL' as link_type, 1 as plan_pct 
-from 
-(select distinct b.idhy, 
-(select e.employee_id from employee e, reps r where e.employee_name=r.emp and e.employee_type in ('REP','SREP') and r.idrep = b.idrep) as empl,
-b.idclient,
-pn.idprod
-from br b, products_new pn
-where b.idrep is not null
-) t
-;
-
-commit;
-*/
 
 insert into employee_client
 select 
@@ -1276,58 +801,60 @@ group by
   td.idprodgr,
   td.transaction_type;
 
-  
 create or replace force view vprepare_calculation as
-SELECT v.*,
+  SELECT v."REAL_YEAR",
+    v."DT",
+    v."DT_REPORT",
+    v."EMPLOYEE_ID",
+    v."IDPRODGR",
+    v."TRANSACTION_TYPE",
+    v."CIP",
+    v."IMS",
+    v."BR",
     (SELECT SUM(d.YVALUE)
     FROM cip_schema s,
       cip_schema_empl e,
       cip_schema_detail d,
       v_dates did
-    WHERE
-      did.real_date = s.real_date
-      and did.dt_type = s.real_date_type 
-      and e.idschema   =d.idschema
-      AND s.idschema   =e.idschema
+    WHERE did.real_date = s.real_date
+    AND did.dt_type     = s.real_date_type
+    AND e.idschema      =d.idschema
+    AND s.idschema      =e.idschema
       --AND e.empltype  IN ('KAM','SKAM')
-      AND  e.idkamrep = v.employee_id
-      AND did.dt_report= v.dt_report
-    ) as base,
-    
-   (SELECT MIN(d.prodsplit)
+    AND e.idkamrep   = v.employee_id
+    AND did.dt_report= v.dt_report
+    ) AS base,
+    (SELECT MIN(d.prodsplit)
     FROM cip_schema s,
       cip_schema_empl e,
       cip_schema_detail d,
       v_dates did
-    WHERE
-      did.real_date = s.real_date
-      and did.dt_type = s.real_date_type
-    AND e.idschema   =d.idschema
-    AND s.idschema   =e.idschema
-    --AND e.empltype  IN ('KAM','SKAM')
-    AND  e.idkamrep = v.employee_id
+    WHERE did.real_date = s.real_date
+    AND did.dt_type     = s.real_date_type
+    AND e.idschema      =d.idschema
+    AND s.idschema      =e.idschema
+      --AND e.empltype  IN ('KAM','SKAM')
+    AND e.idkamrep   = v.employee_id
     AND did.dt_report=v.dt_report
     AND (d.idprodgr  =v.idprodgr
     OR d.idprodgr   IS NULL)
-    ) as prodsplit,
-    
+    ) AS prodsplit,
     (SELECT ROUND( SUM(v1.ims) / SUM(v1.br) ,2)
     FROM vbonus v1
     WHERE v1.employee_id = v.employee_id
-    AND v1.dt_report = v.dt_report
+    AND v1.dt_report     = v.dt_report
     GROUP BY v1.employee_id
     ) goal_achievement,
-    
     (SELECT DECODE(SUM(v1.br),0,0,ROUND( SUM(v1.ims) / SUM(v1.br) ,2) )
     FROM vbonus v1
     WHERE v1.employee_id = v.employee_id
-     AND v1.dt_report = v.dt_report
-    AND v1.idprodgr= v.idprodgr
+    AND v1.dt_report     = v.dt_report
+    AND v1.idprodgr      = v.idprodgr
     GROUP BY v1.employee_id
     ) goal_achievement_prod
   FROM vbonus v;
-
-
+  
+  
 create or replace force view VTOTAL_BONUS as    
   SELECT vpc.*,
     (SELECT targetinc
@@ -1822,6 +1349,8 @@ from
   dbms_output.put_line('end: '||sysdate);
 end;
 /
+
+
 
 spool off
 
