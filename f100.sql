@@ -12,12 +12,12 @@ prompt  APPLICATION 100 - Sales
 -- Application Export:
 --   Application:     100
 --   Name:            Sales
---   Date and Time:   01:49 Tuesday October 11, 2011
+--   Date and Time:   01:37 Monday October 24, 2011
 --   Exported By:     ADMIN
 --   Flashback:       0
 --   Export Type:     Application Export
 --   Version:         4.1.0.00.32
---   Instance ID:     63116656452823
+--   Instance ID:     63131250624514
  
 -- Import:
 --   Using application builder
@@ -26,11 +26,11 @@ prompt  APPLICATION 100 - Sales
  
 -- Application Statistics:
 --   Pages:                   68
---     Items:                199
+--     Items:                207
 --     Computations:           0
 --     Validations:            2
 --     Processes:            146
---     Regions:              156
+--     Regions:              157
 --     Buttons:              159
 --     Dynamic Actions:        0
 --   Shared Components
@@ -146,7 +146,7 @@ wwv_flow_api.create_flow(
   p_default_region_template=> 2616718399032833 + wwv_flow_api.g_id_offset,
   p_error_template=> 2614238398032776 + wwv_flow_api.g_id_offset,
   p_page_protection_enabled_y_n=> 'Y',
-  p_checksum_salt_last_reset => '20111011014553',
+  p_checksum_salt_last_reset => '20111024013707',
   p_max_session_length_sec=> 3600,
   p_compatibility_mode=> '4.0',
   p_home_link=> 'f?p=&APP_ID.:1:&SESSION.',
@@ -162,12 +162,12 @@ wwv_flow_api.create_flow(
   p_login_url=> '',
   p_logout_url=> 'wwv_flow_custom_auth_std.logout?p_this_flow=&APP_ID.&amp;p_next_flow_page_sess=&APP_ID.:1',
   p_application_tab_set=> 1,
-  p_logo_image => 'TEXT:Sales',
+  p_logo_image => 'TEXT:Amgen',
   p_public_url_prefix => '',
   p_public_user=> 'APEX_PUBLIC_USER',
   p_dbauth_url_prefix => '',
   p_proxy_server=> nvl(wwv_flow_application_install.get_proxy,''),
-  p_cust_authentication_process=> '',
+  p_cust_authentication_process=> '.'||to_char(2621424047033390 + wwv_flow_api.g_id_offset)||'.',
   p_cust_authentication_page=> '',
   p_custom_auth_login_url=> '',
   p_flow_version=> 'release 1.0',
@@ -195,7 +195,7 @@ wwv_flow_api.create_flow(
   p_default_menur_template => 2615541273032830 + wwv_flow_api.g_id_offset,
   p_default_listr_template => 2616128690032831 + wwv_flow_api.g_id_offset,
   p_last_updated_by => 'ADMIN',
-  p_last_upd_yyyymmddhh24miss=> '20111011014553',
+  p_last_upd_yyyymmddhh24miss=> '20111024013707',
   p_required_roles=> wwv_flow_utilities.string_to_table2(''));
  
  
@@ -871,21 +871,6 @@ null;
 end;
 /
 
---application/shared_components/user_interface/lov/regions
- 
-begin
- 
-wwv_flow_api.create_list_of_values (
-  p_id       => 1679827920561661 + wwv_flow_api.g_id_offset,
-  p_flow_id  => wwv_flow.g_flow_id,
-  p_lov_name => 'REGIONS',
-  p_lov_query=> 'select geography_name, geography_id from geography where geography_type=''REGION'' order by 1');
- 
-null;
- 
-end;
-/
-
 prompt  ...Application Trees
 --
 --application/pages/page_groups
@@ -899,6 +884,9 @@ null;
 end;
 /
 
+--application/comments
+prompt  ...comments: requires application express 2.2 or higher
+--
  
 --application/pages/page_00001
 prompt  ...PAGE 1: Home
@@ -945,7 +933,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 1,
   p_plug_name=> 'Home',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616718399032833+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -974,7 +962,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 1,
   p_plug_name=> 'Breadcrumbs',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -1002,7 +990,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 1,
   p_plug_name=> 'Pages',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616128690032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 20,
   p_plug_display_column=> 1,
@@ -1109,7 +1097,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 2,
   p_plug_name=> 'Application Administration',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616718399032833+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -1634,7 +1622,6 @@ wwv_flow_api.create_page_item(
   p_field_alignment=> 'LEFT',
   p_is_persistent=> 'N',
   p_button_action => 'SUBMIT',
-  p_button_is_hot=>'N',
   p_item_comment => '');
  
  
@@ -1969,60 +1956,6 @@ begin
  
 begin
  
-wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1861931854731432 + wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
-  p_column_sequence=> 1,
-  p_query_column_name=> 'ID',
-  p_display_as=> 'TEXT',
-  p_column_comment=> '');
- 
-wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1862021629731433 + wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
-  p_column_sequence=> 2,
-  p_query_column_name=> 'ADMIN_USERNAME',
-  p_display_as=> 'TEXT',
-  p_column_comment=> '');
- 
-wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1862111385731433 + wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
-  p_column_sequence=> 3,
-  p_query_column_name=> 'ADMIN_PRIVILEGES',
-  p_display_as=> 'TEXT',
-  p_column_comment=> '');
- 
-wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1862206267731433 + wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
-  p_column_sequence=> 4,
-  p_query_column_name=> 'SETUP_ID',
-  p_display_as=> 'TEXT',
-  p_column_comment=> '');
- 
-wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1862314350731433 + wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
-  p_column_sequence=> 5,
-  p_query_column_name=> 'LAST_CHANGED_BY',
-  p_display_as=> 'TEXT',
-  p_column_comment=> '');
- 
-wwv_flow_api.create_region_rpt_cols (
-  p_id     => 1862424485731433 + wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_plug_id=> 1861014330731426 + wwv_flow_api.g_id_offset,
-  p_column_sequence=> 6,
-  p_query_column_name=> 'LAST_CHANGED_ON',
-  p_display_as=> 'TEXT',
-  p_column_comment=> '');
- 
 null;
 end;
 null;
@@ -2095,7 +2028,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 3,
   p_plug_name=> 'Plan',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -2526,7 +2459,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 3,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -2701,7 +2634,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 4,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -2794,7 +2727,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 5,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -2837,7 +2770,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 5,
   p_plug_name=> 'Employee List',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616718399032833+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 11,
   p_plug_display_column=> 1,
@@ -3140,7 +3073,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011004322'
+ ,p_last_upd_yyyymmddhh24miss => '20111022194451'
   );
 null;
  
@@ -3160,7 +3093,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 6,
   p_plug_name=> ' ',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615319707032802+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 20,
   p_plug_display_column=> 1,
@@ -3189,7 +3122,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 6,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -3261,7 +3194,7 @@ wwv_flow_api.create_page (
  ,p_cache_timeout_seconds => 21600
  ,p_cache_by_user_yn => 'N'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110815002629'
+ ,p_last_upd_yyyymmddhh24miss => '20111024004225'
   );
 null;
  
@@ -3280,7 +3213,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 7,
   p_plug_name=> 'Date Time',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 21,
   p_plug_display_column=> 2,
@@ -3312,7 +3245,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 7,
   p_plug_name=> 'Employees',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 31,
   p_plug_display_column=> 1,
@@ -3343,7 +3276,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 7,
   p_plug_name=> 'Geography',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 41,
   p_plug_display_column=> 2,
@@ -3371,7 +3304,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 7,
   p_plug_name=> 'Products',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 51,
   p_plug_display_column=> 1,
@@ -3399,17 +3332,19 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 7,
   p_plug_name=> 'CIP',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 61,
   p_plug_display_column=> 2,
   p_plug_display_point=> 'AFTER_SHOW_ITEMS',
   p_plug_source=> s,
   p_plug_source_type=> 1624524493431663 + wwv_flow_api.g_id_offset,
+  p_translate_title=> 'Y',
   p_plug_query_row_template=> 1,
   p_plug_query_headings_type=> 'COLON_DELMITED_LIST',
   p_plug_query_row_count_max => 500,
-  p_plug_display_condition_type => '',
+  p_plug_display_condition_type => 'NEVER',
+  p_plug_customized=>'0',
   p_plug_caching=> 'NOT_CACHED',
   p_plug_comment=> '');
 end;
@@ -3426,7 +3361,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 7,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -3454,7 +3389,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 7,
   p_plug_name=> 'Clients Plan Fact',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 11,
   p_plug_display_column=> 1,
@@ -3621,7 +3556,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 8,
   p_plug_name=> 'Area form',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616534986032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 25,
   p_plug_display_column=> 1,
@@ -3661,7 +3596,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 8,
   p_plug_name=> 'Report on AREAS',
   p_region_name=>'REPORT1',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -3856,7 +3791,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 8,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -4202,7 +4137,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 9,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -4231,7 +4166,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 9,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -4566,7 +4501,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011011954'
+ ,p_last_upd_yyyymmddhh24miss => '20111024005555'
   );
 null;
  
@@ -4585,7 +4520,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 10,
   p_plug_name=> 'Employee Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -4612,7 +4547,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 10,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
   p_plug_display_point=> 'REGION_POSITION_01',
@@ -4653,7 +4588,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 10,
   p_plug_name=> 'Report on EMPLOYEE_CLIENT',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -5687,7 +5622,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 11,
   p_plug_name=> 'Report on PRODUCTS_NEW',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -5997,7 +5932,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 11,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -6106,7 +6041,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 12,
   p_plug_name=> 'Regions',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -6445,7 +6380,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 12,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -6548,7 +6483,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 13,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -6575,7 +6510,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 13,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -7104,7 +7039,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 14,
   p_plug_name=> 'Product Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -7133,7 +7068,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 14,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -7631,7 +7566,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 15,
   p_plug_name=> 'Business Units',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -7824,7 +7759,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 15,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -7934,7 +7869,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 16,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -7963,7 +7898,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 16,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -8368,7 +8303,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 17,
   p_plug_name=> 'Clients',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -8644,7 +8579,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 17,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -8735,7 +8670,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011010406'
+ ,p_last_upd_yyyymmddhh24miss => '20111024004954'
   );
 null;
  
@@ -8754,7 +8689,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 18,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -8781,7 +8716,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 18,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -8822,7 +8757,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 18,
   p_plug_name=> 'Employees for this Client',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616718399032833+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -9424,14 +9359,12 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'City',
-  p_source=>'CITY',
-  p_source_type=> 'DB_COLUMN',
+  p_source=>'select geography_name from geography where geography_id = :p18_city',
+  p_source_type=> 'QUERY',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select geography_name, geography_id from geography where geography_parent = :p18_idreg',
-  p_lov_display_null=> 'YES',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
   p_lov_cascade_parent_items=> 'P18_IDREG',
   p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
@@ -9476,8 +9409,7 @@ wwv_flow_api.create_page_item(
   p_source=>'IDREG',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_named_lov=> 'REGIONS',
-  p_lov=> 'select geography_name, geography_id from geography where geography_type=''REGION'' order by 1',
+  p_lov=> 'select geography_name, geography_id from geography where geography_type=''REGION''',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
   p_lov_null_text=>'--None--',
@@ -9706,7 +9638,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 19,
   p_plug_name=> 'Years',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -9903,7 +9835,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 19,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -10013,7 +9945,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 20,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -10040,7 +9972,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 20,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -10442,7 +10374,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 21,
   p_plug_name=> 'Half Year',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -10677,7 +10609,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 21,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -10787,7 +10719,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 22,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -10814,7 +10746,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 22,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -11258,7 +11190,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 23,
   p_plug_name=> 'Distributors',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -11454,7 +11386,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 23,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -11564,7 +11496,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 24,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -11591,7 +11523,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 24,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -11984,7 +11916,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 25,
   p_plug_name=> 'Reps',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -12218,7 +12150,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 25,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -12321,7 +12253,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 26,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -12348,7 +12280,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 26,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -12789,7 +12721,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 27,
   p_plug_name=> 'Senior KAMs',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -13023,7 +12955,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 27,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -13126,7 +13058,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 28,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -13153,7 +13085,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 28,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -13591,7 +13523,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 29,
   p_plug_name=> 'KAMs',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -13825,7 +13757,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 29,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -13928,7 +13860,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 30,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -13955,7 +13887,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 30,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -14401,7 +14333,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 31,
   p_plug_name=> 'Months',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -14636,7 +14568,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 31,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -14746,7 +14678,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 32,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -14773,7 +14705,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 32,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -15223,7 +15155,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 33,
   p_plug_name=> 'Payout Curve',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 20,
   p_plug_display_column=> 1,
@@ -15460,7 +15392,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 33,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -15488,7 +15420,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 33,
   p_plug_name=> 'Create New Curve',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616718399032833+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -15718,7 +15650,6 @@ wwv_flow_api.create_page_item(
   p_is_persistent=> 'N',
   p_button_execute_validations=>'Y',
   p_button_action => 'SUBMIT',
-  p_button_is_hot=>'N',
   p_item_comment => '');
  
  
@@ -15821,7 +15752,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 34,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -15848,7 +15779,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 34,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -16290,7 +16221,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 35,
   p_plug_name=> 'Product Group',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -16524,7 +16455,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 35,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -16634,7 +16565,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 36,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -16661,7 +16592,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 36,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -17112,7 +17043,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 37,
   p_plug_name=> 'Products',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -17539,7 +17470,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 37,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -17642,7 +17573,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 38,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -17669,7 +17600,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 38,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -18312,7 +18243,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110929221732'
+ ,p_last_upd_yyyymmddhh24miss => '20111023130014'
   );
 null;
  
@@ -18327,10 +18258,10 @@ begin
 s:=s||'select "IDPRICELIST", '||unistr('\000a')||
 '(select ws from wss where idws=iddistributor) as "IDDISTRIBUTOR",'||unistr('\000a')||
 '(select dt_report from v_dates vd where vd.real_date = pl.real_date and vd.dt_type = pl.real_date_type) AS "HALFYEAR",'||unistr('\000a')||
-'"SIP_RUR",'||unistr('\000a')||
-'"SIP_USD",'||unistr('\000a')||
-'"OTH_RUR",'||unistr('\000a')||
-'"OTH_USD"'||unistr('\000a')||
+'"CIP_RUR",'||unistr('\000a')||
+'"CIP_USD",'||unistr('\000a')||
+'"NET_RUR",'||unistr('\000a')||
+'"NET_USD"'||unistr('\000a')||
 'from "#OWNER#"."PRICELIST"  pl'||unistr('\000a')||
 '  '||unistr('\000a')||
 '';
@@ -18341,7 +18272,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 39,
   p_plug_name=> 'Price List',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -18364,10 +18295,10 @@ begin
 a1:=a1||'select "IDPRICELIST", '||unistr('\000a')||
 '(select ws from wss where idws=iddistributor) as "IDDISTRIBUTOR",'||unistr('\000a')||
 '(select dt_report from v_dates vd where vd.real_date = pl.real_date and vd.dt_type = pl.real_date_type) AS "HALFYEAR",'||unistr('\000a')||
-'"SIP_RUR",'||unistr('\000a')||
-'"SIP_USD",'||unistr('\000a')||
-'"OTH_RUR",'||unistr('\000a')||
-'"OTH_USD"'||unistr('\000a')||
+'"CIP_RUR",'||unistr('\000a')||
+'"CIP_USD",'||unistr('\000a')||
+'"NET_RUR",'||unistr('\000a')||
+'"NET_USD"'||unistr('\000a')||
 'from "#OWNER#"."PRICELIST"  pl'||unistr('\000a')||
 '  '||unistr('\000a')||
 '';
@@ -18508,154 +18439,6 @@ end;
 /
 begin
 wwv_flow_api.create_worksheet_column(
-  p_id => 1900220308862113+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 39,
-  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'SIP_RUR',
-  p_display_order          =>4,
-  p_column_identifier      =>'D',
-  p_column_label           =>'SIP RUR',
-  p_report_label           =>'SIP RUR',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'NUMBER',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
-  p_id => 1900315244862114+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 39,
-  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'SIP_USD',
-  p_display_order          =>5,
-  p_column_identifier      =>'E',
-  p_column_label           =>'SIP USD',
-  p_report_label           =>'SIP USD',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'NUMBER',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
-  p_id => 1900400678862115+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 39,
-  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'OTH_RUR',
-  p_display_order          =>6,
-  p_column_identifier      =>'F',
-  p_column_label           =>'Other RUR',
-  p_report_label           =>'Other RUR',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'NUMBER',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
-  p_id => 1900507142862115+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 39,
-  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
-  p_db_column_name         =>'OTH_USD',
-  p_display_order          =>7,
-  p_column_identifier      =>'G',
-  p_column_label           =>'Other USD',
-  p_report_label           =>'Other USD',
-  p_sync_form_label        =>'Y',
-  p_display_in_default_rpt =>'Y',
-  p_is_sortable            =>'Y',
-  p_allow_sorting          =>'Y',
-  p_allow_filtering        =>'Y',
-  p_allow_highlighting     =>'Y',
-  p_allow_ctrl_breaks      =>'Y',
-  p_allow_aggregations     =>'Y',
-  p_allow_computations     =>'Y',
-  p_allow_charting         =>'Y',
-  p_allow_group_by         =>'Y',
-  p_allow_hide             =>'Y',
-  p_others_may_edit        =>'Y',
-  p_others_may_view        =>'Y',
-  p_column_type            =>'NUMBER',
-  p_display_as             =>'TEXT',
-  p_display_text_as        =>'ESCAPE_SC',
-  p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
-  p_tz_dependent           =>'N',
-  p_rpt_distinct_lov       =>'Y',
-  p_rpt_show_filter_lov    =>'D',
-  p_rpt_filter_date_ranges =>'ALL',
-  p_help_text              =>'');
-end;
-/
-begin
-wwv_flow_api.create_worksheet_column(
   p_id => 4998112577029116+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 39,
@@ -18691,10 +18474,158 @@ wwv_flow_api.create_worksheet_column(
   p_help_text              =>'');
 end;
 /
+begin
+wwv_flow_api.create_worksheet_column(
+  p_id => 8359706904181466+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id=> 39,
+  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
+  p_db_column_name         =>'CIP_RUR',
+  p_display_order          =>9,
+  p_column_identifier      =>'J',
+  p_column_label           =>'Cip Rur',
+  p_report_label           =>'Cip Rur',
+  p_sync_form_label        =>'Y',
+  p_display_in_default_rpt =>'Y',
+  p_is_sortable            =>'Y',
+  p_allow_sorting          =>'Y',
+  p_allow_filtering        =>'Y',
+  p_allow_highlighting     =>'Y',
+  p_allow_ctrl_breaks      =>'Y',
+  p_allow_aggregations     =>'Y',
+  p_allow_computations     =>'Y',
+  p_allow_charting         =>'Y',
+  p_allow_group_by         =>'Y',
+  p_allow_hide             =>'Y',
+  p_others_may_edit        =>'Y',
+  p_others_may_view        =>'Y',
+  p_column_type            =>'NUMBER',
+  p_display_as             =>'TEXT',
+  p_display_text_as        =>'ESCAPE_SC',
+  p_heading_alignment      =>'CENTER',
+  p_column_alignment       =>'RIGHT',
+  p_tz_dependent           =>'N',
+  p_rpt_distinct_lov       =>'Y',
+  p_rpt_show_filter_lov    =>'D',
+  p_rpt_filter_date_ranges =>'ALL',
+  p_help_text              =>'');
+end;
+/
+begin
+wwv_flow_api.create_worksheet_column(
+  p_id => 8359828348181471+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id=> 39,
+  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
+  p_db_column_name         =>'CIP_USD',
+  p_display_order          =>10,
+  p_column_identifier      =>'K',
+  p_column_label           =>'Cip Usd',
+  p_report_label           =>'Cip Usd',
+  p_sync_form_label        =>'Y',
+  p_display_in_default_rpt =>'Y',
+  p_is_sortable            =>'Y',
+  p_allow_sorting          =>'Y',
+  p_allow_filtering        =>'Y',
+  p_allow_highlighting     =>'Y',
+  p_allow_ctrl_breaks      =>'Y',
+  p_allow_aggregations     =>'Y',
+  p_allow_computations     =>'Y',
+  p_allow_charting         =>'Y',
+  p_allow_group_by         =>'Y',
+  p_allow_hide             =>'Y',
+  p_others_may_edit        =>'Y',
+  p_others_may_view        =>'Y',
+  p_column_type            =>'NUMBER',
+  p_display_as             =>'TEXT',
+  p_display_text_as        =>'ESCAPE_SC',
+  p_heading_alignment      =>'CENTER',
+  p_column_alignment       =>'RIGHT',
+  p_tz_dependent           =>'N',
+  p_rpt_distinct_lov       =>'Y',
+  p_rpt_show_filter_lov    =>'D',
+  p_rpt_filter_date_ranges =>'ALL',
+  p_help_text              =>'');
+end;
+/
+begin
+wwv_flow_api.create_worksheet_column(
+  p_id => 8359915204181471+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id=> 39,
+  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
+  p_db_column_name         =>'NET_RUR',
+  p_display_order          =>11,
+  p_column_identifier      =>'L',
+  p_column_label           =>'Net Rur',
+  p_report_label           =>'Net Rur',
+  p_sync_form_label        =>'Y',
+  p_display_in_default_rpt =>'Y',
+  p_is_sortable            =>'Y',
+  p_allow_sorting          =>'Y',
+  p_allow_filtering        =>'Y',
+  p_allow_highlighting     =>'Y',
+  p_allow_ctrl_breaks      =>'Y',
+  p_allow_aggregations     =>'Y',
+  p_allow_computations     =>'Y',
+  p_allow_charting         =>'Y',
+  p_allow_group_by         =>'Y',
+  p_allow_hide             =>'Y',
+  p_others_may_edit        =>'Y',
+  p_others_may_view        =>'Y',
+  p_column_type            =>'NUMBER',
+  p_display_as             =>'TEXT',
+  p_display_text_as        =>'ESCAPE_SC',
+  p_heading_alignment      =>'CENTER',
+  p_column_alignment       =>'RIGHT',
+  p_tz_dependent           =>'N',
+  p_rpt_distinct_lov       =>'Y',
+  p_rpt_show_filter_lov    =>'D',
+  p_rpt_filter_date_ranges =>'ALL',
+  p_help_text              =>'');
+end;
+/
+begin
+wwv_flow_api.create_worksheet_column(
+  p_id => 8360014270181472+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id=> 39,
+  p_worksheet_id => 1899827317862079+wwv_flow_api.g_id_offset,
+  p_db_column_name         =>'NET_USD',
+  p_display_order          =>12,
+  p_column_identifier      =>'M',
+  p_column_label           =>'Net Usd',
+  p_report_label           =>'Net Usd',
+  p_sync_form_label        =>'Y',
+  p_display_in_default_rpt =>'Y',
+  p_is_sortable            =>'Y',
+  p_allow_sorting          =>'Y',
+  p_allow_filtering        =>'Y',
+  p_allow_highlighting     =>'Y',
+  p_allow_ctrl_breaks      =>'Y',
+  p_allow_aggregations     =>'Y',
+  p_allow_computations     =>'Y',
+  p_allow_charting         =>'Y',
+  p_allow_group_by         =>'Y',
+  p_allow_hide             =>'Y',
+  p_others_may_edit        =>'Y',
+  p_others_may_view        =>'Y',
+  p_column_type            =>'NUMBER',
+  p_display_as             =>'TEXT',
+  p_display_text_as        =>'ESCAPE_SC',
+  p_heading_alignment      =>'CENTER',
+  p_column_alignment       =>'RIGHT',
+  p_tz_dependent           =>'N',
+  p_rpt_distinct_lov       =>'Y',
+  p_rpt_show_filter_lov    =>'D',
+  p_rpt_filter_date_ranges =>'ALL',
+  p_help_text              =>'');
+end;
+/
 declare
     rc1 varchar2(32767) := null;
 begin
-rc1:=rc1||'IDPRICELIST:IDDISTRIBUTOR:IDHY:SIP_RUR:SIP_USD:OTH_RUR:OTH_USD';
+rc1:=rc1||'IDPRICELIST:IDDISTRIBUTOR:IDHY:SIP_RUR:SIP_USD:OTH_RUR:OTH_USD:CIP_RUR:CIP_USD:NET_RUR:NET_USD';
 
 wwv_flow_api.create_worksheet_rpt(
   p_id => 1902419445895999+wwv_flow_api.g_id_offset,
@@ -18727,7 +18658,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 39,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -18814,7 +18745,7 @@ wwv_flow_api.create_page (
  ,p_cache_timeout_seconds => 21600
  ,p_cache_by_user_yn => 'N'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011004322'
+ ,p_last_upd_yyyymmddhh24miss => '20111023232121'
   );
 null;
  
@@ -18831,9 +18762,9 @@ wwv_flow_api.create_page_plug (
   p_id=> 1805924314908685 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 40,
-  p_plug_name=> 'Breadcrumb',
+  p_plug_name=> 'General Information',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -18841,10 +18772,12 @@ wwv_flow_api.create_page_plug (
   p_plug_source=> s,
   p_plug_source_type=> 'M'|| to_char(2622829076033627 + wwv_flow_api.g_id_offset),
   p_menu_template_id=> 2620420903033009+ wwv_flow_api.g_id_offset,
+  p_translate_title=> 'Y',
   p_plug_query_row_template=> 1,
   p_plug_query_headings_type=> 'COLON_DELMITED_LIST',
   p_plug_query_row_count_max => 500,
   p_plug_display_condition_type => '',
+  p_plug_customized=>'0',
   p_plug_caching=> 'NOT_CACHED',
   p_plug_comment=> '');
 end;
@@ -18861,7 +18794,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 40,
   p_plug_name=> 'Filters',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616623974032832+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 5,
   p_plug_display_column=> 1,
@@ -18932,7 +18865,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 40,
   p_plug_name=> 'Sales. ITM vs. TTM',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 41,
   p_plug_display_column=> 1,
@@ -18964,10 +18897,10 @@ wwv_flow_api.create_flash_chart5(
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'SideFromLeftCenter',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -18984,7 +18917,7 @@ wwv_flow_api.create_flash_chart5(
   p_custom_colors          =>'',
   p_map_undef_color_scheme =>'',
   p_map_undef_custom_colors =>'',
-  p_x_axis_title           =>'Period',
+  p_x_axis_title           =>'',
   p_x_axis_min             =>null,
   p_x_axis_max             =>null,
   p_x_axis_decimal_place   =>null,
@@ -18994,7 +18927,7 @@ wwv_flow_api.create_flash_chart5(
   p_x_axis_label_font      =>'Tahoma:10:#000000',
   p_x_axis_major_interval  =>null,
   p_x_axis_minor_interval  =>null,
-  p_y_axis_title           =>'RUB, CIP',
+  p_y_axis_title           =>'',
   p_y_axis_min             =>null,
   p_y_axis_max             =>null,
   p_y_axis_decimal_place   =>null,
@@ -19030,13 +18963,18 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as ITM'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_sales_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as ITM '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'') '||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
 'and transaction_type = ''IMS'''||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-'and reports = nvl(:p40_reporttype,''Units'')';
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,';
+
+a1:=a1||'to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4940906720871367+wwv_flow_api.g_id_offset,
@@ -19058,13 +18996,19 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as TTM'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_sales_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as TTM '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where '||unistr('\000a')||
+'report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
 'and transaction_type = ''IMP'''||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-'and reports = nvl(:p40_reporttype,''Units'')';
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.';
+
+a1:=a1||'yyyy'')'||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4960008518053373+wwv_flow_api.g_id_offset,
@@ -19131,9 +19075,9 @@ wwv_flow_api.create_page_plug (
   p_id=> 4946507453425590 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 40,
-  p_plug_name=> 'Sales. ITM + TTM vs. -1Year',
+  p_plug_name=> 'Sales. ITM vs. Year-1',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 51,
   p_include_in_reg_disp_sel_yn=> 'Y',
@@ -19160,16 +19104,16 @@ wwv_flow_api.create_flash_chart5(
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id => 40,
   p_region_id => 4946507453425590+wwv_flow_api.g_id_offset,
-  p_default_chart_type     =>'Stacked3DColumn',
+  p_default_chart_type     =>'3DColumn',
   p_chart_title            =>'',
   p_chart_name             =>'chart_4946713930425594',
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'ScaleYTop',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:Y::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:Y::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -19213,7 +19157,7 @@ wwv_flow_api.create_flash_chart5(
   p_names_font             => null,
   p_names_rotation         => null,
   p_values_font            =>'Arial:10:#000000',
-  p_values_rotation        =>90,
+  p_values_rotation        =>null,
   p_values_prefix          =>'',
   p_values_postfix         =>'',
   p_hints_font             =>'Tahoma:10:#000000',
@@ -19232,18 +19176,25 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as "ITM+TTM", rost as Growth'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')))  and to_date(nvl(:P40_PERIOD_TO,sysdate))';
+a1:=a1||'select null as link, period, volume as "ITM Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD';
+
+a1:=a1||'_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4946814213425595+wwv_flow_api.g_id_offset,
   p_chart_id => 4946713930425594+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>10,
-  p_series_name               =>'ITM+TTM',
+  p_series_name               =>'ITM Sales',
   p_series_query              => a1,
   p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
@@ -19258,11 +19209,51 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, previous_units as "ITM+TTM (-1 Year)"'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')))  and to_date(nvl(:P40_PERIOD_TO,sysdate))'||unistr('\000a')||
+a1:=a1||'select null as link, period, Growth'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''';
+
+a1:=a1||'01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period';
+
+wwv_flow_api.create_flash_chart5_series(
+  p_id => 3904020792314161+wwv_flow_api.g_id_offset,
+  p_chart_id => 4946713930425594+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_series_seq                =>20,
+  p_series_name               =>'Growth',
+  p_series_query              => a1,
+  p_series_type               =>'Line',
+  p_series_query_type         =>'SQL_QUERY',
+  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
+  p_series_query_no_data_found=>'',
+  p_series_query_row_count_max=>15,
+  p_action_link               =>'',
+  p_show_action_link          =>'N',
+  p_action_link_checksum_type =>'');
+end;
+/
+declare
+ a1 varchar2(32767) := null;
+begin
+a1:=a1||'select null as link, period, previous_volume as "ITM Sales prev.period"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'and minreal_date between to';
+
+a1:=a1||'_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period'||unistr('\000a')||
 ''||unistr('\000a')||
 '';
 
@@ -19271,13 +19262,13 @@ wwv_flow_api.create_flash_chart5_series(
   p_chart_id => 4946713930425594+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>30,
-  p_series_name               =>'ITM+TTM (-1 Year)',
+  p_series_name               =>'ITM Sales prev. period',
   p_series_query              => a1,
-  p_series_type               =>'Line',
+  p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>15,
+  p_series_query_row_count_max=>36,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -19333,7 +19324,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 40,
   p_plug_name=> 'Sales. ITM vs. TTM by Product',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 71,
   p_plug_display_column=> 1,
@@ -19365,10 +19356,10 @@ wwv_flow_api.create_flash_chart5(
   p_chart_width            =>900,
   p_chart_height           =>500,
   p_chart_animation        =>'SideFromRightTop',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:Y::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'N:None:None:Full:None:None:Full:None:None:Full:30:15:5:N::::',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -19403,7 +19394,7 @@ wwv_flow_api.create_flash_chart5(
   p_y_axis_postfix         =>'',
   p_y_axis_label_rotation  =>'',
   p_y_axis_label_font      =>'Tahoma:10:#000000',
-  p_y_axis_major_interval  =>1000,
+  p_y_axis_major_interval  =>null,
   p_y_axis_minor_interval  =>null,
   p_async_update           =>'N',
   p_async_time             =>null,
@@ -19423,7 +19414,7 @@ wwv_flow_api.create_flash_chart5(
   p_x_axis_title_rotation  =>'',
   p_y_axis_title_font      =>'Tahoma:14:#000000',
   p_y_axis_title_rotation  =>'',
-  p_gauge_labels_font      =>'::',
+  p_gauge_labels_font      =>'Tahoma:10:',
   p_use_chart_xml          =>'N',
   p_chart_xml              => a1);
 end;
@@ -19431,13 +19422,18 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as ITM'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_sales_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as ITM'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
 'and transaction_type = ''IMS'''||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-'and reports = nvl(:p40_reporttype,''Units'')';
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.';
+
+a1:=a1||'mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4957802758892022+wwv_flow_api.g_id_offset,
@@ -19459,47 +19455,24 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as TTM'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_sales_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and transaction_type = ''IMP'''||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-'and reports = nvl(:p40_reporttype,''Units'')';
+a1:=a1||'select null as link, period, volume as AN'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_';
 
-wwv_flow_api.create_flash_chart5_series(
-  p_id => 4962822538719749+wwv_flow_api.g_id_offset,
-  p_chart_id => 4957729768892022+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>20,
-  p_series_name               =>'TTM',
-  p_series_query              => a1,
-  p_series_type               =>'Line',
-  p_series_query_type         =>'SQL_QUERY',
-  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
-  p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>36,
-  p_action_link               =>'',
-  p_show_action_link          =>'N',
-  p_action_link_checksum_type =>'');
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1:=a1||'select null as link, period, units as AN'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_pg_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P40_PRODUCTGROUP is null then ''AN'''||unistr('\000a')||
 ' when :P40_PRODUCTGROUP = ''AN'' then ''AN'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'';
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4963823071833437+wwv_flow_api.g_id_offset,
@@ -19521,16 +19494,23 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as AO'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_pg_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in (case '||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as AO'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_';
+
+a1:=a1||'date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
 ' when :P40_PRODUCTGROUP is null then ''AO'''||unistr('\000a')||
 ' when :P40_PRODUCTGROUP = ''AO'' then ''AO'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
-'end)';
+'end)'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4963927704844203+wwv_flow_api.g_id_offset,
@@ -19552,16 +19532,23 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as Mi'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_pg_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in (case '||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as Mi '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to';
+
+a1:=a1||'_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
 ' when :P40_PRODUCTGROUP is null then ''Mi'''||unistr('\000a')||
 ' when :P40_PRODUCTGROUP = ''Mi'' then ''Mi'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
-'end)';
+'end)'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4964000262855212+wwv_flow_api.g_id_offset,
@@ -19583,16 +19570,23 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as Npl'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_pg_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in (case '||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as Npl'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to';
+
+a1:=a1||'_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
 ' when :P40_PRODUCTGROUP is null then ''Npl'''||unistr('\000a')||
 ' when :P40_PRODUCTGROUP = ''Npl'' then ''Npl'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
-'end)';
+'end)'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4964115499859641+wwv_flow_api.g_id_offset,
@@ -19614,16 +19608,23 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as Vbx'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_pg_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in (case '||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as Vbx'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to';
+
+a1:=a1||'_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
 ' when :P40_PRODUCTGROUP is null then ''Vbx'''||unistr('\000a')||
 ' when :P40_PRODUCTGROUP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
-'end)';
+'end)'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4964225888862652+wwv_flow_api.g_id_offset,
@@ -19692,7 +19693,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 40,
   p_plug_name=> 'Stock Accumulated',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 81,
   p_plug_display_column=> 2,
@@ -19724,10 +19725,10 @@ wwv_flow_api.create_flash_chart5(
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'N',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -19790,13 +19791,18 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as ITM'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_sales_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as ITM '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
 'and transaction_type = ''IMS'''||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-'and reports = ''Units''';
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,t';
+
+a1:=a1||'o_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4965232212079859+wwv_flow_api.g_id_offset,
@@ -19818,13 +19824,18 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units as TTM'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_sales_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+a1:=a1||'select null as link, period, volume as TTM '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'' '||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
 'and transaction_type = ''IMP'''||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-'and reports = ''Units''';
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,';
+
+a1:=a1||'to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4965325695085715+wwv_flow_api.g_id_offset,
@@ -19846,11 +19857,18 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null as link, period, units_diff as Stock'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_total_reports'||unistr('\000a')||
-'where dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P40_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')';
+a1:=a1||'select null as link, period, volume_diff as Stock'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and geography = ''Total Russia'''||unistr('\000a')||
+'and dt_type = nvl(:p40_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p40_reporttype,''Units'')'||unistr('\000a')||
+'and product in (nvl(:P40_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P40_PERIOD_';
+
+a1:=a1||'FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P40_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by period';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4965431329144102+wwv_flow_api.g_id_offset,
@@ -19911,7 +19929,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'YES',
   p_item_default=> 'Year',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Filter Period',
+  p_prompt=>'Period',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select distinct dt_type as d, dt_type as r from v_dates where dt_type <> ''Date''',
@@ -19975,7 +19993,6 @@ wwv_flow_api.create_page_item(
   p_is_persistent=> 'N',
   p_button_execute_validations=>'Y',
   p_button_action => 'SUBMIT',
-  p_button_is_hot=>'N',
   p_item_comment => '');
  
  
@@ -20107,7 +20124,7 @@ wwv_flow_api.create_page_item(
   p_lov=> 'select prodgr as d, prodgr as r from prodgrs',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'',
+  p_lov_null_text=>'All products',
   p_lov_null_value=> '',
   p_cSize=> 30,
   p_cMaxlength=> 4000,
@@ -20148,10 +20165,10 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 1807105241945243+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Type',
+  p_prompt=>'Measure',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'STATIC:Units;Units,CIP RUR;CIP RUR',
+  p_lov=> 'STATIC:Units;Units,CIP RUR;CIP RUR,CIP USD;CIP USD,NET RUR;NET RUR,NET USD;NET USD',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
   p_cSize=> 30,
@@ -20246,7 +20263,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 41,
   p_plug_name=> 'Discounts',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -20555,7 +20572,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 41,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -20665,7 +20682,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 42,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -20692,7 +20709,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 42,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -21200,7 +21217,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011014047'
+ ,p_last_upd_yyyymmddhh24miss => '20110815002629'
   );
 null;
  
@@ -21214,8 +21231,8 @@ declare
 begin
 s:=s||'select "IDSCHEMA", '||unistr('\000a')||
 '"SCHEMA_NAME",'||unistr('\000a')||
-'(select distinct dt_report from v_dates v where v.real_date = cs.real_date and v.dt_type = cs.real_date_type) HalfYear,'||unistr('\000a')||
-'(select distinct dt_report from v_dates v where v.real_date = cs.real_date and v.dt_type = ''Year'') Year'||unistr('\000a')||
+'(select hy from half_year where idhy = cs."IDHY") HalfYear,'||unistr('\000a')||
+'(select y from years where idy = cs."IDY") Year'||unistr('\000a')||
 'from "#OWNER#"."CIP_SCHEMA" cs'||unistr('\000a')||
 'order by idschema desc  '||unistr('\000a')||
 '';
@@ -21226,7 +21243,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 43,
   p_plug_name=> 'CIP Schema',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -21248,8 +21265,8 @@ declare
 begin
 a1:=a1||'select "IDSCHEMA", '||unistr('\000a')||
 '"SCHEMA_NAME",'||unistr('\000a')||
-'(select distinct dt_report from v_dates v where v.real_date = cs.real_date and v.dt_type = cs.real_date_type) HalfYear,'||unistr('\000a')||
-'(select distinct dt_report from v_dates v where v.real_date = cs.real_date and v.dt_type = ''Year'') Year'||unistr('\000a')||
+'(select hy from half_year where idhy = cs."IDHY") HalfYear,'||unistr('\000a')||
+'(select y from years where idy = cs."IDY") Year'||unistr('\000a')||
 'from "#OWNER#"."CIP_SCHEMA" cs'||unistr('\000a')||
 'order by idschema desc  '||unistr('\000a')||
 '';
@@ -21427,7 +21444,7 @@ end;
 /
 begin
 wwv_flow_api.create_worksheet_column(
-  p_id => 1975303407810069+wwv_flow_api.g_id_offset,
+  p_id => 1436301333282323+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 43,
   p_worksheet_id => 1434214810266851+wwv_flow_api.g_id_offset,
@@ -21450,11 +21467,11 @@ wwv_flow_api.create_worksheet_column(
   p_allow_hide             =>'Y',
   p_others_may_edit        =>'Y',
   p_others_may_view        =>'Y',
-  p_column_type            =>'STRING',
+  p_column_type            =>'NUMBER',
   p_display_as             =>'TEXT',
   p_display_text_as        =>'ESCAPE_SC',
   p_heading_alignment      =>'CENTER',
-  p_column_alignment       =>'LEFT',
+  p_column_alignment       =>'RIGHT',
   p_tz_dependent           =>'N',
   p_rpt_distinct_lov       =>'Y',
   p_rpt_show_filter_lov    =>'D',
@@ -21498,7 +21515,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 43,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -21589,7 +21606,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011014415'
+ ,p_last_upd_yyyymmddhh24miss => '20110815002629'
   );
 null;
  
@@ -21608,7 +21625,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 44,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -21635,7 +21652,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 44,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -21850,17 +21867,12 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Half Year',
-  p_source=>'REAL_DATE',
+  p_source=>'IDHY',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_named_lov=> 'HALFYEARS LIST',
-  p_lov=> 'select distinct dt_report as d, to_date(dt_id_fake,''yyyymmdd'') as r from v_dates'||unistr('\000a')||
-'where dt_type = ''HalfYear'''||unistr('\000a')||
-'order by 2 desc',
-  p_lov_display_null=> 'YES',
+  p_lov=> 'select hy , idhy from half_year',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
   p_cSize=> 32,
   p_cMaxlength=> 255,
   p_cHeight=> 1,
@@ -21900,10 +21912,10 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Year',
-  p_source=>'REAL_DATE_TYPE',
+  p_source=>'IDY',
   p_source_type=> 'DB_COLUMN',
-  p_source_post_computation => '''HalfYear''',
-  p_display_as=> 'NATIVE_HIDDEN',
+  p_display_as=> 'NATIVE_SELECT_LIST',
+  p_lov=> 'select y, idy from years',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
   p_cSize=> 32,
@@ -21920,7 +21932,8 @@ wwv_flow_api.create_page_item(
   p_lov_display_extra=>'YES',
   p_protection_level => 'N',
   p_escape_on_http_output => 'Y',
-  p_attribute_01 => 'Y',
+  p_attribute_01 => 'NONE',
+  p_attribute_02 => 'N',
   p_show_quick_picks=>'N',
   p_item_comment => '');
  
@@ -22133,7 +22146,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 45,
   p_plug_name=> 'CIP Schema Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -22519,7 +22532,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 45,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -22629,7 +22642,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 46,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -22656,7 +22669,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 46,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -23276,7 +23289,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 47,
   p_plug_name=> 'CIP Schema Employee',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -23552,7 +23565,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 47,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -23643,7 +23656,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011014553'
+ ,p_last_upd_yyyymmddhh24miss => '20110815002629'
   );
 null;
  
@@ -23662,7 +23675,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 48,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -23689,7 +23702,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 48,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -23958,10 +23971,8 @@ wwv_flow_api.create_page_item(
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select employee_name, employee_id from all_employees where employee_type = :p48_empltype',
-  p_lov_display_null=> 'YES',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
   p_lov_cascade_parent_items=> 'P48_EMPLTYPE',
   p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
@@ -24176,7 +24187,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 49,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -24204,7 +24215,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 49,
   p_plug_name=> 'Geography',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616718399032833+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -24397,7 +24408,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 50,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -24424,7 +24435,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 50,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
   p_plug_display_point=> 'REGION_POSITION_01',
@@ -24954,7 +24965,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 51,
   p_plug_name=> 'Employee Client Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -24981,7 +24992,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 51,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -25571,7 +25582,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 52,
   p_plug_name=> 'Links',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -25957,7 +25968,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 52,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -26048,7 +26059,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011010829'
+ ,p_last_upd_yyyymmddhh24miss => '20111024005230'
   );
 null;
  
@@ -26067,7 +26078,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 53,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -26094,7 +26105,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 53,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -26879,7 +26890,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 54,
   p_plug_name=> 'Fact',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -27274,7 +27285,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 54,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -27384,7 +27395,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 55,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -27411,7 +27422,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 55,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -28252,7 +28263,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011012900'
+ ,p_last_upd_yyyymmddhh24miss => '20110815002629'
   );
 null;
  
@@ -28271,7 +28282,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 56,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -28298,7 +28309,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 56,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -28517,10 +28528,8 @@ wwv_flow_api.create_page_item(
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select employee_name , employee_id from employee where employee_type = :P56_EMPLOYEETYPE',
-  p_lov_display_null=> 'YES',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
   p_lov_cascade_parent_items=> 'P56_EMPLOYEETYPE',
   p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
@@ -28566,10 +28575,8 @@ wwv_flow_api.create_page_item(
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select geography_name, geography_id from geography where geography_type = :P56_GEOTYPE',
-  p_lov_display_null=> 'YES',
+  p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'--None--',
-  p_lov_null_value=> '',
   p_lov_cascade_parent_items=> 'P56_GEOTYPE',
   p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 32,
@@ -28997,7 +29004,7 @@ wwv_flow_api.create_page (
  ,p_cache_timeout_seconds => 21600
  ,p_cache_by_user_yn => 'N'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011012104'
+ ,p_last_upd_yyyymmddhh24miss => '20111024005724'
   );
 null;
  
@@ -29016,7 +29023,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 57,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -29056,7 +29063,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 57,
   p_plug_name=> 'List of Employees',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -29473,7 +29480,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011013853'
+ ,p_last_upd_yyyymmddhh24miss => '20111024010121'
   );
 null;
  
@@ -29492,7 +29499,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 58,
   p_plug_name=> 'Employee Client Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -29521,7 +29528,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 58,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -29909,7 +29916,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
   p_prompt=>'Half Year',
-  p_source=>'REAL_DATE',
+  p_source=>'IDHY',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_named_lov=> 'HALFYEARS LIST',
@@ -30281,7 +30288,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110929221641'
+ ,p_last_upd_yyyymmddhh24miss => '20111024010842'
   );
 null;
  
@@ -30300,7 +30307,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 59,
   p_plug_name=> 'Details on Price',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -30327,7 +30334,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 59,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -30596,9 +30603,9 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 1895518534861583+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'SIP RUR',
-  p_format_mask=>'FML999G999G999G999G990D00',
-  p_source=>'SIP_RUR',
+  p_prompt=>'CIP RUR',
+  p_format_mask=>'999G999G999G999G990D00',
+  p_source=>'CIP_RUR',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_NUMBER_FIELD',
   p_lov_display_null=> 'NO',
@@ -30640,9 +30647,9 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 1895518534861583+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'SIP USD',
-  p_format_mask=>'FML999G999G999G999G990D00',
-  p_source=>'SIP_USD',
+  p_prompt=>'CIP USD',
+  p_format_mask=>'999G999G999G999G990D00',
+  p_source=>'CIP_USD',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_NUMBER_FIELD',
   p_lov_display_null=> 'NO',
@@ -30684,9 +30691,9 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 1895518534861583+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Other RUR',
-  p_format_mask=>'FML999G999G999G999G990D00',
-  p_source=>'OTH_RUR',
+  p_prompt=>'NET RUR',
+  p_format_mask=>'999G999G999G999G990D00',
+  p_source=>'NET_RUR',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_NUMBER_FIELD',
   p_lov_display_null=> 'NO',
@@ -30728,9 +30735,9 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 1895518534861583+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'NO',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Other USD',
-  p_format_mask=>'FML999G999G999G999G990D00',
-  p_source=>'OTH_USD',
+  p_prompt=>'NET USD',
+  p_format_mask=>'999G999G999G999G990D00',
+  p_source=>'NET_USD',
   p_source_type=> 'DB_COLUMN',
   p_display_as=> 'NATIVE_NUMBER_FIELD',
   p_lov_display_null=> 'NO',
@@ -30998,7 +31005,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 60,
   p_plug_name=> 'Employee Client Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -31025,7 +31032,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 60,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -31638,7 +31645,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011004322'
+ ,p_last_upd_yyyymmddhh24miss => '20111023232531'
   );
 null;
  
@@ -31657,7 +31664,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 61,
   p_plug_name=> 'Region Information',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -31687,7 +31694,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 61,
   p_plug_name=> 'Filters',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616623974032832+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 11,
   p_plug_display_column=> 1,
@@ -31758,7 +31765,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 61,
   p_plug_name=> 'Products',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 21,
   p_plug_display_column=> 1,
@@ -31790,10 +31797,10 @@ wwv_flow_api.create_flash_chart5(
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'show',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -31816,7 +31823,7 @@ wwv_flow_api.create_flash_chart5(
   p_x_axis_decimal_place   =>null,
   p_x_axis_prefix          =>'',
   p_x_axis_postfix         =>'',
-  p_x_axis_label_rotation  =>'',
+  p_x_axis_label_rotation  =>'90',
   p_x_axis_label_font      =>'Tahoma:10:#000000',
   p_x_axis_major_interval  =>null,
   p_x_axis_minor_interval  =>null,
@@ -31856,15 +31863,23 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Total'||unistr('\000a')||
-'from db_region_report'||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as "ITM Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
 ''||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between '||unistr('\000a')||
-'add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
 ''||unistr('\000a')||
-'group by region';
+'and (geography = :P61_REGIONNAME or (geogra';
+
+a1:=a1||'phy is not null and :P61_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and product in (''All products'')'||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'group by geography'||unistr('\000a')||
+'order by 3';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4970003948906676+wwv_flow_api.g_id_offset,
@@ -31886,22 +31901,29 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as AN'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as AN'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'') and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P61_REG';
+
+a1:=a1||'IONNAME or (geography is not null and :P61_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P61_PRODUCTGROUP is null then ''AN'''||unistr('\000a')||
-' when :P61_PRODUCTGROU';
-
-a1:=a1||'P = ''AN'' then ''AN'''||unistr('\000a')||
+' when :P61_PRODUCTGROUP = ''AN'' then ''AN'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geograp';
+
+a1:=a1||'hy'||unistr('\000a')||
+'order by 3';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4970305524149128+wwv_flow_api.g_id_offset,
@@ -31923,22 +31945,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as AO'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as AO'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+'and (geography = :P61_REGI';
+
+a1:=a1||'ONNAME or (geography is not null and :P61_REGIONNAME is null))'||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P61_PRODUCTGROUP is null then ''AO'''||unistr('\000a')||
-' when :P61_PRODUCTGROU';
-
-a1:=a1||'P = ''AO'' then ''AO'''||unistr('\000a')||
+' when :P61_PRODUCTGROUP = ''AO'' then ''AO'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geography';
+
+a1:=a1||''||unistr('\000a')||
+'order by 3';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4970415482170913+wwv_flow_api.g_id_offset,
@@ -31960,22 +31988,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Mi'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as Mi'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+'and (geography = :P61_REGI';
+
+a1:=a1||'ONNAME or (geography is not null and :P61_REGIONNAME is null))'||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P61_PRODUCTGROUP is null then ''Mi'''||unistr('\000a')||
-' when :P61_PRODUCTGROUP';
-
-a1:=a1||' = ''Mi'' then ''Mi'''||unistr('\000a')||
+' when :P61_PRODUCTGROUP = ''Mi'' then ''Mi'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geography';
+
+a1:=a1||''||unistr('\000a')||
+'order by 3';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4970526564174052+wwv_flow_api.g_id_offset,
@@ -31997,22 +32031,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Npl'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as Npl'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+'and (geography = :P61_REG';
+
+a1:=a1||'IONNAME or (geography is not null and :P61_REGIONNAME is null))'||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P61_PRODUCTGROUP is null then ''Npl'''||unistr('\000a')||
-' when :P61_PRODUCTGRO';
-
-a1:=a1||'UP = ''Npl'' then ''Npl'''||unistr('\000a')||
+' when :P61_PRODUCTGROUP = ''Npl'' then ''Npl'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geogr';
+
+a1:=a1||'aphy'||unistr('\000a')||
+'order by 3';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4970605917177573+wwv_flow_api.g_id_offset,
@@ -32034,22 +32074,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Vbx'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as Vbx'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+'and (geography = :P61_REG';
+
+a1:=a1||'IONNAME or (geography is not null and :P61_REGIONNAME is null))'||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P61_PRODUCTGROUP is null then ''Vbx'''||unistr('\000a')||
-' when :P61_PRODUCTGRO';
-
-a1:=a1||'UP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
+' when :P61_PRODUCTGROUP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geogr';
+
+a1:=a1||'aphy'||unistr('\000a')||
+'order by 3';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4970718730181278+wwv_flow_api.g_id_offset,
@@ -32116,9 +32162,9 @@ wwv_flow_api.create_page_plug (
   p_id=> 4971217007606584 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 61,
-  p_plug_name=> 'Regions vs. -1 Year',
+  p_plug_name=> 'Sales vs. previous period',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 31,
   p_plug_display_column=> 2,
@@ -32144,16 +32190,16 @@ wwv_flow_api.create_flash_chart5(
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id => 61,
   p_region_id => 4971217007606584+wwv_flow_api.g_id_offset,
-  p_default_chart_type     =>'Stacked3DColumn',
+  p_default_chart_type     =>'3DColumn',
   p_chart_title            =>'',
   p_chart_name             =>'chart_4971406518606594',
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'ScaleYTop',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:None:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -32176,7 +32222,7 @@ wwv_flow_api.create_flash_chart5(
   p_x_axis_decimal_place   =>null,
   p_x_axis_prefix          =>'',
   p_x_axis_postfix         =>'',
-  p_x_axis_label_rotation  =>'',
+  p_x_axis_label_rotation  =>'90',
   p_x_axis_label_font      =>'Tahoma:10:#000000',
   p_x_axis_major_interval  =>null,
   p_x_axis_minor_interval  =>null,
@@ -32197,7 +32243,7 @@ wwv_flow_api.create_flash_chart5(
   p_names_font             => null,
   p_names_rotation         => null,
   p_values_font            =>'Arial:10:#000000',
-  p_values_rotation        =>90,
+  p_values_rotation        =>null,
   p_values_prefix          =>'',
   p_values_postfix         =>'',
   p_hints_font             =>'Tahoma:10:#000000',
@@ -32216,14 +32262,21 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Y, sum(previous_units) as "Y-1"'||unistr('\000a')||
-'from db_region_report'||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as "ITM Sales", sum(previous_volume) as "ITM Sales prev. period"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
 ''||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
+'and geography_type = nvl(:p61_geographytype,''Area'') '||unistr('\000a')||
+'and product = nvl(:P61_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p61_rep';
+
+a1:=a1||'orttype,''Units'')'||unistr('\000a')||
 'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-''||unistr('\000a')||
-'group by region';
+'group by geography'||unistr('\000a')||
+'order by 3';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4971532753606596+wwv_flow_api.g_id_offset,
@@ -32292,7 +32345,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 61,
   p_plug_name=> 'Region by product',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 41,
   p_plug_display_column=> 1,
@@ -32324,10 +32377,10 @@ wwv_flow_api.create_flash_chart5(
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'ScaleYTop',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -32350,7 +32403,7 @@ wwv_flow_api.create_flash_chart5(
   p_x_axis_decimal_place   =>null,
   p_x_axis_prefix          =>'',
   p_x_axis_postfix         =>'',
-  p_x_axis_label_rotation  =>'',
+  p_x_axis_label_rotation  =>'90',
   p_x_axis_label_font      =>'Tahoma:10:#000000',
   p_x_axis_major_interval  =>null,
   p_x_axis_minor_interval  =>null,
@@ -32390,20 +32443,23 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, units as Total from ('||unistr('\000a')||
-'select period, sum(units) as units, dt_id'||unistr('\000a')||
-'from db_region_report'||unistr('\000a')||
+a1:=a1||'select null, period, sum(volume) as "ITM Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
 ''||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between '||unistr('\000a')||
-'to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.y';
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P61_REGIONNAME or (geography is not null and :P61_REGIONNA';
 
-a1:=a1||'yyy'')'||unistr('\000a')||
-'group by period, dt_id'||unistr('\000a')||
-'order by dt_id)'||unistr('\000a')||
-'';
+a1:=a1||'ME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and product in (''All products'')'||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'group by period'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4972512662683074+wwv_flow_api.g_id_offset,
@@ -32425,23 +32481,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as AN'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTG';
+a1:=a1||'select null, period, sum(volume) as AN'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'')'||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P61_REGIONNAME or (geography is not null and :P61_REGIONNAME is null';
 
-a1:=a1||'ROUP is null then ''AN'''||unistr('\000a')||
+a1:=a1||'))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
+' when :P61_PRODUCTGROUP is null then ''AN'''||unistr('\000a')||
 ' when :P61_PRODUCTGROUP = ''AN'' then ''AN'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by period';
+'group by period'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4972411364683074+wwv_flow_api.g_id_offset,
@@ -32463,23 +32524,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as AO'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTG';
+a1:=a1||'select null, period, sum(volume) as AO'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'') '||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P61_REGIONNAME or (geography is not null and :P61_REGIONNAME is nul';
 
-a1:=a1||'ROUP is null then ''AO'''||unistr('\000a')||
+a1:=a1||'l))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
+' when :P61_PRODUCTGROUP is null then ''AO'''||unistr('\000a')||
 ' when :P61_PRODUCTGROUP = ''AO'' then ''AO'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by period';
+'group by period'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4972620504683074+wwv_flow_api.g_id_offset,
@@ -32501,23 +32567,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as Mi'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTG';
+a1:=a1||'select null, period, sum(volume) as Mi'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'') '||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P61_REGIONNAME or (geography is not null and :P61_REGIONNAME is nul';
 
-a1:=a1||'ROUP is null then ''Mi'''||unistr('\000a')||
+a1:=a1||'l))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
+' when :P61_PRODUCTGROUP is null then ''Mi'''||unistr('\000a')||
 ' when :P61_PRODUCTGROUP = ''Mi'' then ''Mi'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by period';
+'group by period'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4972727919683074+wwv_flow_api.g_id_offset,
@@ -32539,23 +32610,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as Npl'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCT';
+a1:=a1||'select null, period, sum(volume) as Npl'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'') '||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P61_REGIONNAME or (geography is not null and :P61_REGIONNAME is nu';
 
-a1:=a1||'GROUP is null then ''Npl'''||unistr('\000a')||
+a1:=a1||'ll))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
+' when :P61_PRODUCTGROUP is null then ''Npl'''||unistr('\000a')||
 ' when :P61_PRODUCTGROUP = ''Npl'' then ''Npl'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by period';
+'group by period'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4972811890683074+wwv_flow_api.g_id_offset,
@@ -32577,23 +32653,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as Vbx'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCT';
+a1:=a1||'select null, period, sum(volume) as AN'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'') '||unistr('\000a')||
+'and dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p61_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P61_REGIONNAME or (geography is not null and :P61_REGIONNAME is nul';
 
-a1:=a1||'GROUP is null then ''Vbx'''||unistr('\000a')||
+a1:=a1||'l))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
+'case '||unistr('\000a')||
+' when :P61_PRODUCTGROUP is null then ''Vbx'''||unistr('\000a')||
 ' when :P61_PRODUCTGROUP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by period';
+'group by period'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4972923052683074+wwv_flow_api.g_id_offset,
@@ -32642,6 +32723,51 @@ declare
     h varchar2(32767) := null;
 begin
 wwv_flow_api.create_page_item(
+  p_id=>4455731340553801 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 61,
+  p_name=>'P61_REPORTTYPE',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> true,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 90,
+  p_item_plug_id => 4967713770621586+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_prompt=>'Measure',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_SELECT_LIST',
+  p_lov=> 'STATIC:Units;Units,CIP RUR;CIP RUR,CIP USD;CIP USD,NET RUR;NET RUR,NET USD;NET USD',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'NO',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_attribute_01 => 'NONE',
+  p_attribute_02 => 'N',
+  p_show_quick_picks=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+wwv_flow_api.create_page_item(
   p_id=>4967900851621590 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_flow_step_id=> 61,
@@ -32654,7 +32780,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'YES',
   p_item_default=> 'Year',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Filter Period',
+  p_prompt=>'Period',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select distinct dt_type as d, dt_type as r from v_dates where dt_type <> ''Date''',
@@ -32770,7 +32896,6 @@ wwv_flow_api.create_page_item(
   p_is_persistent=> 'N',
   p_button_execute_validations=>'Y',
   p_button_action => 'SUBMIT',
-  p_button_is_hot=>'N',
   p_item_comment => '');
  
  
@@ -32792,13 +32917,13 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 4967713770621586+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Product Group',
+  p_prompt=>'Product',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select prodgr as d, prodgr as r from prodgrs',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'',
+  p_lov_null_text=>'All Products',
   p_lov_null_value=> '',
   p_cSize=> 30,
   p_cMaxlength=> 4000,
@@ -32892,10 +33017,11 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'YES',
   p_item_default=> 'Area',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Geo Type',
+  p_prompt=>'Geography Type',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select distinct geography_type as d, geography_type as r from db_region_report',
+  p_lov=> 'select distinct INITCAP(geography_type) as d, INITCAP(geography_type) as r from geography'||unistr('\000a')||
+'where geography_type!=''CITY''',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
   p_cSize=> 30,
@@ -32937,13 +33063,15 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 4967713770621586+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Geo name',
+  p_prompt=>'Geography',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select distinct region as d, region as r from db_check_region'||unistr('\000a')||
 'where geography_type = nvl(:P61_GEOGRAPHYTYPE,''Area'')',
-  p_lov_display_null=> 'NO',
+  p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
+  p_lov_null_text=>'Total Russia',
+  p_lov_null_value=> '',
   p_lov_cascade_parent_items=> 'P61_GEOGRAPHYTYPE',
   p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 30,
@@ -33046,7 +33174,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011011433'
+ ,p_last_upd_yyyymmddhh24miss => '20111024004317'
   );
 null;
  
@@ -33065,7 +33193,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 62,
   p_plug_name=> 'Breadcrumb',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -33093,7 +33221,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 62,
   p_plug_name=> 'Dates',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616718399032833+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -33245,7 +33373,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011004322'
+ ,p_last_upd_yyyymmddhh24miss => '20111023232759'
   );
 null;
  
@@ -33264,7 +33392,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 64,
   p_plug_name=> 'Filters',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616623974032832+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 11,
   p_plug_display_column=> 1,
@@ -33297,7 +33425,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 64,
   p_plug_name=> 'Region Information',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -33363,7 +33491,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 64,
   p_plug_name=> 'Product by Regions',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 31,
   p_plug_display_column=> 1,
@@ -33389,15 +33517,15 @@ wwv_flow_api.create_flash_chart5(
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id => 64,
   p_region_id => 4992103406014017+wwv_flow_api.g_id_offset,
-  p_default_chart_type     =>'3DPie',
+  p_default_chart_type     =>'2DPie',
   p_chart_title            =>'',
   p_chart_name             =>'chart_4992305640014018',
   p_chart_width            =>700,
   p_chart_height           =>500,
-  p_chart_animation        =>'Appear',
-  p_display_attr           =>':H:N:V:::Float::V:Y:None:::N:::Default',
+  p_chart_animation        =>'show',
+  p_display_attr           =>':H:N:V:::Right::V:Y:None:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
   p_pie_attr               =>'Outside:::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
@@ -33461,27 +33589,32 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Product'||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as "ITM Sales"'||unistr('\000a')||
 'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
+'db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsTotalRussia'',''SalesAllProductsByRegion'',''SalesByProductByRegion'')'||unistr('\000a')||
+'and dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
 'and geography_type = nvl(:p64_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in (nvl(:P64_PRODUCTGROUP,''AN''))'||unistr('\000a')||
-'group by region';
+'and measure = nvl(:p61_reporttype,''Units'')'||unistr('\000a')||
+'and transaction_type=''IMS'''||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P64_PERIOD';
+
+a1:=a1||'_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
+'and product in (nvl(:P64_PRODUCTGROUP,''All products''))'||unistr('\000a')||
+'group by geography';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4992419092014018+wwv_flow_api.g_id_offset,
   p_chart_id => 4992305640014018+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>10,
-  p_series_name               =>'Regions',
+  p_series_name               =>'ITM Sales',
   p_series_query              => a1,
-  p_series_type               =>'',
+  p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'No data found.',
-  p_series_query_row_count_max=>15,
+  p_series_query_row_count_max=>36,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -33537,7 +33670,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 64,
   p_plug_name=> 'Region by Products',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 41,
   p_plug_display_column=> 2,
@@ -33569,9 +33702,9 @@ wwv_flow_api.create_flash_chart5(
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'show',
-  p_display_attr           =>':H:N:V:::Float::V:Y:None:::N:::Default',
+  p_display_attr           =>':H:N:V:::Right::V:Y:None:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
   p_pie_attr               =>'Outside:::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
@@ -33635,27 +33768,33 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, prodgr, sum(units) as Region'||unistr('\000a')||
+a1:=a1||'select null, product, sum(Volume) as "ITM Sales"'||unistr('\000a')||
 'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p64_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and region in (nvl(:P64_regionname,''AN''))'||unistr('\000a')||
-'group by prodgr';
+'db_bigtable'||unistr('\000a')||
+'where report_type in  (''SalesByProductTotalRussia'',''SalesByProductByRegion'')'||unistr('\000a')||
+'and dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
+'and (geography_type = nvl(:p64_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+'and measure = nvl(:p64_reporttype,''Units'')'||unistr('\000a')||
+'and transaction_type=''IMS'''||unistr('\000a')||
+''||unistr('\000a')||
+'and minreal_date between add_mon';
+
+a1:=a1||'ths(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
+'and geography in (nvl(:P64_regionname,''Total Russia''))'||unistr('\000a')||
+'group by product';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4993127073095358+wwv_flow_api.g_id_offset,
   p_chart_id => 4993026917095358+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>10,
-  p_series_name               =>'Series 1',
+  p_series_name               =>'ITM Sales',
   p_series_query              => a1,
-  p_series_type               =>'',
+  p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'No data found.',
-  p_series_query_row_count_max=>15,
+  p_series_query_row_count_max=>36,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -33711,7 +33850,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 64,
   p_plug_name=> 'Products',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 51,
   p_plug_display_column=> 1,
@@ -33740,13 +33879,13 @@ wwv_flow_api.create_flash_chart5(
   p_default_chart_type     =>'3DHSTACKED_PCT',
   p_chart_title            =>'',
   p_chart_name             =>'chart_4969908596906673',
-  p_chart_width            =>700,
+  p_chart_width            =>1024,
   p_chart_height           =>500,
   p_chart_animation        =>'show',
-  p_display_attr           =>':H:N:V:X:N:Float::V:Y:Circle:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -33809,22 +33948,29 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as AN'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p64_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as AN'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'') and dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p64_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P64_REG';
+
+a1:=a1||'IONNAME or (geography is not null and :P64_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p64_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P64_PRODUCTGROUP is null then ''AN'''||unistr('\000a')||
-' when :P64_PRODUCTGROU';
-
-a1:=a1||'P = ''AN'' then ''AN'''||unistr('\000a')||
+' when :P64_PRODUCTGROUP = ''AN'' then ''AN'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geograp';
+
+a1:=a1||'hy'||unistr('\000a')||
+'order by 2 desc';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4994714739421305+wwv_flow_api.g_id_offset,
@@ -33846,22 +33992,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as AO'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p64_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as AO'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'') and dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p64_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P64_REG';
+
+a1:=a1||'IONNAME or (geography is not null and :P64_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p64_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P64_PRODUCTGROUP is null then ''AO'''||unistr('\000a')||
-' when :P64_PRODUCTGROU';
-
-a1:=a1||'P = ''AO'' then ''AO'''||unistr('\000a')||
+' when :P64_PRODUCTGROUP = ''AO'' then ''AO'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geograp';
+
+a1:=a1||'hy';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4994914347421305+wwv_flow_api.g_id_offset,
@@ -33883,22 +34035,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Mi'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p64_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as Mi'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'') and dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p64_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P64_REG';
+
+a1:=a1||'IONNAME or (geography is not null and :P64_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p64_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P64_PRODUCTGROUP is null then ''Mi'''||unistr('\000a')||
-' when :P64_PRODUCTGROUP';
-
-a1:=a1||' = ''Mi'' then ''Mi'''||unistr('\000a')||
+' when :P64_PRODUCTGROUP = ''Mi'' then ''Mi'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geograp';
+
+a1:=a1||'hy';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4995026801421305+wwv_flow_api.g_id_offset,
@@ -33920,22 +34078,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Npl'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p64_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as Npl'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'') and dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p64_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P64_RE';
+
+a1:=a1||'GIONNAME or (geography is not null and :P64_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p64_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P64_PRODUCTGROUP is null then ''Npl'''||unistr('\000a')||
-' when :P64_PRODUCTGRO';
-
-a1:=a1||'UP = ''Npl'' then ''Npl'''||unistr('\000a')||
+' when :P64_PRODUCTGROUP = ''Npl'' then ''Npl'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geo';
+
+a1:=a1||'graphy';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4995106650421305+wwv_flow_api.g_id_offset,
@@ -33957,22 +34121,28 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Vbx'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p64_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
+a1:=a1||'select null, geography, sum(volume) as Vbx'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesByProductTotalRussia'',''SalesAllProductsTotalRussia'') and dt_type = nvl(:p64_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and (geography_type = nvl(:p64_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P64_RE';
+
+a1:=a1||'GIONNAME or (geography is not null and :P64_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and measure = nvl(:p64_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P64_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P64_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'and product in ('||unistr('\000a')||
 'case '||unistr('\000a')||
 ' when :P64_PRODUCTGROUP is null then ''Vbx'''||unistr('\000a')||
-' when :P64_PRODUCTGRO';
-
-a1:=a1||'UP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
+' when :P64_PRODUCTGROUP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
 ' else ''-'''||unistr('\000a')||
 'end'||unistr('\000a')||
 ')'||unistr('\000a')||
-'group by region';
+'group by geo';
+
+a1:=a1||'graphy';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 4995229302421305+wwv_flow_api.g_id_offset,
@@ -34033,10 +34203,11 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'YES',
   p_item_default=> 'Area',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Geo Type',
+  p_prompt=>'Geography Type',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select distinct geography_type as d, geography_type as r from db_region_report',
+  p_lov=> 'select distinct INITCAP(geography_type) as d, INITCAP(geography_type) as r from geography'||unistr('\000a')||
+'where geography_type!=''CITY''',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
   p_cSize=> 30,
@@ -34079,7 +34250,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'YES',
   p_item_default=> 'Year',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Filter Period',
+  p_prompt=>'Period',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select distinct dt_type as d, dt_type as r from v_dates where dt_type <> ''Date''',
@@ -34195,7 +34366,6 @@ wwv_flow_api.create_page_item(
   p_is_persistent=> 'N',
   p_button_execute_validations=>'Y',
   p_button_action => 'SUBMIT',
-  p_button_is_hot=>'N',
   p_item_comment => '');
  
  
@@ -34217,13 +34387,13 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 4978327005775740+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Product Group',
+  p_prompt=>'Product',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select prodgr as d, prodgr as r from prodgrs',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'',
+  p_lov_null_text=>'All Products',
   p_lov_null_value=> '',
   p_cSize=> 30,
   p_cMaxlength=> 4000,
@@ -34316,15 +34486,64 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 4978327005775740+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Geo name',
+  p_prompt=>'Geography',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select distinct region as d, region as r from db_check_region'||unistr('\000a')||
-'where geography_type = nvl(:P64_GEOGRAPHYTYPE,''Area'')',
-  p_lov_display_null=> 'NO',
+  p_lov=> 'select t.d, t.r from '||unistr('\000a')||
+'(select distinct region as d, region as r, geography_type from db_check_region'||unistr('\000a')||
+'union select ''Total Russia'', ''Toral Russia'', ''Total Russia'' from dual) t'||unistr('\000a')||
+'where t.geography_type = nvl(:P64_GEOGRAPHYTYPE,''Area'')',
+  p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
+  p_lov_null_text=>'Total Russia',
+  p_lov_null_value=> '',
   p_lov_cascade_parent_items=> 'P64_GEOGRAPHYTYPE',
   p_ajax_optimize_refresh=> 'Y',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'NO',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_attribute_01 => 'NONE',
+  p_attribute_02 => 'N',
+  p_show_quick_picks=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+wwv_flow_api.create_page_item(
+  p_id=>6813815863043885 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 64,
+  p_name=>'P64_REPORTTYPE',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> true,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 30,
+  p_item_plug_id => 4978327005775740+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_prompt=>'Measure',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_SELECT_LIST',
+  p_lov=> 'STATIC:Units;Units,CIP RUR;CIP RUR,CIP USD;CIP USD,NET RUR;NET RUR,NET USD;NET USD',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
   p_cSize=> 30,
   p_cMaxlength=> 4000,
   p_cHeight=> 1,
@@ -34400,7 +34619,7 @@ end;
 
  
 --application/pages/page_00065
-prompt  ...PAGE 65: Ofline Product Information
+prompt  ...PAGE 65: Plan vs. Fact Information
 --
  
 begin
@@ -34409,8 +34628,8 @@ wwv_flow_api.create_page (
   p_flow_id => wwv_flow.g_flow_id
  ,p_id => 65
  ,p_tab_set => 'TS1'
- ,p_name => 'Ofline Product Information'
- ,p_step_title => 'Ofline Product Information'
+ ,p_name => 'Plan vs. Fact Information'
+ ,p_step_title => 'Plan vs. Fact Information'
  ,p_allow_duplicate_submissions => 'Y'
  ,p_step_sub_title => 'Ofline Product Information'
  ,p_step_sub_title_type => 'TEXT_WITH_SUBSTITUTIONS'
@@ -34420,10 +34639,12 @@ wwv_flow_api.create_page (
  ,p_page_is_public_y_n => 'N'
  ,p_protection_level => 'N'
  ,p_cache_page_yn => 'N'
+ ,p_cache_timeout_seconds => 21600
+ ,p_cache_by_user_yn => 'N'
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20111011004404'
+ ,p_last_upd_yyyymmddhh24miss => '20111023233006'
   );
 null;
  
@@ -34435,188 +34656,14 @@ declare
   l_clob clob;
   l_length number := 1;
 begin
-s:=s||'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'||unistr('\000a')||
-'    codebase="#HOST_PROTOCOL#://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"'||unistr('\000a')||
-'    width="#WIDTH#"'||unistr('\000a')||
-'    height="#HEIGHT#"'||unistr('\000a')||
-'    id="#CHART_NAME#"'||unistr('\000a')||
-'    align="top">'||unistr('\000a')||
-'<param name="movie" value="#IMAGE_PREFIX#flashchart/anychart_5/swf/#CHART_TYPE#.swf?XMLFile=#HOST#apex_util.flash?p=&APP_ID.:&FLOW_PAGE_ID.:&APP_SES';
-
-s:=s||'SION.:FLOW_FLASH_CHART5_R#REGION_ID#">'||unistr('\000a')||
-'<param name="quality" value="high">'||unistr('\000a')||
-'<param name="allowScriptAccess" value="sameDomain">'||unistr('\000a')||
-'<param name="allowNetworking" value="all">'||unistr('\000a')||
-'<param name="scale" value="noscale">'||unistr('\000a')||
-'<param name="wmode" value="transparent">'||unistr('\000a')||
-'<param name="FlashVars" value="initText=#FLASH_INIT#&xmlLoadingText=#FLASH_LOADING#&resourcesLoadingText=#FLASH_RESOURCES#&noDataText=#FLASH_NO_DATA#&wa';
-
-s:=s||'itingForDataText=#FLASH_WAITING#&templatesLoadingText=#FLASH_TEMPLATES#">'||unistr('\000a')||
-''||unistr('\000a')||
-'<embed src="#IMAGE_PREFIX#flashchart/anychart_5/swf/#CHART_TYPE#.swf?XMLFile=#HOST#apex_util.flash?p=&APP_ID.:&FLOW_PAGE_ID.:&APP_SESSION.:FLOW_FLASH_CHART5_R#REGION_ID#"'||unistr('\000a')||
-'       quality="high"'||unistr('\000a')||
-'       width="#WIDTH#"'||unistr('\000a')||
-'       height="#HEIGHT#"'||unistr('\000a')||
-'       name="#CHART_NAME#"'||unistr('\000a')||
-'       scale="noscale"'||unistr('\000a')||
-'       align=""'||unistr('\000a')||
-'       allowScript';
-
-s:=s||'Access="sameDomain" '||unistr('\000a')||
-'       allowNetworking="all"'||unistr('\000a')||
-'       type="application/x-shockwave-flash"'||unistr('\000a')||
-'       pluginspage="#HOST_PROTOCOL#://www.macromedia.com/go/getflashplayer"'||unistr('\000a')||
-'       wmode="transparent"'||unistr('\000a')||
-'       FlashVars="initText=#FLASH_INIT#&xmlLoadingText=#FLASH_LOADING#&resourcesLoadingText=#FLASH_RESOURCES#&noDataText=#FLASH_NO_DATA#&waitingForDataText=#FLASH_WAITING#&templatesLoadingText=#FLASH_TEM';
-
-s:=s||'PLATES#">'||unistr('\000a')||
-'</embed>'||unistr('\000a')||
-'</object>'||unistr('\000a')||
-'#CHART_REFRESH#';
-
-wwv_flow_api.create_page_plug (
-  p_id=> 5001504849840265 + wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id=> 65,
-  p_plug_name=> 'Regions vs. -1 Year',
-  p_region_name=>'',
-  p_escape_on_http_output=>'N',
-  p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
-  p_plug_display_sequence=> 31,
-  p_plug_display_column=> 2,
-  p_plug_display_point=> 'BEFORE_SHOW_ITEMS',
-  p_plug_source=> s,
-  p_plug_source_type=> 'FLASH_CHART5',
-  p_translate_title=> 'Y',
-  p_plug_query_row_template=> 1,
-  p_plug_query_headings_type=> 'COLON_DELMITED_LIST',
-  p_plug_query_row_count_max => 500,
-  p_plug_display_condition_type => '',
-  p_plug_customized=>'0',
-  p_plug_caching=> 'NOT_CACHED',
-  p_plug_comment=> '');
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1 := null;
-wwv_flow_api.create_flash_chart5(
-  p_id => 5001722362840273+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_page_id => 65,
-  p_region_id => 5001504849840265+wwv_flow_api.g_id_offset,
-  p_default_chart_type     =>'Stacked3DColumn',
-  p_chart_title            =>'',
-  p_chart_name             =>'chart_4971406518606594',
-  p_chart_width            =>700,
-  p_chart_height           =>500,
-  p_chart_animation        =>'ScaleYTop',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:None:::N:::Default',
-  p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
-  p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
-  p_map_source             =>'',
-  p_margins                =>':::',
-  p_omit_label_interval    => null,
-  p_bgtype                 =>'Trans',
-  p_bgcolor1               =>'',
-  p_bgcolor2               =>'',
-  p_gradient_rotation      =>null,
-  p_grid_bgtype            =>'',
-  p_grid_bgcolor1          =>'',
-  p_grid_bgcolor2          =>'',
-  p_grid_gradient_rotation =>null,
-  p_color_scheme           =>'6',
-  p_custom_colors          =>'',
-  p_map_undef_color_scheme =>'',
-  p_map_undef_custom_colors =>'',
-  p_x_axis_title           =>'',
-  p_x_axis_min             =>null,
-  p_x_axis_max             =>null,
-  p_x_axis_decimal_place   =>null,
-  p_x_axis_prefix          =>'',
-  p_x_axis_postfix         =>'',
-  p_x_axis_label_rotation  =>'',
-  p_x_axis_label_font      =>'Tahoma:10:#000000',
-  p_x_axis_major_interval  =>null,
-  p_x_axis_minor_interval  =>null,
-  p_y_axis_title           =>'',
-  p_y_axis_min             =>null,
-  p_y_axis_max             =>null,
-  p_y_axis_decimal_place   =>null,
-  p_y_axis_prefix          =>'',
-  p_y_axis_postfix         =>'',
-  p_y_axis_label_rotation  =>'',
-  p_y_axis_label_font      =>'Tahoma:10:#000000',
-  p_y_axis_major_interval  =>null,
-  p_y_axis_minor_interval  =>null,
-  p_async_update           =>'N',
-  p_async_time             =>null,
-  p_legend_title           =>'',
-  p_legend_title_font      =>'',
-  p_names_font             => null,
-  p_names_rotation         => null,
-  p_values_font            =>'Arial:10:#000000',
-  p_values_rotation        =>90,
-  p_values_prefix          =>'',
-  p_values_postfix         =>'',
-  p_hints_font             =>'Tahoma:10:#000000',
-  p_legend_font            =>'Arial:10:#000000',
-  p_grid_labels_font       =>'',
-  p_chart_title_font       =>'Tahoma:14:#000000',
-  p_x_axis_title_font      =>'Tahoma:14:#000000',
-  p_x_axis_title_rotation  =>'',
-  p_y_axis_title_font      =>'Tahoma:14:#000000',
-  p_y_axis_title_rotation  =>'',
-  p_gauge_labels_font      =>'Tahoma:10:',
-  p_use_chart_xml          =>'N',
-  p_chart_xml              => a1);
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1:=a1||'select null, region, sum(units) as Y, sum(previous_units) as "Y-1"'||unistr('\000a')||
-'from db_region_report'||unistr('\000a')||
-''||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-''||unistr('\000a')||
-'group by region';
-
-wwv_flow_api.create_flash_chart5_series(
-  p_id => 5001816633840277+wwv_flow_api.g_id_offset,
-  p_chart_id => 5001722362840273+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>10,
-  p_series_name               =>'Total',
-  p_series_query              => a1,
-  p_series_type               =>'Bar',
-  p_series_query_type         =>'SQL_QUERY',
-  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
-  p_series_query_no_data_found=>'No data found.',
-  p_series_query_row_count_max=>89,
-  p_action_link               =>'',
-  p_show_action_link          =>'N',
-  p_action_link_checksum_type =>'');
-end;
-/
-declare
-  s varchar2(32767) := null;
-  l_clob clob;
-  l_length number := 1;
-begin
 s := null;
 wwv_flow_api.create_page_plug (
   p_id=> 5001916054840279 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 65,
-  p_plug_name=> 'Region Information',
+  p_plug_name=> 'Plan vs. Fact Information',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -34646,7 +34693,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 65,
   p_plug_name=> 'Filters',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2616623974032832+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 11,
   p_plug_display_column=> 1,
@@ -34715,12 +34762,12 @@ wwv_flow_api.create_page_plug (
   p_id=> 5003724347840294 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 65,
-  p_plug_name=> 'Products',
+  p_plug_name=> 'Plan vs. Fact',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
-  p_plug_display_sequence=> 21,
-  p_plug_display_column=> 1,
+  p_plug_display_sequence=> 30,
+  p_plug_display_column=> 2,
   p_plug_display_point=> 'BEFORE_SHOW_ITEMS',
   p_plug_source=> s,
   p_plug_source_type=> 'FLASH_CHART5',
@@ -34749,10 +34796,10 @@ wwv_flow_api.create_flash_chart5(
   p_chart_width            =>700,
   p_chart_height           =>500,
   p_chart_animation        =>'show',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:Y::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -34775,7 +34822,7 @@ wwv_flow_api.create_flash_chart5(
   p_x_axis_decimal_place   =>null,
   p_x_axis_prefix          =>'',
   p_x_axis_postfix         =>'',
-  p_x_axis_label_rotation  =>'',
+  p_x_axis_label_rotation  =>'90',
   p_x_axis_label_font      =>'Tahoma:10:#000000',
   p_x_axis_major_interval  =>null,
   p_x_axis_minor_interval  =>null,
@@ -34789,18 +34836,18 @@ wwv_flow_api.create_flash_chart5(
   p_y_axis_label_font      =>'Tahoma:10:#000000',
   p_y_axis_major_interval  =>null,
   p_y_axis_minor_interval  =>null,
-  p_async_update           =>'',
+  p_async_update           =>'N',
   p_async_time             =>null,
   p_legend_title           =>'',
   p_legend_title_font      =>'',
   p_names_font             => null,
   p_names_rotation         => null,
-  p_values_font            =>'',
+  p_values_font            =>'Arial:10:#000000',
   p_values_rotation        =>null,
   p_values_prefix          =>'',
   p_values_postfix         =>'',
   p_hints_font             =>'Tahoma:10:#000000',
-  p_legend_font            =>'',
+  p_legend_font            =>'Arial:10:#000000',
   p_grid_labels_font       =>'',
   p_chart_title_font       =>'Tahoma:14:#000000',
   p_x_axis_title_font      =>'Tahoma:14:#000000',
@@ -34815,213 +34862,134 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, region, sum(units) as Total'||unistr('\000a')||
-'from db_region_report'||unistr('\000a')||
-''||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between '||unistr('\000a')||
-'add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
-''||unistr('\000a')||
-'group by region';
+a1:=a1||'select null, period, volume as "ITM Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesByProductByRegion'',''SalesAllProductsByRegion'', ''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p65_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and nvl(geography_type,''Total'') = decode(:P65_REGIONNAME,null,''Total'', nvl(:p65_geography';
 
-wwv_flow_api.create_flash_chart5_series(
-  p_id => 5004114739840296+wwv_flow_api.g_id_offset,
-  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>10,
-  p_series_name               =>'Total',
-  p_series_query              => a1,
-  p_series_type               =>'Marker',
-  p_series_query_type         =>'SQL_QUERY',
-  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
-  p_series_query_no_data_found=>'No data found.',
-  p_series_query_row_count_max=>89,
-  p_action_link               =>'',
-  p_show_action_link          =>'N',
-  p_action_link_checksum_type =>'');
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1:=a1||'select null, region, sum(units) as AN'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTGROUP is null then ''AN'''||unistr('\000a')||
-' when :P61_PRODUCTGROU';
-
-a1:=a1||'P = ''AN'' then ''AN'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by region';
-
-wwv_flow_api.create_flash_chart5_series(
-  p_id => 5004026867840296+wwv_flow_api.g_id_offset,
-  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>20,
-  p_series_name               =>'AN',
-  p_series_query              => a1,
-  p_series_type               =>'Bar',
-  p_series_query_type         =>'SQL_QUERY',
-  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
-  p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
-  p_action_link               =>'',
-  p_show_action_link          =>'N',
-  p_action_link_checksum_type =>'');
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1:=a1||'select null, region, sum(units) as AO'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTGROUP is null then ''AO'''||unistr('\000a')||
-' when :P61_PRODUCTGROU';
-
-a1:=a1||'P = ''AO'' then ''AO'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by region';
-
-wwv_flow_api.create_flash_chart5_series(
-  p_id => 5004202753840296+wwv_flow_api.g_id_offset,
-  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>30,
-  p_series_name               =>'AO',
-  p_series_query              => a1,
-  p_series_type               =>'Bar',
-  p_series_query_type         =>'SQL_QUERY',
-  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
-  p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
-  p_action_link               =>'',
-  p_show_action_link          =>'N',
-  p_action_link_checksum_type =>'');
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1:=a1||'select null, region, sum(units) as Mi'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTGROUP is null then ''Mi'''||unistr('\000a')||
-' when :P61_PRODUCTGROUP';
-
-a1:=a1||' = ''Mi'' then ''Mi'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by region';
-
-wwv_flow_api.create_flash_chart5_series(
-  p_id => 5004306785840296+wwv_flow_api.g_id_offset,
-  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>40,
-  p_series_name               =>'Mi',
-  p_series_query              => a1,
-  p_series_type               =>'Bar',
-  p_series_query_type         =>'SQL_QUERY',
-  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
-  p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
-  p_action_link               =>'',
-  p_show_action_link          =>'N',
-  p_action_link_checksum_type =>'');
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1:=a1||'select null, region, sum(units) as Npl'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTGROUP is null then ''Npl'''||unistr('\000a')||
-' when :P61_PRODUCTGRO';
-
-a1:=a1||'UP = ''Npl'' then ''Npl'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by region';
-
-wwv_flow_api.create_flash_chart5_series(
-  p_id => 5004421826840296+wwv_flow_api.g_id_offset,
-  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
-  p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>50,
-  p_series_name               =>'Npl',
-  p_series_query              => a1,
-  p_series_type               =>'Bar',
-  p_series_query_type         =>'SQL_QUERY',
-  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
-  p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
-  p_action_link               =>'',
-  p_show_action_link          =>'N',
-  p_action_link_checksum_type =>'');
-end;
-/
-declare
- a1 varchar2(32767) := null;
-begin
-a1:=a1||'select null, region, sum(units) as Vbx'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and minreal_date between add_months(to_date(nvl(:P61_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12) and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTGROUP is null then ''Vbx'''||unistr('\000a')||
-' when :P61_PRODUCTGRO';
-
-a1:=a1||'UP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by region';
+a1:=a1||'type,''Area''))'||unistr('\000a')||
+'and geography = nvl(:P65_REGIONNAME,''Total Russia'')'||unistr('\000a')||
+'and product = nvl(:P65_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P65_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by dt_id';
 
 wwv_flow_api.create_flash_chart5_series(
   p_id => 5004523937840297+wwv_flow_api.g_id_offset,
   p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>60,
-  p_series_name               =>'Vbx',
+  p_series_seq                =>30,
+  p_series_name               =>'ITM',
   p_series_query              => a1,
   p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'',
   p_series_query_row_count_max=>89,
+  p_action_link               =>'',
+  p_show_action_link          =>'N',
+  p_action_link_checksum_type =>'');
+end;
+/
+declare
+ a1 varchar2(32767) := null;
+begin
+a1:=a1||'select null, period, aplan_pers as "PvF"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesByProductByRegion'',''SalesAllProductsByRegion'', ''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p65_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and nvl(geography_type,''Total'') = decode(:P65_REGIONNAME,null,''Total'', nvl(:p65_geographyty';
+
+a1:=a1||'pe,''Area''))'||unistr('\000a')||
+'and geography = nvl(:P65_REGIONNAME,''Total Russia'')'||unistr('\000a')||
+'and product = nvl(:P65_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P65_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by dt_id';
+
+wwv_flow_api.create_flash_chart5_series(
+  p_id => 9428924807154784+wwv_flow_api.g_id_offset,
+  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_series_seq                =>50,
+  p_series_name               =>'PvF',
+  p_series_query              => a1,
+  p_series_type               =>'Line',
+  p_series_query_type         =>'SQL_QUERY',
+  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
+  p_series_query_no_data_found=>'',
+  p_series_query_row_count_max=>89,
+  p_action_link               =>'',
+  p_show_action_link          =>'N',
+  p_action_link_checksum_type =>'');
+end;
+/
+declare
+ a1 varchar2(32767) := null;
+begin
+a1:=a1||'select null, period, plan_volume as "Plan Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesByProductByRegion'',''SalesAllProductsByRegion'', ''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p65_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and nvl(geography_type,''Total'') = decode(:P65_REGIONNAME,null,''Total'', nvl(:p65_geo';
+
+a1:=a1||'graphytype,''Area''))'||unistr('\000a')||
+'and geography = nvl(:P65_REGIONNAME,''Total Russia'')'||unistr('\000a')||
+'and product = nvl(:P65_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P65_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by dt_id';
+
+wwv_flow_api.create_flash_chart5_series(
+  p_id => 9142803551789104+wwv_flow_api.g_id_offset,
+  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_series_seq                =>70,
+  p_series_name               =>'SalesPlan',
+  p_series_query              => a1,
+  p_series_type               =>'Line',
+  p_series_query_type         =>'SQL_QUERY',
+  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
+  p_series_query_no_data_found=>'',
+  p_series_query_row_count_max=>15,
+  p_action_link               =>'',
+  p_show_action_link          =>'N',
+  p_action_link_checksum_type =>'');
+end;
+/
+declare
+ a1 varchar2(32767) := null;
+begin
+a1:=a1||'select null, period, aplan_volume as "Accumulative Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesByProductByRegion'',''SalesAllProductsByRegion'', ''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p65_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and nvl(geography_type,''Total'') = decode(:P65_REGIONNAME,null,''Total'', nvl';
+
+a1:=a1||'(:p65_geographytype,''Area''))'||unistr('\000a')||
+'and geography = nvl(:P65_REGIONNAME,''Total Russia'')'||unistr('\000a')||
+'and product = nvl(:P65_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P65_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by dt_id';
+
+wwv_flow_api.create_flash_chart5_series(
+  p_id => 9448530132165757+wwv_flow_api.g_id_offset,
+  p_chart_id => 5003932259840296+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_series_seq                =>90,
+  p_series_name               =>'Acc Sales',
+  p_series_query              => a1,
+  p_series_type               =>'Bar',
+  p_series_query_type         =>'SQL_QUERY',
+  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
+  p_series_query_no_data_found=>'',
+  p_series_query_row_count_max=>15,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -35072,16 +35040,16 @@ s:=s||'PLATES#">'||unistr('\000a')||
 '#CHART_REFRESH#';
 
 wwv_flow_api.create_page_plug (
-  p_id=> 5004606436840297 + wwv_flow_api.g_id_offset,
+  p_id=> 8218816077146284 + wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id=> 65,
-  p_plug_name=> 'Region by product',
+  p_plug_name=> 'ITM, TTM, PLAN',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
-  p_plug_display_sequence=> 41,
+  p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
-  p_plug_display_point=> 'AFTER_SHOW_ITEMS',
+  p_plug_display_point=> 'BEFORE_SHOW_ITEMS',
   p_plug_source=> s,
   p_plug_source_type=> 'FLASH_CHART5',
   p_translate_title=> 'Y',
@@ -35099,20 +35067,20 @@ declare
 begin
 a1 := null;
 wwv_flow_api.create_flash_chart5(
-  p_id => 5004810770840297+wwv_flow_api.g_id_offset,
+  p_id => 8219005956146294+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_page_id => 65,
-  p_region_id => 5004606436840297+wwv_flow_api.g_id_offset,
+  p_region_id => 8218816077146284+wwv_flow_api.g_id_offset,
   p_default_chart_type     =>'2DLine',
   p_chart_title            =>'',
-  p_chart_name             =>'chart_4969908596906673',
+  p_chart_name             =>'chart_4940826905871361',
   p_chart_width            =>700,
   p_chart_height           =>500,
-  p_chart_animation        =>'ScaleYTop',
-  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default',
+  p_chart_animation        =>'SideFromLeftCenter',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:::N:::Default:::S',
   p_dial_tick_attr         =>':::::::::::',
-  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E',
-  p_pie_attr               =>'Outside:::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
   p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
   p_map_source             =>'',
   p_margins                =>':::',
@@ -35135,7 +35103,7 @@ wwv_flow_api.create_flash_chart5(
   p_x_axis_decimal_place   =>null,
   p_x_axis_prefix          =>'',
   p_x_axis_postfix         =>'',
-  p_x_axis_label_rotation  =>'',
+  p_x_axis_label_rotation  =>'90',
   p_x_axis_label_font      =>'Tahoma:10:#000000',
   p_x_axis_major_interval  =>null,
   p_x_axis_minor_interval  =>null,
@@ -35149,18 +35117,18 @@ wwv_flow_api.create_flash_chart5(
   p_y_axis_label_font      =>'Tahoma:10:#000000',
   p_y_axis_major_interval  =>null,
   p_y_axis_minor_interval  =>null,
-  p_async_update           =>'',
+  p_async_update           =>'N',
   p_async_time             =>null,
   p_legend_title           =>'',
   p_legend_title_font      =>'',
   p_names_font             => null,
   p_names_rotation         => null,
-  p_values_font            =>'',
+  p_values_font            =>'Arial:10:#000000',
   p_values_rotation        =>null,
   p_values_prefix          =>'',
   p_values_postfix         =>'',
   p_hints_font             =>'Tahoma:10:#000000',
-  p_legend_font            =>'',
+  p_legend_font            =>'Arial:10:#000000',
   p_grid_labels_font       =>'',
   p_chart_title_font       =>'Tahoma:14:#000000',
   p_x_axis_title_font      =>'Tahoma:14:#000000',
@@ -35175,33 +35143,32 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, units as Total from ('||unistr('\000a')||
-'select period, sum(units) as units, dt_id'||unistr('\000a')||
-'from db_region_report'||unistr('\000a')||
-''||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between '||unistr('\000a')||
-'to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.y';
+a1:=a1||'select null, period, volume as "ITM Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesByProductByRegion'',''SalesAllProductsByRegion'', ''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p65_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and nvl(geography_type,''Total'') = decode(:P65_REGIONNAME,null,''Total'', nvl(:p65_geography';
 
-a1:=a1||'yyy'')'||unistr('\000a')||
-'group by period, dt_id'||unistr('\000a')||
-'order by dt_id)'||unistr('\000a')||
-'';
+a1:=a1||'type,''Area''))'||unistr('\000a')||
+'and geography = nvl(:P65_REGIONNAME,''Total Russia'')'||unistr('\000a')||
+'and product = nvl(:P65_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P65_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by dt_id';
 
 wwv_flow_api.create_flash_chart5_series(
-  p_id => 5005208782840298+wwv_flow_api.g_id_offset,
-  p_chart_id => 5004810770840297+wwv_flow_api.g_id_offset,
+  p_id => 8219129200146296+wwv_flow_api.g_id_offset,
+  p_chart_id => 8219005956146294+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>10,
-  p_series_name               =>'Total',
+  p_series_name               =>'ITM',
   p_series_query              => a1,
   p_series_type               =>'Line',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'No data found.',
-  p_series_query_row_count_max=>89,
+  p_series_query_row_count_max=>36,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -35210,36 +35177,32 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as AN'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTG';
+a1:=a1||'select null, period, volume as "TTM Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesByProductByRegion'',''SalesAllProductsByRegion'', ''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p65_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMP'''||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and nvl(geography_type,''Total'') = decode(:P65_REGIONNAME,null,''Total'', nvl(:p65_geography';
 
-a1:=a1||'ROUP is null then ''AN'''||unistr('\000a')||
-' when :P61_PRODUCTGROUP = ''AN'' then ''AN'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by period';
+a1:=a1||'type,''Area''))'||unistr('\000a')||
+'and geography = nvl(:P65_REGIONNAME,''Total Russia'')'||unistr('\000a')||
+'and product = nvl(:P65_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P65_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by dt_id';
 
 wwv_flow_api.create_flash_chart5_series(
-  p_id => 5005115987840297+wwv_flow_api.g_id_offset,
-  p_chart_id => 5004810770840297+wwv_flow_api.g_id_offset,
+  p_id => 8219222761146296+wwv_flow_api.g_id_offset,
+  p_chart_id => 8219005956146294+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>20,
-  p_series_name               =>'AN',
+  p_series_name               =>'TTM',
   p_series_query              => a1,
   p_series_type               =>'Line',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
+  p_series_query_row_count_max=>15,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -35248,32 +35211,210 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as AO'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTG';
+a1:=a1||'select null, period, plan_volume as "Plan Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesByProductTotalRussia'',''SalesByProductByRegion'',''SalesAllProductsByRegion'', ''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = nvl(:p65_filter_period,''Year'')'||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and nvl(geography_type,''Total'') = decode(:P65_REGIONNAME,null,''Total'', nvl(:p65_geo';
 
-a1:=a1||'ROUP is null then ''AO'''||unistr('\000a')||
-' when :P61_PRODUCTGROUP = ''AO'' then ''AO'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by period';
+a1:=a1||'graphytype,''Area''))'||unistr('\000a')||
+'and geography = nvl(:P65_REGIONNAME,''Total Russia'')'||unistr('\000a')||
+'and product = nvl(:P65_PRODUCTGROUP,''All products'')'||unistr('\000a')||
+'and minreal_date between to_date(nvl(:P65_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by dt_id';
 
 wwv_flow_api.create_flash_chart5_series(
-  p_id => 5005315299840298+wwv_flow_api.g_id_offset,
-  p_chart_id => 5004810770840297+wwv_flow_api.g_id_offset,
+  p_id => 8268204087152285+wwv_flow_api.g_id_offset,
+  p_chart_id => 8219005956146294+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>30,
-  p_series_name               =>'AO',
+  p_series_name               =>'Plan',
   p_series_query              => a1,
   p_series_type               =>'Line',
+  p_series_query_type         =>'SQL_QUERY',
+  p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
+  p_series_query_no_data_found=>'',
+  p_series_query_row_count_max=>15,
+  p_action_link               =>'',
+  p_show_action_link          =>'N',
+  p_action_link_checksum_type =>'');
+end;
+/
+declare
+  s varchar2(32767) := null;
+  l_clob clob;
+  l_length number := 1;
+begin
+s:=s||'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'||unistr('\000a')||
+'    codebase="#HOST_PROTOCOL#://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"'||unistr('\000a')||
+'    width="#WIDTH#"'||unistr('\000a')||
+'    height="#HEIGHT#"'||unistr('\000a')||
+'    id="#CHART_NAME#"'||unistr('\000a')||
+'    align="top">'||unistr('\000a')||
+'<param name="movie" value="#IMAGE_PREFIX#flashchart/anychart_5/swf/#CHART_TYPE#.swf?XMLFile=#HOST#apex_util.flash?p=&APP_ID.:&FLOW_PAGE_ID.:&APP_SES';
+
+s:=s||'SION.:FLOW_FLASH_CHART5_R#REGION_ID#">'||unistr('\000a')||
+'<param name="quality" value="high">'||unistr('\000a')||
+'<param name="allowScriptAccess" value="sameDomain">'||unistr('\000a')||
+'<param name="allowNetworking" value="all">'||unistr('\000a')||
+'<param name="scale" value="noscale">'||unistr('\000a')||
+'<param name="wmode" value="transparent">'||unistr('\000a')||
+'<param name="FlashVars" value="initText=#FLASH_INIT#&xmlLoadingText=#FLASH_LOADING#&resourcesLoadingText=#FLASH_RESOURCES#&noDataText=#FLASH_NO_DATA#&wa';
+
+s:=s||'itingForDataText=#FLASH_WAITING#&templatesLoadingText=#FLASH_TEMPLATES#">'||unistr('\000a')||
+''||unistr('\000a')||
+'<embed src="#IMAGE_PREFIX#flashchart/anychart_5/swf/#CHART_TYPE#.swf?XMLFile=#HOST#apex_util.flash?p=&APP_ID.:&FLOW_PAGE_ID.:&APP_SESSION.:FLOW_FLASH_CHART5_R#REGION_ID#"'||unistr('\000a')||
+'       quality="high"'||unistr('\000a')||
+'       width="#WIDTH#"'||unistr('\000a')||
+'       height="#HEIGHT#"'||unistr('\000a')||
+'       name="#CHART_NAME#"'||unistr('\000a')||
+'       scale="noscale"'||unistr('\000a')||
+'       align=""'||unistr('\000a')||
+'       allowScript';
+
+s:=s||'Access="sameDomain" '||unistr('\000a')||
+'       allowNetworking="all"'||unistr('\000a')||
+'       type="application/x-shockwave-flash"'||unistr('\000a')||
+'       pluginspage="#HOST_PROTOCOL#://www.macromedia.com/go/getflashplayer"'||unistr('\000a')||
+'       wmode="transparent"'||unistr('\000a')||
+'       FlashVars="initText=#FLASH_INIT#&xmlLoadingText=#FLASH_LOADING#&resourcesLoadingText=#FLASH_RESOURCES#&noDataText=#FLASH_NO_DATA#&waitingForDataText=#FLASH_WAITING#&templatesLoadingText=#FLASH_TEM';
+
+s:=s||'PLATES#">'||unistr('\000a')||
+'</embed>'||unistr('\000a')||
+'</object>'||unistr('\000a')||
+'#CHART_REFRESH#';
+
+wwv_flow_api.create_page_plug (
+  p_id=> 9752206834502704 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id=> 65,
+  p_plug_name=> 'Plan vs. Fact Region',
+  p_region_name=>'',
+  p_escape_on_http_output=>'Y',
+  p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
+  p_plug_display_sequence=> 40,
+  p_plug_display_column=> 1,
+  p_plug_display_point=> 'AFTER_SHOW_ITEMS',
+  p_plug_source=> s,
+  p_plug_source_type=> 'FLASH_CHART5',
+  p_translate_title=> 'Y',
+  p_plug_query_row_template=> 1,
+  p_plug_query_headings_type=> 'COLON_DELMITED_LIST',
+  p_plug_query_row_count_max => 500,
+  p_plug_display_condition_type => '',
+  p_plug_customized=>'0',
+  p_plug_caching=> 'NOT_CACHED',
+  p_plug_comment=> '');
+end;
+/
+declare
+ a1 varchar2(32767) := null;
+begin
+a1 := null;
+wwv_flow_api.create_flash_chart5(
+  p_id => 9752409263502707+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id => 65,
+  p_region_id => 9752206834502704+wwv_flow_api.g_id_offset,
+  p_default_chart_type     =>'3DColumn',
+  p_chart_title            =>'',
+  p_chart_name             =>'chart_4969908596906673',
+  p_chart_width            =>700,
+  p_chart_height           =>500,
+  p_chart_animation        =>'show',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:Y::N:::Default:::S',
+  p_dial_tick_attr         =>':::::::::::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
+  p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
+  p_map_source             =>'',
+  p_margins                =>':::',
+  p_omit_label_interval    => null,
+  p_bgtype                 =>'Trans',
+  p_bgcolor1               =>'',
+  p_bgcolor2               =>'',
+  p_gradient_rotation      =>null,
+  p_grid_bgtype            =>'',
+  p_grid_bgcolor1          =>'',
+  p_grid_bgcolor2          =>'',
+  p_grid_gradient_rotation =>null,
+  p_color_scheme           =>'6',
+  p_custom_colors          =>'',
+  p_map_undef_color_scheme =>'',
+  p_map_undef_custom_colors =>'',
+  p_x_axis_title           =>'',
+  p_x_axis_min             =>null,
+  p_x_axis_max             =>null,
+  p_x_axis_decimal_place   =>null,
+  p_x_axis_prefix          =>'',
+  p_x_axis_postfix         =>'',
+  p_x_axis_label_rotation  =>'90',
+  p_x_axis_label_font      =>'Tahoma:10:#000000',
+  p_x_axis_major_interval  =>null,
+  p_x_axis_minor_interval  =>null,
+  p_y_axis_title           =>'',
+  p_y_axis_min             =>null,
+  p_y_axis_max             =>null,
+  p_y_axis_decimal_place   =>null,
+  p_y_axis_prefix          =>'',
+  p_y_axis_postfix         =>'',
+  p_y_axis_label_rotation  =>'',
+  p_y_axis_label_font      =>'Tahoma:10:#000000',
+  p_y_axis_major_interval  =>null,
+  p_y_axis_minor_interval  =>null,
+  p_async_update           =>'N',
+  p_async_time             =>null,
+  p_legend_title           =>'',
+  p_legend_title_font      =>'',
+  p_names_font             => null,
+  p_names_rotation         => null,
+  p_values_font            =>'Arial:10:#000000',
+  p_values_rotation        =>null,
+  p_values_prefix          =>'',
+  p_values_postfix         =>'',
+  p_hints_font             =>'Tahoma:10:#000000',
+  p_legend_font            =>'Arial:10:#000000',
+  p_grid_labels_font       =>'',
+  p_chart_title_font       =>'Tahoma:14:#000000',
+  p_x_axis_title_font      =>'Tahoma:14:#000000',
+  p_x_axis_title_rotation  =>'',
+  p_y_axis_title_font      =>'Tahoma:14:#000000',
+  p_y_axis_title_rotation  =>'',
+  p_gauge_labels_font      =>'Tahoma:10:',
+  p_use_chart_xml          =>'N',
+  p_chart_xml              => a1);
+end;
+/
+declare
+ a1 varchar2(32767) := null;
+begin
+a1:=a1||'select null, geography, volume as "ITM Sales"'||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = ''HalfYear'''||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography_type = nvl(:p65_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P65_REGIONNAME or (geography is not null and :P65_';
+
+a1:=a1||'REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and product in (''All products'')'||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P65_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by 2';
+
+wwv_flow_api.create_flash_chart5_series(
+  p_id => 9752512386502710+wwv_flow_api.g_id_offset,
+  p_chart_id => 9752409263502707+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_series_seq                =>30,
+  p_series_name               =>'ITM Sales',
+  p_series_query              => a1,
+  p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'',
@@ -35286,36 +35427,35 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as Mi'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCTG';
+a1:=a1||'select null, geography, aplan_pers as "% Performance" '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = ''HalfYear'''||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography_type = nvl(:p65_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P65_REGIONNAME or (geography is not null ';
 
-a1:=a1||'ROUP is null then ''Mi'''||unistr('\000a')||
-' when :P61_PRODUCTGROUP = ''Mi'' then ''Mi'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by period';
+a1:=a1||'and :P65_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and product in (''All products'')'||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P65_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
-  p_id => 5005416588840298+wwv_flow_api.g_id_offset,
-  p_chart_id => 5004810770840297+wwv_flow_api.g_id_offset,
+  p_id => 9963502351652832+wwv_flow_api.g_id_offset,
+  p_chart_id => 9752409263502707+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>40,
-  p_series_name               =>'Mi',
+  p_series_name               =>'% Performance',
   p_series_query              => a1,
   p_series_type               =>'Line',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
+  p_series_query_row_count_max=>15,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -35324,74 +35464,217 @@ end;
 declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as Npl'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCT';
+a1:=a1||'select null, geography, plan_volume as "Sales Plan" '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = ''HalfYear'''||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography_type = nvl(:p65_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P65_REGIONNAME or (geography is not null an';
 
-a1:=a1||'GROUP is null then ''Npl'''||unistr('\000a')||
-' when :P61_PRODUCTGROUP = ''Npl'' then ''Npl'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by period';
+a1:=a1||'d :P65_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and product in (''All products'')'||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P65_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
-  p_id => 5004907757840297+wwv_flow_api.g_id_offset,
-  p_chart_id => 5004810770840297+wwv_flow_api.g_id_offset,
+  p_id => 9975314472656308+wwv_flow_api.g_id_offset,
+  p_chart_id => 9752409263502707+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
   p_series_seq                =>50,
-  p_series_name               =>'Npl',
+  p_series_name               =>'Sales Plan',
   p_series_query              => a1,
-  p_series_type               =>'Line',
+  p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
+  p_series_query_row_count_max=>15,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
 end;
 /
 declare
+  s varchar2(32767) := null;
+  l_clob clob;
+  l_length number := 1;
+begin
+s:=s||'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'||unistr('\000a')||
+'    codebase="#HOST_PROTOCOL#://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"'||unistr('\000a')||
+'    width="#WIDTH#"'||unistr('\000a')||
+'    height="#HEIGHT#"'||unistr('\000a')||
+'    id="#CHART_NAME#"'||unistr('\000a')||
+'    align="top">'||unistr('\000a')||
+'<param name="movie" value="#IMAGE_PREFIX#flashchart/anychart_5/swf/#CHART_TYPE#.swf?XMLFile=#HOST#apex_util.flash?p=&APP_ID.:&FLOW_PAGE_ID.:&APP_SES';
+
+s:=s||'SION.:FLOW_FLASH_CHART5_R#REGION_ID#">'||unistr('\000a')||
+'<param name="quality" value="high">'||unistr('\000a')||
+'<param name="allowScriptAccess" value="sameDomain">'||unistr('\000a')||
+'<param name="allowNetworking" value="all">'||unistr('\000a')||
+'<param name="scale" value="noscale">'||unistr('\000a')||
+'<param name="wmode" value="transparent">'||unistr('\000a')||
+'<param name="FlashVars" value="initText=#FLASH_INIT#&xmlLoadingText=#FLASH_LOADING#&resourcesLoadingText=#FLASH_RESOURCES#&noDataText=#FLASH_NO_DATA#&wa';
+
+s:=s||'itingForDataText=#FLASH_WAITING#&templatesLoadingText=#FLASH_TEMPLATES#">'||unistr('\000a')||
+''||unistr('\000a')||
+'<embed src="#IMAGE_PREFIX#flashchart/anychart_5/swf/#CHART_TYPE#.swf?XMLFile=#HOST#apex_util.flash?p=&APP_ID.:&FLOW_PAGE_ID.:&APP_SESSION.:FLOW_FLASH_CHART5_R#REGION_ID#"'||unistr('\000a')||
+'       quality="high"'||unistr('\000a')||
+'       width="#WIDTH#"'||unistr('\000a')||
+'       height="#HEIGHT#"'||unistr('\000a')||
+'       name="#CHART_NAME#"'||unistr('\000a')||
+'       scale="noscale"'||unistr('\000a')||
+'       align=""'||unistr('\000a')||
+'       allowScript';
+
+s:=s||'Access="sameDomain" '||unistr('\000a')||
+'       allowNetworking="all"'||unistr('\000a')||
+'       type="application/x-shockwave-flash"'||unistr('\000a')||
+'       pluginspage="#HOST_PROTOCOL#://www.macromedia.com/go/getflashplayer"'||unistr('\000a')||
+'       wmode="transparent"'||unistr('\000a')||
+'       FlashVars="initText=#FLASH_INIT#&xmlLoadingText=#FLASH_LOADING#&resourcesLoadingText=#FLASH_RESOURCES#&noDataText=#FLASH_NO_DATA#&waitingForDataText=#FLASH_WAITING#&templatesLoadingText=#FLASH_TEM';
+
+s:=s||'PLATES#">'||unistr('\000a')||
+'</embed>'||unistr('\000a')||
+'</object>'||unistr('\000a')||
+'#CHART_REFRESH#';
+
+wwv_flow_api.create_page_plug (
+  p_id=> 10024617719666741 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id=> 65,
+  p_plug_name=> '% Performance',
+  p_region_name=>'',
+  p_escape_on_http_output=>'Y',
+  p_plug_template=> 2615829971032830+ wwv_flow_api.g_id_offset,
+  p_plug_display_sequence=> 50,
+  p_plug_display_column=> 2,
+  p_plug_display_point=> 'AFTER_SHOW_ITEMS',
+  p_plug_source=> s,
+  p_plug_source_type=> 'FLASH_CHART5',
+  p_translate_title=> 'Y',
+  p_plug_query_row_template=> 1,
+  p_plug_query_headings_type=> 'COLON_DELMITED_LIST',
+  p_plug_query_row_count_max => 500,
+  p_plug_display_condition_type => '',
+  p_plug_customized=>'0',
+  p_plug_caching=> 'NOT_CACHED',
+  p_plug_comment=> '');
+end;
+/
+declare
  a1 varchar2(32767) := null;
 begin
-a1:=a1||'select null, period, sum(units) as Vbx'||unistr('\000a')||
-'from '||unistr('\000a')||
-'db_region_report'||unistr('\000a')||
-'where dt_type = nvl(:p61_filter_period,''Year'')'||unistr('\000a')||
-'and geography_type = nvl(:p61_geographytype,''Area'')'||unistr('\000a')||
-'and region = nvl(:P61_REGIONNAME,''СЗ'')'||unistr('\000a')||
-'and minreal_date between to_date(nvl(:P61_PERIOD_FROM,to_date(''01.01.2000'',''dd.mm.yyyy'')),''dd.mm.yyyy'')  and to_date(nvl(:P61_PERIOD_TO,sysdate),''dd.mm.yyyy'') '||unistr('\000a')||
-'and prodgr in ('||unistr('\000a')||
-'case '||unistr('\000a')||
-' when :P61_PRODUCT';
+a1 := null;
+wwv_flow_api.create_flash_chart5(
+  p_id => 10024816028666742+wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_page_id => 65,
+  p_region_id => 10024617719666741+wwv_flow_api.g_id_offset,
+  p_default_chart_type     =>'3DColumn',
+  p_chart_title            =>'',
+  p_chart_name             =>'chart_4969908596906673',
+  p_chart_width            =>700,
+  p_chart_height           =>500,
+  p_chart_animation        =>'show',
+  p_display_attr           =>':H:N:V:X:N:Right::V:Y:Circle:Y::N:::Default:::S',
+  p_dial_tick_attr         =>':::::::::::',
+  p_gantt_attr             =>'Y:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:Rhomb:Rhomb:Full:30:15:5:Y:I:N:S:E::',
+  p_pie_attr               =>':::',
+  p_map_attr               =>'Orthographic:RegionBounds:REGION_NAME',
+  p_map_source             =>'',
+  p_margins                =>':::',
+  p_omit_label_interval    => null,
+  p_bgtype                 =>'Trans',
+  p_bgcolor1               =>'',
+  p_bgcolor2               =>'',
+  p_gradient_rotation      =>null,
+  p_grid_bgtype            =>'',
+  p_grid_bgcolor1          =>'',
+  p_grid_bgcolor2          =>'',
+  p_grid_gradient_rotation =>null,
+  p_color_scheme           =>'6',
+  p_custom_colors          =>'',
+  p_map_undef_color_scheme =>'',
+  p_map_undef_custom_colors =>'',
+  p_x_axis_title           =>'',
+  p_x_axis_min             =>null,
+  p_x_axis_max             =>null,
+  p_x_axis_decimal_place   =>null,
+  p_x_axis_prefix          =>'',
+  p_x_axis_postfix         =>'',
+  p_x_axis_label_rotation  =>'90',
+  p_x_axis_label_font      =>'Tahoma:10:#000000',
+  p_x_axis_major_interval  =>null,
+  p_x_axis_minor_interval  =>null,
+  p_y_axis_title           =>'',
+  p_y_axis_min             =>null,
+  p_y_axis_max             =>null,
+  p_y_axis_decimal_place   =>null,
+  p_y_axis_prefix          =>'',
+  p_y_axis_postfix         =>'',
+  p_y_axis_label_rotation  =>'',
+  p_y_axis_label_font      =>'Tahoma:10:#000000',
+  p_y_axis_major_interval  =>null,
+  p_y_axis_minor_interval  =>null,
+  p_async_update           =>'N',
+  p_async_time             =>null,
+  p_legend_title           =>'',
+  p_legend_title_font      =>'',
+  p_names_font             => null,
+  p_names_rotation         => null,
+  p_values_font            =>'Arial:10:#000000',
+  p_values_rotation        =>null,
+  p_values_prefix          =>'',
+  p_values_postfix         =>'',
+  p_hints_font             =>'Tahoma:10:#000000',
+  p_legend_font            =>'Arial:10:#000000',
+  p_grid_labels_font       =>'',
+  p_chart_title_font       =>'Tahoma:14:#000000',
+  p_x_axis_title_font      =>'Tahoma:14:#000000',
+  p_x_axis_title_rotation  =>'',
+  p_y_axis_title_font      =>'Tahoma:14:#000000',
+  p_y_axis_title_rotation  =>'',
+  p_gauge_labels_font      =>'Tahoma:10:',
+  p_use_chart_xml          =>'N',
+  p_chart_xml              => a1);
+end;
+/
+declare
+ a1 varchar2(32767) := null;
+begin
+a1:=a1||'select null, geography, aplan_pers as "% Performance" '||unistr('\000a')||
+'from db_bigtable'||unistr('\000a')||
+'where report_type in (''SalesAllProductsByRegion'',''SalesByProductByRegion'',''SalesAllProductsTotalRussia'')'||unistr('\000a')||
+'and dt_type = ''HalfYear'''||unistr('\000a')||
+'and transaction_type = ''IMS'''||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography_type = nvl(:p65_geographytype,''Area'') or (geography_type is null and geography is not null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and (geography = :P65_REGIONNAME or (geography is not null ';
 
-a1:=a1||'GROUP is null then ''Vbx'''||unistr('\000a')||
-' when :P61_PRODUCTGROUP = ''Vbx'' then ''Vbx'''||unistr('\000a')||
-' else ''-'''||unistr('\000a')||
-'end'||unistr('\000a')||
-')'||unistr('\000a')||
-'group by period';
+a1:=a1||'and :P65_REGIONNAME is null))'||unistr('\000a')||
+''||unistr('\000a')||
+'and product in (''All products'')'||unistr('\000a')||
+'and measure = nvl(:p65_reporttype,''Units'')'||unistr('\000a')||
+'and minreal_date between add_months(to_date(nvl(:P65_PERIOD_TO,''31.12.2011''),''dd.mm.yyyy'')+1,-12)   and to_date(nvl(:P65_PERIOD_TO,sysdate),''dd.mm.yyyy'')'||unistr('\000a')||
+'order by 2';
 
 wwv_flow_api.create_flash_chart5_series(
-  p_id => 5005015451840297+wwv_flow_api.g_id_offset,
-  p_chart_id => 5004810770840297+wwv_flow_api.g_id_offset,
+  p_id => 10025018881666742+wwv_flow_api.g_id_offset,
+  p_chart_id => 10024816028666742+wwv_flow_api.g_id_offset,
   p_flow_id=> wwv_flow.g_flow_id,
-  p_series_seq                =>60,
-  p_series_name               =>'Vbx',
+  p_series_seq                =>40,
+  p_series_name               =>'% Performance',
   p_series_query              => a1,
-  p_series_type               =>'Line',
+  p_series_type               =>'Bar',
   p_series_query_type         =>'SQL_QUERY',
   p_series_query_parse_opt    =>'PARSE_CHART_QUERY',
   p_series_query_no_data_found=>'',
-  p_series_query_row_count_max=>89,
+  p_series_query_row_count_max=>15,
   p_action_link               =>'',
   p_show_action_link          =>'N',
   p_action_link_checksum_type =>'');
@@ -35439,10 +35722,11 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'YES',
   p_item_default=> 'Area',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Geo Type',
+  p_prompt=>'Geography Type',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
-  p_lov=> 'select distinct geography_type as d, geography_type as r from db_region_report',
+  p_lov=> 'select distinct INITCAP(geography_type) as d, INITCAP(geography_type) as r from geography'||unistr('\000a')||
+'where geography_type!=''CITY''',
   p_lov_display_null=> 'NO',
   p_lov_translated=> 'N',
   p_cSize=> 30,
@@ -35485,7 +35769,7 @@ wwv_flow_api.create_page_item(
   p_use_cache_before_default=> 'YES',
   p_item_default=> 'Year',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Filter Period',
+  p_prompt=>'Period',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select distinct dt_type as d, dt_type as r from v_dates where dt_type <> ''Date''',
@@ -35601,7 +35885,6 @@ wwv_flow_api.create_page_item(
   p_is_persistent=> 'N',
   p_button_execute_validations=>'Y',
   p_button_action => 'SUBMIT',
-  p_button_is_hot=>'N',
   p_item_comment => '');
  
  
@@ -35623,13 +35906,13 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 5002120885840280+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Product Group',
+  p_prompt=>'Product',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select prodgr as d, prodgr as r from prodgrs',
   p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
-  p_lov_null_text=>'',
+  p_lov_null_text=>'All Products',
   p_lov_null_value=> '',
   p_cSize=> 30,
   p_cMaxlength=> 4000,
@@ -35722,13 +36005,15 @@ wwv_flow_api.create_page_item(
   p_item_plug_id => 5002120885840280+wwv_flow_api.g_id_offset,
   p_use_cache_before_default=> 'YES',
   p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
-  p_prompt=>'Geo name',
+  p_prompt=>'Geography',
   p_source_type=> 'STATIC',
   p_display_as=> 'NATIVE_SELECT_LIST',
   p_lov=> 'select distinct region as d, region as r from db_check_region'||unistr('\000a')||
 'where geography_type = nvl(:P65_GEOGRAPHYTYPE,''Area'')',
-  p_lov_display_null=> 'NO',
+  p_lov_display_null=> 'YES',
   p_lov_translated=> 'N',
+  p_lov_null_text=>'Total Russia',
+  p_lov_null_value=> '',
   p_lov_cascade_parent_items=> 'P65_GEOGRAPHYTYPE',
   p_ajax_optimize_refresh=> 'Y',
   p_cSize=> 30,
@@ -35748,6 +36033,251 @@ wwv_flow_api.create_page_item(
   p_escape_on_http_output => 'Y',
   p_attribute_01 => 'NONE',
   p_attribute_02 => 'N',
+  p_show_quick_picks=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+wwv_flow_api.create_page_item(
+  p_id=>7829417977047513 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 65,
+  p_name=>'P65_REPORTTYPE',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> true,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 30,
+  p_item_plug_id => 5002120885840280+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_prompt=>'Measure',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_SELECT_LIST',
+  p_lov=> 'STATIC:Units;Units,CIP RUR;CIP RUR,CIP USD;CIP USD',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'NO',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_attribute_01 => 'NONE',
+  p_attribute_02 => 'N',
+  p_show_quick_picks=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+h := null;
+h:=h||'Отчет ITM, TTM, PLAN показывает данные с разбивкой по периоду.'||unistr('\000a')||
+'Отчет зависит от всех фильтров';
+
+wwv_flow_api.create_page_item(
+  p_id=>10603810250825391 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 65,
+  p_name=>'P65_HELP',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> false,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 270,
+  p_item_plug_id => 8218816077146284+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_prompt=>'Help',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_DISPLAY_ONLY',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'YES',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_help_text=> h,
+  p_attribute_01 => 'N',
+  p_attribute_02 => 'VALUE',
+  p_attribute_04 => 'Y',
+  p_show_quick_picks=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+h := null;
+h:=h||'Отчет ITM, TTM, PLAN показывает данные с разбивкой по периоду.'||unistr('\000a')||
+'Отчет зависит от всех фильтров';
+
+wwv_flow_api.create_page_item(
+  p_id=>10667831768860012 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 65,
+  p_name=>'P65_HELP2',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> false,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 280,
+  p_item_plug_id => 5003724347840294+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_prompt=>'Help',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_DISPLAY_ONLY',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'YES',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_help_text=> h,
+  p_attribute_01 => 'N',
+  p_attribute_02 => 'VALUE',
+  p_attribute_04 => 'Y',
+  p_show_quick_picks=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+h := null;
+h:=h||'Отчет ITM, TTM, PLAN показывает данные с разбивкой по периоду.'||unistr('\000a')||
+'Отчет зависит от всех фильтров';
+
+wwv_flow_api.create_page_item(
+  p_id=>10683407311862374 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 65,
+  p_name=>'P65_HELP3',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> false,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 290,
+  p_item_plug_id => 9752206834502704+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_prompt=>'Help',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_DISPLAY_ONLY',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'YES',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_help_text=> h,
+  p_attribute_01 => 'N',
+  p_attribute_02 => 'VALUE',
+  p_attribute_04 => 'Y',
+  p_show_quick_picks=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+h := null;
+h:=h||'Отчет ITM, TTM, PLAN показывает данные с разбивкой по периоду.'||unistr('\000a')||
+'Отчет зависит от всех фильтров';
+
+wwv_flow_api.create_page_item(
+  p_id=>10699015969864916 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 65,
+  p_name=>'P65_HELP4',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> false,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 300,
+  p_item_plug_id => 10024617719666741+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_prompt=>'Help',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_DISPLAY_ONLY',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'YES',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_help_text=> h,
+  p_attribute_01 => 'N',
+  p_attribute_02 => 'VALUE',
+  p_attribute_04 => 'Y',
   p_show_quick_picks=>'N',
   p_item_comment => '');
  
@@ -35831,7 +36361,7 @@ wwv_flow_api.create_page (
  ,p_help_text => 
 'No help is available for this page.'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110920174132'
+ ,p_last_upd_yyyymmddhh24miss => '20111024005440'
   );
 null;
  
@@ -35865,7 +36395,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 74,
   p_plug_name=> 'Import',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 0,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -36182,7 +36712,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 74,
   p_plug_name=> 'Import',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -36294,7 +36824,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 75,
   p_plug_name=> 'Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -36323,7 +36853,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 75,
   p_plug_name=> 'Import Details',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615541273032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 1,
   p_plug_display_column=> 1,
@@ -37156,7 +37686,7 @@ wwv_flow_api.create_page (
  ,p_page_is_public_y_n => 'N'
  ,p_cache_page_yn => 'N'
  ,p_last_updated_by => 'ADMIN'
- ,p_last_upd_yyyymmddhh24miss => '20110822011121'
+ ,p_last_upd_yyyymmddhh24miss => '20111024004557'
   );
 null;
  
@@ -37175,7 +37705,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 101,
   p_plug_name=> 'Login',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615732977032830+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -37328,7 +37858,50 @@ wwv_flow_api.create_page_item(
   p_is_persistent=> 'Y',
   p_button_execute_validations=>'Y',
   p_button_action => 'SUBMIT',
-  p_button_is_hot=>'N',
+  p_item_comment => '');
+ 
+ 
+end;
+/
+
+declare
+    h varchar2(32767) := null;
+begin
+wwv_flow_api.create_page_item(
+  p_id=>8619015665316528 + wwv_flow_api.g_id_offset,
+  p_flow_id=> wwv_flow.g_flow_id,
+  p_flow_step_id=> 101,
+  p_name=>'P101_LOGO',
+  p_data_type=> 'VARCHAR',
+  p_is_required=> false,
+  p_accept_processing=> 'REPLACE_EXISTING',
+  p_item_sequence=> 5,
+  p_item_plug_id => 2622042624033476+wwv_flow_api.g_id_offset,
+  p_use_cache_before_default=> 'YES',
+  p_item_default_type=> 'STATIC_TEXT_WITH_SUBSTITUTIONS',
+  p_source=>'#WORKSPACE_IMAGES#amgenlogo1.png',
+  p_source_type=> 'STATIC',
+  p_display_as=> 'NATIVE_DISPLAY_IMAGE',
+  p_lov_display_null=> 'NO',
+  p_lov_translated=> 'N',
+  p_cSize=> 30,
+  p_cMaxlength=> 4000,
+  p_cHeight=> 1,
+  p_cAttributes=> 'nowrap="nowrap"',
+  p_begin_on_new_line=> 'YES',
+  p_begin_on_new_field=> 'YES',
+  p_colspan=> 1,
+  p_rowspan=> 1,
+  p_label_alignment=> 'RIGHT',
+  p_field_alignment=> 'LEFT-CENTER',
+  p_display_when_type=>'NEVER',
+  p_field_template=> 2620143823033009+wwv_flow_api.g_id_offset,
+  p_is_persistent=> 'Y',
+  p_lov_display_extra=>'YES',
+  p_protection_level => 'N',
+  p_escape_on_http_output => 'Y',
+  p_attribute_01 => 'URL',
+  p_show_quick_picks=>'N',
   p_item_comment => '');
  
  
@@ -37530,7 +38103,7 @@ wwv_flow_api.create_page_plug (
   p_page_id=> 102,
   p_plug_name=> 'Feedback',
   p_region_name=>'',
-  p_escape_on_http_output=>'N',
+  p_escape_on_http_output=>'Y',
   p_plug_template=> 2615925593032831+ wwv_flow_api.g_id_offset,
   p_plug_display_sequence=> 10,
   p_plug_display_column=> 1,
@@ -38219,6 +38792,8 @@ wwv_flow_api.create_list_item (
   p_list_item_link_text=> 'Discounts',
   p_list_item_link_target=> 'f?p=&APP_ID.:41:&SESSION.::&DEBUG.::::',
   p_list_item_icon=> 'menu/page_32.gif',
+  p_list_item_disp_cond_type=> 'NEVER',
+  p_list_item_disp_condition=> '',
   p_list_countclicks_y_n=> 'N',
   p_list_text_01=> '',
   p_list_item_current_type=> 'COLON_DELIMITED_PAGE_LIST',
@@ -38374,7 +38949,7 @@ wwv_flow_api.create_list_item (
   p_list_item_status=> 'PUBLIC',
   p_item_displayed=> 'BY_DEFAULT',
   p_list_item_display_sequence=>40,
-  p_list_item_link_text=> 'Ofline Products Information',
+  p_list_item_link_text=> 'Plan vs. Fact Information',
   p_list_item_link_target=> 'f?p=&APP_ID.:65:&SESSION.::&DEBUG.::::',
   p_list_item_icon=> 'menu/census_bx_128x128.png',
   p_list_countclicks_y_n=> 'N',
@@ -38414,6 +38989,21 @@ wwv_flow_api.create_list_item (
   p_list_countclicks_y_n=> 'N',
   p_list_text_01=> '',
   p_list_item_current_type=> 'COLON_DELIMITED_PAGE_LIST',
+  p_list_item_owner=> '');
+ 
+wwv_flow_api.create_list_item (
+  p_id=> 11738327928372365 + wwv_flow_api.g_id_offset,
+  p_list_id=> 2631128800093892 + wwv_flow_api.g_id_offset,
+  p_list_item_type=> 'LINK',
+  p_list_item_status=> 'PUBLIC',
+  p_item_displayed=> 'BY_DEFAULT',
+  p_list_item_display_sequence=>40,
+  p_list_item_link_text=> 'Dictionaries',
+  p_list_item_link_target=> 'f?p=&APP_ID.:7:&SESSION.::&DEBUG.::::',
+  p_list_item_icon=> 'menu/wiz_ez_report_140x90.gif',
+  p_list_countclicks_y_n=> 'N',
+  p_list_text_01=> '',
+  p_list_item_current_type=> 'TARGET_PAGE',
   p_list_item_owner=> '');
  
 null;
@@ -39230,25 +39820,6 @@ wwv_flow_api.create_menu_option (
   p_also_current_for_pages=> '');
  
 wwv_flow_api.create_menu_option (
-  p_id=>1599009225518757 + wwv_flow_api.g_id_offset,
-  p_menu_id=>2622829076033627 + wwv_flow_api.g_id_offset,
-  p_parent_id=>2711919379052933 + wwv_flow_api.g_id_offset,
-  p_option_sequence=>10,
-  p_short_name=>'Ofline Product Information',
-  p_long_name=>'',
-  p_link=>'f?p=&FLOW_ID.:65:&SESSION.',
-  p_page_id=>65,
-  p_also_current_for_pages=> '');
- 
-null;
- 
-end;
-/
-
- 
-begin
- 
-wwv_flow_api.create_menu_option (
   p_id=>1641910861664976 + wwv_flow_api.g_id_offset,
   p_menu_id=>2622829076033627 + wwv_flow_api.g_id_offset,
   p_parent_id=>2733925259399158 + wwv_flow_api.g_id_offset,
@@ -39258,6 +39829,14 @@ wwv_flow_api.create_menu_option (
   p_link=>'f?p=&FLOW_ID.:57:&SESSION.',
   p_page_id=>57,
   p_also_current_for_pages=> '');
+ 
+null;
+ 
+end;
+/
+
+ 
+begin
  
 wwv_flow_api.create_menu_option (
   p_id=>1648603741724252 + wwv_flow_api.g_id_offset,
@@ -39286,7 +39865,7 @@ wwv_flow_api.create_menu_option (
   p_menu_id=>2622829076033627 + wwv_flow_api.g_id_offset,
   p_parent_id=>2711919379052933 + wwv_flow_api.g_id_offset,
   p_option_sequence=>10,
-  p_short_name=>'General Information',
+  p_short_name=>'Product Information',
   p_long_name=>'',
   p_link=>'f?p=&APP_ID.:61:&SESSION.::&DEBUG.:::',
   p_page_id=>61,
@@ -39297,7 +39876,7 @@ wwv_flow_api.create_menu_option (
   p_menu_id=>2622829076033627 + wwv_flow_api.g_id_offset,
   p_parent_id=>2711919379052933 + wwv_flow_api.g_id_offset,
   p_option_sequence=>10,
-  p_short_name=>'Product Information',
+  p_short_name=>'General Information',
   p_long_name=>'',
   p_link=>'f?p=&APP_ID.:40:&SESSION.::&DEBUG.:::',
   p_page_id=>40,
@@ -39369,14 +39948,6 @@ wwv_flow_api.create_menu_option (
   p_page_id=>62,
   p_also_current_for_pages=> '');
  
-null;
- 
-end;
-/
-
- 
-begin
- 
 wwv_flow_api.create_menu_option (
   p_id=>1913622115328786 + wwv_flow_api.g_id_offset,
   p_menu_id=>2622829076033627 + wwv_flow_api.g_id_offset,
@@ -39387,6 +39958,14 @@ wwv_flow_api.create_menu_option (
   p_link=>'f?p=&FLOW_ID.:11:&SESSION.',
   p_page_id=>11,
   p_also_current_for_pages=> '');
+ 
+null;
+ 
+end;
+/
+
+ 
+begin
  
 wwv_flow_api.create_menu_option (
   p_id=>1913923085328852 + wwv_flow_api.g_id_offset,
@@ -39487,6 +40066,17 @@ wwv_flow_api.create_menu_option (
   p_page_id=>64,
   p_also_current_for_pages=> '');
  
+wwv_flow_api.create_menu_option (
+  p_id=>7790602955033665 + wwv_flow_api.g_id_offset,
+  p_menu_id=>2622829076033627 + wwv_flow_api.g_id_offset,
+  p_parent_id=>2711919379052933 + wwv_flow_api.g_id_offset,
+  p_option_sequence=>10,
+  p_short_name=>'Plan vs. Fact Information',
+  p_long_name=>'',
+  p_link=>'f?p=&APP_ID.:65:&SESSION.::&DEBUG.:::',
+  p_page_id=>65,
+  p_also_current_for_pages=> '');
+ 
 null;
  
 end;
@@ -39570,7 +40160,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 6,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '18');
 end;
  
@@ -39686,7 +40275,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 17,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -39811,7 +40399,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 17,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -39926,7 +40513,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 3,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -40046,7 +40632,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 3,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -40167,7 +40752,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 16,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -40302,7 +40886,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 16,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -40421,7 +41004,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 8,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -40550,7 +41132,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 1,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -40625,7 +41206,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 4,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -40723,7 +41303,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 5,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '3');
 end;
  
@@ -40861,7 +41440,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 18,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -41005,7 +41583,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 18,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -41139,7 +41716,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 2,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -41276,7 +41852,6 @@ wwv_flow_api.create_template(
   p_theme_id  => 2,
   p_theme_class_id => 2,
   p_translate_this_template => 'N',
-  p_mobile_page_template => 'N',
   p_template_comment => '');
 end;
  
@@ -44797,5 +45372,3 @@ end;
 set verify on
 set feedback on
 prompt  ...done
-
-exit
