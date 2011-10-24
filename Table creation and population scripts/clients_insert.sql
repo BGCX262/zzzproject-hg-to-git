@@ -86,7 +86,7 @@ Insert into Clients (IDClient,Client,City,IDReg) values (85,'ГУЗ "Облас�
 Insert into Clients (IDClient,Client,City,IDReg) values (86,'ГУЗ "Ростовская областная клиническая больница"','Ростов-на-Дону',55);
 Insert into Clients (IDClient,Client,City,IDReg) values (87,'ФГУ "Ростовский Научно-Исследовательский Онкологический Институт МЗ РФ"','Ростов-на-Дону',55);
 Insert into Clients (IDClient,Client,City,IDReg) values (88,'ГОУЗ "Онкологический диспансер" РО','Ростов-на-Дону',55);
-Insert into Clients (IDClient,Client,City,IDReg) values (89,'Окружной военный клинический госпиталь СКВО 1602','Ростов-на-Дону',55);
+Insert into Clients (IDClient,Client,City,IDReg) values (89,'ФГУ "Окружной военный клинический госпиталь СКВО 1602"','Ростов-на-Дону',55);
 Insert into Clients (IDClient,Client,City,IDReg) values (90,'ГУЗ "Госпиталь ветеранов войн РО"','Ростов-на-Дону',55);
 Insert into Clients (IDClient,Client,City,IDReg) values (91,'МЛПУ "Городская больница скорой медицинской помощи"','Ростов-на-Дону',55);
 Insert into Clients (IDClient,Client,City,IDReg) values (92,'МЛПУЗ "Городская больница №1 им. Н.А. Семашко"','Ростов-на-Дону',55);
@@ -139,7 +139,7 @@ Insert into Clients (IDClient,Client,City,IDReg) values (138,'ГУЗ "Новоу
 Insert into Clients (IDClient,Client,City,IDReg) values (139,'ГУЗ Надымская клиническая больница','Надым',83);
 Insert into Clients (IDClient,Client,City,IDReg) values (140,'ГУЗОО "Областная клиническая больница"','Омск',48);
 Insert into Clients (IDClient,Client,City,IDReg) values (141,'ГУЗОО "Городская  клиническая больница №1 им. Кабанова А.Н."','Омск',48);
-Insert into Clients (IDClient,Client,City,IDReg) values (142,'БУЗОО Областной онкологический диспансер','Омск',48);
+Insert into Clients (IDClient,Client,City,IDReg) values (142,'БУЗОО "Областной онкологический диспансер"','Омск',48);
 Insert into Clients (IDClient,Client,City,IDReg) values (143,'Медицинский центр "ФЕЗФАРМ"','Омск',48);
 Insert into Clients (IDClient,Client,City,IDReg) values (144,'Госпиталь для ветеранов войн №2 ДЗ г. Москвы','Москва',41);
 Insert into Clients (IDClient,Client,City,IDReg) values (145,'Городская клиническая больница им. С.П. Боткина','Москва',41);
@@ -390,7 +390,7 @@ Insert into Clients (IDClient,Client,City,IDReg) values (387,'ФГУ "25 ЦВК�
 Insert into Clients (IDClient,Client,City,IDReg) values (388,'МЛПУ "Красногорская городская больница №3"','Красногорск',42);
 Insert into Clients (IDClient,Client,City,IDReg) values (389,'ГУЗ "Областная детская больница"','Липецк',37);
 Insert into Clients (IDClient,Client,City,IDReg) values (390,'ОАО «Мособлфармация»','Подольск',42);
-Insert into Clients (IDClient,Client,City,IDReg) values (391,'МУЗ «Курская областная клиническая больница»','Курск',35);
+Insert into Clients (IDClient,Client,City,IDReg) values (391,'БМУ "Курская областная клиническая больница"','Курск',35);
 Insert into Clients (IDClient,Client,City,IDReg) values (392,'РАМН','Москва',41);
 Insert into Clients (IDClient,Client,City,IDReg) values (393,'ООО «РМК»','Санкт-Петербург',58);
 Insert into Clients (IDClient,Client,City,IDReg) values (394,'ГП "Калугафармация"','Калуга',24);
@@ -461,7 +461,7 @@ Insert into Clients (IDClient,Client,City,IDReg) values (459,'ООО "Росме
 Insert into Clients (IDClient,Client,City,IDReg) values (460,'ЗАО "Фармстор"','Москва',41);
 Insert into Clients (IDClient,Client,City,IDReg) values (461,'МУЗ "Сызранская центральная городская больница"','Сызрань',57);
 Insert into Clients (IDClient,Client,City,IDReg) values (462,'МЛПУ "Когалымская городская больница"','Когалым',72);
-Insert into Clients (IDClient,Client,City,IDReg) values (463,'Региональная льгота МО',null,42);
+Insert into Clients (IDClient,Client,City,IDReg) values (463,'Региональная льгота МО','МО',42);
 Insert into Clients (IDClient,Client,City,IDReg) values (464,'МУЗ "Центральная районная больница"','Аксай',55);
 Insert into Clients (IDClient,Client,City,IDReg) values (465,'ГУЗ "Хакасский республиканский онкологический диспансер"','Абакан',76);
 Insert into Clients (IDClient,Client,City,IDReg) values (466,'МЗ Оренбургской области','Оренбург',49);
@@ -482,7 +482,7 @@ Insert into Clients (IDClient,Client,City,IDReg) values (481,'ГУП "Аптек
 Insert into Clients (IDClient,Client,City,IDReg) values (482,'ЗАО "Вилард"','Москва',41);
 Insert into Clients (IDClient,Client,City,IDReg) values (483,'МУЗ "Химкинская центральная городская больница"','Химки',42);
 Insert into Clients (IDClient,Client,City,IDReg) values (484,'ЗАО "Озон"','Москва',41);
-Insert into Clients (IDClient,Client,City,IDReg) values (485,'ГУЗ "Республиканская клиническая больница"','Грозный',79);
+Insert into Clients (IDClient,Client,City,IDReg) values (485,'ГУ "Республиканская клиническая больница им. Ш.Ш. Эпендиева"','Грозный',79);
 Insert into Clients (IDClient,Client,City,IDReg) values (486,'МУЗ "Динская центральная районная больница"','ст. Динская',32);
 Insert into Clients (IDClient,Client,City,IDReg) values (487,'ГУЗ "Республиканский онкологический диспансер"','Петрозаводск',27);
 Insert into Clients (IDClient,Client,City,IDReg) values (488,'ОАО "Курская Фармация"','Курск',35);
@@ -525,6 +525,29 @@ Insert into Clients (IDClient,Client,City,IDReg) values (524,'ГУЗ "Респу
 Insert into Clients (IDClient,Client,City,IDReg) values (525,'ГУЗ "Республиканский онкологичексий диспансер"','Махачкала',15);
 Insert into Clients (IDClient,Client,City,IDReg) values (526,'ГУП КК "Районная аптека №171 Выселковского района"','ст. Выселки',32);
 Insert into Clients (IDClient,Client,City,IDReg) values (527,'ГУЗ "Городская больница №40"','Санкт-Петербург',58);
+Insert into Clients (IDClient,Client,City,IDReg) values (528,'Аптеки "Фармаград"','Санкт-Петербург',58);
+Insert into Clients (IDClient,Client,City,IDReg) values (529,'МЛПУ "Егорьевская ЦРБ"','Егорьевск',42);
+Insert into Clients (IDClient,Client,City,IDReg) values (530,'ГУП ВО "Воронежфармация"','Воронеж',14);
+Insert into Clients (IDClient,Client,City,IDReg) values (531,'НУЗ "ДКБ на станции Челябинск ОАО "РЖД"','Челябинск',78);
+Insert into Clients (IDClient,Client,City,IDReg) values (532,'ООО "Клиника промышленной медицины"','Оренбург',49);
+Insert into Clients (IDClient,Client,City,IDReg) values (533,'ОАО "Аптека №220"','Нижневартовск',77);
+Insert into Clients (IDClient,Client,City,IDReg) values (534,'ОГУЗ "Детская областная клиническая больница"','Орёл',50);
+Insert into Clients (IDClient,Client,City,IDReg) values (535,'ООО "Исомал"','Элиста',23);
+Insert into Clients (IDClient,Client,City,IDReg) values (536,'ОАО "Медицина"','Москва',41);
+Insert into Clients (IDClient,Client,City,IDReg) values (537,'МУЗ "Городская детская клиническая больница"','Владивосток',53);
+Insert into Clients (IDClient,Client,City,IDReg) values (538,'ИП Акатова Елена Викторовна','Пермь',52);
+Insert into Clients (IDClient,Client,City,IDReg) values (539,'ООО "Клиника гемодиализа "Нью Лайф"','Пермь',52);
+Insert into Clients (IDClient,Client,City,IDReg) values (540,'ФГУ "ДВОМЦ ФМБА России"','Якутск',60);
+Insert into Clients (IDClient,Client,City,IDReg) values (541,'ООО "Экофарма"','Ростов-на-Дону',55);
+Insert into Clients (IDClient,Client,City,IDReg) values (542,'Управление здравоохранения города Калуги','Калуга',24);
+Insert into Clients (IDClient,Client,City,IDReg) values (543,'МУЗ "Клиническая медико-санитарная часть №1"','Пермь',52);
+Insert into Clients (IDClient,Client,City,IDReg) values (544,'ГЛПУЗ "Челябинская областная детская клиническая больница"','Челябинск',78);
+Insert into Clients (IDClient,Client,City,IDReg) values (546,'ГУЗ "Московская городская онкологическая больница №62"','Москва',41);
+Insert into Clients (IDClient,Client,City,IDReg) values (547,'ГУЗ "Городская многопрофильная больница №2"','Санкт-Петербург',58);
+Insert into Clients (IDClient,Client,City,IDReg) values (548,'Аптека ЗАО "Фирма "Евросервис"','Санкт-Петербург',58);
+Insert into Clients (IDClient,Client,City,IDReg) values (549,'ООО "Эдельвейс-О"','Кемерово',28);
+Insert into Clients (IDClient,Client,City,IDReg) values (550,'ООО "Трик-Фарма"','Краснодар',32);
+Insert into Clients (IDClient,Client,City,IDReg) values (551,'ООО "АВИНЭКС"','Москва',41);
 
 commit;
 spool off;

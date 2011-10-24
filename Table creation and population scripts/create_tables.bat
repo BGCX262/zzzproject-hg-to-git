@@ -6,6 +6,7 @@ sqlplus mdb_rep/mdb@xe @clients.sql
 sqlplus mdb_rep/mdb@xe @discounts.sql
 sqlplus mdb_rep/mdb@xe @half_year.sql
 sqlplus mdb_rep/mdb@xe @ims.sql
+sqlplus mdb_rep/mdb@xe @import.sql
 sqlplus mdb_rep/mdb@xe @kam.sql
 sqlplus mdb_rep/mdb@xe @months.sql
 sqlplus mdb_rep/mdb@xe @prodgrs.sql
@@ -23,5 +24,7 @@ sqlplus mdb_rep/mdb@xe @affiliation.sql
 sqlplus mdb_rep/mdb@xe @employee_client.sql
 sqlplus mdb_rep/mdb@xe @access_control.sql
 sqlplus mdb_rep/mdb@xe @pricelist.sql
+
+
 
 

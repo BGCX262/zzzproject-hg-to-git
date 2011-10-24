@@ -6,13 +6,14 @@ CREATE SEQUENCE  Pricelist_ID_SEQ  MINVALUE 100 MAXVALUE 99999999999999999999999
 drop table pricelist;
 CREATE TABLE pricelist (
   idpricelist NUMBER(11,0) NOT NULL,
+  idproduct number,
   iddistributor number,
   real_date_type varchar2(100),
   real_date	date,
-  sip_rur	number,
-  sip_usd number,
-  oth_rur number,
-  oth_usd number
+  cip_rur	number,
+  cip_usd number,
+  net_rur number,
+  net_usd number
 );
 
 ALTER TABLE pricelist

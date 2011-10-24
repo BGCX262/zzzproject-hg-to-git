@@ -7,6 +7,7 @@ sqlplus mdb_rep/mdb@xe @clients_insert.sql
 sqlplus mdb_rep/mdb@xe @discounts_insert.sql
 sqlplus mdb_rep/mdb@xe @half_year_insert.sql
 sqlplus mdb_rep/mdb@xe @ims_insert.sql
+sqlplus mdb_rep/mdb@xe @import_insert.sql
 sqlplus mdb_rep/mdb@xe @kams_insert.sql
 sqlplus mdb_rep/mdb@xe @months_insert.sql
 sqlplus mdb_rep/mdb@xe @prodgrs_insert.sql
